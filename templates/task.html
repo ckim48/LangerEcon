@@ -1,0 +1,89 @@
+{% extends "header.html" %}
+{% block task %}
+    <head>
+
+    </head>
+    <body>
+<!--    mt : margin top, mb: margin bottom, ms: margin left, me: margin right-->
+        <div class="container">
+                <div class="card task-card mt-5">
+                    <div class="card-header">
+                        <h1 class="text-center">Economics Mini-Task</h1>
+                    </div>
+                    <div class="card-body">
+                        <div id="startSection">
+                            <h2>Welcome to the Economics Mini-Task!</h2>
+                            <p>Click the button below to start the task.</p>
+                            <button class="btn btn-primary" onclick="showBudgetSection()">Start!</button>
+                        </div>
+
+                        <div id="budgetSection">
+                            <h2>Select your budget</h2>
+                            <form>
+                                <select class="form-control">
+                                    <option>100 USD</option>
+                                    <option>500 USD</option>
+                                    <option>1000 USD</option>
+                                </select>
+                                <button type="submit" class="btn btn-success mt-3">Submit</button>
+                            </form>
+                        </div>
+
+                        <div id="shopSection">
+                            <form>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card p-2">
+                                            <img class="shop-img d-block mx-auto" src="../static/img/shoes.png">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Shop 1</h5>
+                                                <p>Shoes Store</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <img class="shop-img d-block mx-auto" src="../static/img/joystick.png">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Shop 2</h5>
+                                                <p>Video Game Store</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <img class="shop-img d-block mx-auto" src="../static/img/electric-guitar.png">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Shop 3</h5>
+                                                <p>Guitar Store</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Shop 4</h5>
+                                                <p>Toy Store</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+        </div>
+    <script>
+        // Function to show the budget selection when user clicks 'Start!'
+        function showBudgetSection(){
+            document.getElementById('startSection').style.display = 'none';
+            document.getElementById('budgetSection').style.display = 'block';
+        }
+    </script>
+    </body>
+
+{% endblock %}

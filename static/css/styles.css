@@ -1,0 +1,70 @@
+.login-card{
+    max-width: 500px;
+}
+.login-button{
+    background-color: transparent;
+    border: 1px solid black;
+}
+.login-button:hover{
+    border: 1px solid black;
+    background-color: black;
+    color:white;
+}
+
+.navbar{
+    height: 70px;
+}
+
+.nav-bg{
+    background-color: #ffecec;
+}
+.color-blue{
+    color: #4f229f;
+}
+
+.hero{
+    position: relative;
+    background: url('../img/hero-bg.jpg') no-repeat center center;
+    text-align:center;
+    height: 100vh;
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    font-family: "Fira Sans", sans-serif;
+}
+.hero::before{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.3);
+}
+.hero .container{
+    z-index: 1;
+}
+.hero h1{
+    color:white;
+
+    font-size: 48px;
+}
+.hero p{
+    color:white;
+    font-size: 30px;
+}
+
+.mt-6{
+    margin-top: 100px;
+}
+.task-card{
+    border: 2px solid;
+    border-image: linear-gradient(to right, red, blue) 1;
+}
+
+#budgetSection{
+    display: none;
+}
+.shop-img{
+    width: 75%;
+}
