@@ -25,7 +25,7 @@
                                     <option>500 USD</option>
                                     <option>1000 USD</option>
                                 </select>
-                                <button type="submit" class="btn btn-success mt-3">Submit</button>
+                                <button type="submit" class="btn btn-success mt-3" onclick="showShopSection()">Submit</button>
                             </form>
                         </div>
 
@@ -36,8 +36,8 @@
                                         <div class="card p-2">
                                             <img class="shop-img d-block mx-auto" src="../static/img/shoes.png">
                                             <div class="card-body">
-                                                <h5 class="card-title">Shop 1</h5>
-                                                <p>Shoes Store</p>
+                                                <h5 class="card-title text-center mt-3">Shop 1</h5>
+                                                <p class="text-center">Shoes Store</p>
                                             </div>
                                         </div>
                                     </div>
@@ -45,8 +45,8 @@
                                         <div class="card">
                                             <img class="shop-img d-block mx-auto" src="../static/img/joystick.png">
                                             <div class="card-body">
-                                                <h5 class="card-title">Shop 2</h5>
-                                                <p>Video Game Store</p>
+                                                <h5 class="card-title text-center mt-3">Shop 2</h5>
+                                                <p class="text-center">Video Game Store</p>
                                             </div>
                                         </div>
                                     </div>
@@ -54,8 +54,8 @@
                                         <div class="card">
                                             <img class="shop-img d-block mx-auto" src="../static/img/electric-guitar.png">
                                             <div class="card-body">
-                                                <h5 class="card-title">Shop 3</h5>
-                                                <p>Guitar Store</p>
+                                                <h5 class="card-title text-center mt-3">Shop 3</h5>
+                                                <p class="text-center">Guitar Store</p>
                                             </div>
                                         </div>
                                     </div>
@@ -64,8 +64,19 @@
                                         <div class="card">
                                             <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
                                             <div class="card-body">
-                                                <h5 class="card-title">Shop 4</h5>
-                                                <p>Toy Store</p>
+                                                <h5 class="card-title text-center mt-3">Shop 4</h5>
+                                                <p class="text-center">Toy Store</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
+                                            <div class="card-body">
+                                                <h5 class="card-title text-center mt-3">Shop 4</h5>
+                                                <p class="text-center">Toy Store</p>
                                             </div>
                                         </div>
                                     </div>
@@ -82,6 +93,11 @@
         function showBudgetSection(){
             document.getElementById('startSection').style.display = 'none';
             document.getElementById('budgetSection').style.display = 'block';
+        }
+
+        function showShopSection(){
+            document.getElementById('budgetSection').style.display = 'none';
+            document.getElementById('shopSection').style.display = 'block';
         }
     </script>
     </body>
