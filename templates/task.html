@@ -11,6 +11,7 @@
                         <h1 class="text-center">Economics Mini-Task</h1>
                     </div>
                     <div class="card-body">
+
                         <div id="startSection">
                             <h2>Welcome to the Economics Mini-Task!</h2>
                             <p>Click the button below to start the task.</p>
@@ -25,7 +26,7 @@
                                     <option>500 USD</option>
                                     <option>1000 USD</option>
                                 </select>
-                                <button type="submit" class="btn btn-success mt-3" onclick="showShopSection()">Submit</button>
+                                <button type="button" class="btn btn-success mt-3" onclick="showShopSection()">Submit</button>
                             </form>
                         </div>
 
@@ -38,6 +39,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 1</h5>
                                                 <p class="text-center">Shoes Store</p>
+                                                <button type="button" class="btn btn-enter" onclick="showItems('shop1','Shores Store')">Enter</button>
                                             </div>
                                         </div>
                                     </div>
@@ -47,6 +49,8 @@
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 2</h5>
                                                 <p class="text-center">Video Game Store</p>
+                                                <button type="button" class="btn btn-enter" onclick="showItems('shop2','Video Game Store')">Enter</button>
+
                                             </div>
                                         </div>
                                     </div>
@@ -56,6 +60,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 3</h5>
                                                 <p class="text-center">Guitar Store</p>
+                                                <button type="button" class="btn btn-enter" onclick="showItems('shop3','Guita Store')">Enter</button>
                                             </div>
                                         </div>
                                     </div>
@@ -66,6 +71,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 4</h5>
                                                 <p class="text-center">Toy Store</p>
+                                                <button type="button" class="btn btn-enter" onclick="showItems('shop4','Toy Store')">Enter</button>
                                             </div>
                                         </div>
                                     </div>
@@ -75,15 +81,25 @@
                                         <div class="card">
                                             <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
                                             <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 4</h5>
+                                                <h5 class="card-title text-center mt-3">Shop 5</h5>
                                                 <p class="text-center">Toy Store</p>
+                                                <button type="button" class="btn btn-enter" onclick="showItems('shop5','Random Store')">Enter</button>
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </form>
                         </div>
 
+                        <div id = 'itemSection'>
+                            <h2 class="text-center" id="currentShop">Current Store: </h2>
+                            <h3>Available Items</h3>
+                            <div id="shopItems">
+
+                            </div>
+                            <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
+                        </div>
 
                     </div>
                 </div>
@@ -97,6 +113,34 @@
 
         function showShopSection(){
             document.getElementById('budgetSection').style.display = 'none';
+            document.getElementById('shopSection').style.display = 'block';
+        }
+
+        function showItems(shopId, shopName){
+            document.getElementById('shopSection').style.display = 'none';
+            document.getElementById('itemSection').style.display = 'block';
+
+            document.getElementById('currentShop').innerText = shopName;
+
+            var items = {
+                'shop1': ["Running Shoes", "Sneakers", "Boots"],
+                'shop2': ["NBA 2k25", "Mario", "Zelda"],
+                'shop3': ["Electric Guitar", "Acrostic Guitar","Guitar Pick"],
+                'shop4': ["Teddy Bear", "Toy Car","Puzzle","Robot"],
+                'shop5': [""]
+            };
+
+            itemsContainer = document.getElementById('shopItems');
+            itemsContainer.innerText = '';
+
+            items[shopId].forEach(function(item){
+                var itemElement = document.createElement('p') // <p></p>
+                itemElement.innerText = item // <p>Running Shoes</p>
+                itemsContainer.appendChild(itemElement);
+            });
+        }
+        function goBackShop(){
+            document.getElementById('itemSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
         }
     </script>

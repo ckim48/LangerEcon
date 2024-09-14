@@ -65,9 +65,31 @@
 #budgetSection{
     display: none;
 }
+#shopSection{
+    display: none;
+}
+#itemSection{
+    display: none;
+}
 /*#shopSection{*/
 /*    display: none;*/
 /*}*/
 .shop-img{
     width: 75%;
+}
+.btn-enter{
+    background-color: orange;
+    color: white;
+    width: 80%;
+    text-align:center;
+    display: block;
+    margin: 0 auto;
+}
+.btn-enter:hover{
+    background-color: darkorange;
+    color: white;
+}
+
+#itemSection h2{
+
 }
