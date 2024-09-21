@@ -21,7 +21,7 @@
                         <div id="budgetSection">
                             <h2>Select your budget</h2>
                             <form>
-                                <select class="form-control">
+                                <select id="budgetSelect" class="form-control">
                                     <option>100 USD</option>
                                     <option>500 USD</option>
                                     <option>1000 USD</option>
@@ -31,10 +31,17 @@
                         </div>
 
                         <div id="shopSection">
+                            <div class="row mb-5">
+                                <div class="col-md-12 d-flex justify-content-end align-items-center">
+                                    <h4 class="me-4 budget">Available Budget: $<span id="availableBudget"></span></h4>
+                                    <button class="btn btn-primary">What you bought</button>
+                                </div>
+                            </div>
+
                             <form>
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <div class="card p-2">
+                                        <div class="card shop-card d-block mx-auto">
                                             <img class="shop-img d-block mx-auto" src="../static/img/shoes.png">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 1</h5>
@@ -44,7 +51,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <div class="card">
+                                        <div class="card shop-card d-block mx-auto">
                                             <img class="shop-img d-block mx-auto" src="../static/img/joystick.png">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 2</h5>
@@ -55,7 +62,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-3">
-                                        <div class="card">
+                                        <div class="card shop-card d-block mx-auto">
                                             <img class="shop-img d-block mx-auto" src="../static/img/electric-guitar.png">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 3</h5>
@@ -66,7 +73,7 @@
                                     </div>
 
                                     <div class="col-md-3">
-                                        <div class="card">
+                                        <div class="card shop-card d-block mx-auto">
                                             <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 4</h5>
@@ -78,7 +85,7 @@
 
 
                                     <div class="col-md-3">
-                                        <div class="card">
+                                        <div class="card shop-card d-block mx-auto">
                                             <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
                                             <div class="card-body">
                                                 <h5 class="card-title text-center mt-3">Shop 5</h5>
@@ -105,6 +112,10 @@
                 </div>
         </div>
     <script>
+
+        budget = 0;
+        availableBudget = 0;
+
         // Function to show the budget selection when user clicks 'Start!'
         function showBudgetSection(){
             document.getElementById('startSection').style.display = 'none';
@@ -112,6 +123,11 @@
         }
 
         function showShopSection(){
+            selectedBudget = document.getElementById('budgetSelect').value; // 500 USD
+            budget = parseInt(selectedBudget);
+            availableBudget = budget;
+
+            document.getElementById('availableBudget').innerText = availableBudget;
             document.getElementById('budgetSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
         }
@@ -123,10 +139,10 @@
             document.getElementById('currentShop').innerText = shopName;
 
             var items = {
-                'shop1': ["Running Shoes", "Sneakers", "Boots"],
-                'shop2': ["NBA 2k25", "Mario", "Zelda"],
-                'shop3': ["Electric Guitar", "Acrostic Guitar","Guitar Pick"],
-                'shop4': ["Teddy Bear", "Toy Car","Puzzle","Robot"],
+                'shop1': ["Running Shoes - $25", "Sneakers - $15", "Boots - $45"],
+                'shop2': ["NBA 2k25 - $55", "Mario - $45", "Zelda - $65"],
+                'shop3': ["Electric Guitar - $85", "Acrostic Guitar - $95","Guitar Pick - $105"],
+                'shop4': ["Teddy Bear - $25", "Toy Car - $25","Puzzle - $15","Robot - $25"],
                 'shop5': [""]
             };
 
@@ -134,11 +150,22 @@
             itemsContainer.innerText = '';
 
             items[shopId].forEach(function(item){
-                var itemElement = document.createElement('p') // <p></p>
-                itemElement.innerText = item // <p>Running Shoes</p>
+                var itemElement = document.createElement('div'); // this code creates <div> </div>
+                var itemName = document.createElement('span'); // this code create <span> </span>
+                itemName.innerText = item; // <span>Sneakers</span>
+
+                var buyButton = document.createElement('button'); // <button></button>
+                buyButton.classList.add('btn', 'btn-success'); // <button class="btn btn-success"> </button>
+                buyButton.innerText = "Buy"; // <button class="btn btn-success"> Buy </button>
+
+                itemElement.appendChild(itemName); // <div><span>Sneakers</span></div>
+                itemElement.appendChild(buyButton); // <div><span>Sneakers</span><button class="btn btn-success"> Buy </button></div>
+
                 itemsContainer.appendChild(itemElement);
+
             });
         }
+
         function goBackShop(){
             document.getElementById('itemSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';

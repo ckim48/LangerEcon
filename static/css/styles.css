@@ -93,3 +93,10 @@
 #itemSection h2{
 
 }
+.shop-card{
+    width: 80%;
+}
+.budget{
+    font-size: 22px;
+    font-weight: 500;
+}
