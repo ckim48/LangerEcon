@@ -4,6 +4,7 @@
 
     </head>
     <body>
+
 <!--    mt : margin top, mb: margin bottom, ms: margin left, me: margin right-->
         <div class="container">
                 <div class="card task-card mt-5">
@@ -34,7 +35,7 @@
                             <div class="row mb-5">
                                 <div class="col-md-12 d-flex justify-content-end align-items-center">
                                     <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                                    <button class="btn btn-primary">What you bought</button>
+                                    <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
                                 </div>
                             </div>
 
@@ -103,7 +104,7 @@
                             <div class="row mb-5">
                                 <div class="col-md-12 d-flex justify-content-end align-items-center">
                                     <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                                    <button class="btn btn-primary">What you bought</button>
+                                    <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
                                 </div>
                             </div>
 
@@ -118,10 +119,29 @@
                     </div>
                 </div>
         </div>
+
+    <div class="modal fade" id ="purchasedItemsModal" tabindex="-1" area-labelledby ="purchasedItemsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Items you Bought</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="purchasedItemsList">
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
 
         budget = 0;
         availableBudget = 0;
+        purchasedItems = []; // list to keep track of purchased items
 
         // Function to show the budget selection when user clicks 'Start!'
         function showBudgetSection(){
@@ -174,6 +194,28 @@
                 buyButton.classList.add('btn', 'btn-success'); // <button class="btn btn-success"> </button>
                 buyButton.innerText = "Buy"; // <button class="btn btn-success"> Buy </button>
 
+                // Functionalites for buy buttons
+                buyButton.addEventListener('click', function(){
+                    if(availableBudget >= item.price && item.quantity > 0){ // only when user has enough budget AND item quantity is larger than 0.
+                        availableBudget = availableBudget - item.price; // availableBudge -= item.price Deduct price from budge
+                        item.quantity -= 1; // Decrease item quantity
+                        itemName.innerText = `${item.name} - $${item.price}, quantity: ${item.quantity}`; // re-render the item with updated quantity
+
+                        if (item.quantity === 0){
+                            buyButton.disabled = true;
+                            buyButton.innerText = "Out of Stock";
+                        }
+
+                        updateAvailableBudget();
+
+                        purchasedItems.push({name: item.name, price: item.price}); // adding the purchased item to the list purchasedItems.
+                        alert(`You bought ${item.name} for $${item.price}!`);
+                    }else{ // when user does not have sufficient budget
+                        alert("Insufficient budget or item is out of stock!");
+                    }
+                });
+
+
                 itemElement.appendChild(itemName); // <div><span>Sneakers</span></div>
                 itemElement.appendChild(buyButton); // <div><span>Sneakers</span><button class="btn btn-success"> Buy </button></div>
 
@@ -185,6 +227,27 @@
         function goBackShop(){
             document.getElementById('itemSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
+        }
+
+        // Function to show purchased items in the modal
+        function showPurchasedItems(){
+            var purchasedItemsList = document.getElementById('purchasedItemsList');
+            purchasedItemsList.innerHTML = '';
+
+            // user bought at least one item
+            if (purchasedItems.length > 0){
+                purchasedItems.forEach(function(item){
+                    var li = document.createElement('li');
+                    li.innerText = `${item.name} - $${item.price}`;
+                    purchasedItemsList.appendChild(li);
+                });
+            }else{ // user bought nothing
+                purchasedItemsList.innerHTML = "<p>No items purchased yet.</p>"
+            }
+
+            // show the modal
+            var purchasedItemsModal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
+            purchasedItemsModal.show();
         }
     </script>
     </body>
