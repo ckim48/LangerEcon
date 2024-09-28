@@ -33,7 +33,7 @@
                         <div id="shopSection">
                             <div class="row mb-5">
                                 <div class="col-md-12 d-flex justify-content-end align-items-center">
-                                    <h4 class="me-4 budget">Available Budget: $<span id="availableBudget"></span></h4>
+                                    <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
                                     <button class="btn btn-primary">What you bought</button>
                                 </div>
                             </div>
@@ -100,6 +100,13 @@
                         </div>
 
                         <div id = 'itemSection'>
+                            <div class="row mb-5">
+                                <div class="col-md-12 d-flex justify-content-end align-items-center">
+                                    <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
+                                    <button class="btn btn-primary">What you bought</button>
+                                </div>
+                            </div>
+
                             <h2 class="text-center" id="currentShop">Current Store: </h2>
                             <h3>Available Items</h3>
                             <div id="shopItems">
@@ -122,12 +129,21 @@
             document.getElementById('budgetSection').style.display = 'block';
         }
 
+        // Function to Update all availableBudget elements
+        function updateAvailableBudget(){
+            budgetElements = document.querySelectorAll('.availableBudget'); // [<h1 class="availableBudte"></h1>, <span class="availableBudte"></span> ]
+            budgetElements.forEach(function(element){
+                element.innerText = availableBudget;
+            });
+        }
+
+
         function showShopSection(){
             selectedBudget = document.getElementById('budgetSelect').value; // 500 USD
             budget = parseInt(selectedBudget);
             availableBudget = budget;
 
-            document.getElementById('availableBudget').innerText = availableBudget;
+            updateAvailableBudget();
             document.getElementById('budgetSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
         }
@@ -139,10 +155,10 @@
             document.getElementById('currentShop').innerText = shopName;
 
             var items = {
-                'shop1': ["Running Shoes - $25", "Sneakers - $15", "Boots - $45"],
-                'shop2': ["NBA 2k25 - $55", "Mario - $45", "Zelda - $65"],
-                'shop3': ["Electric Guitar - $85", "Acrostic Guitar - $95","Guitar Pick - $105"],
-                'shop4': ["Teddy Bear - $25", "Toy Car - $25","Puzzle - $15","Robot - $25"],
+                'shop1': [{name:"Running Shoes", price: 25, quantity: 1}, {name: "Sneakers", price: 15, quantity: 1}, {name: "Boots", price: 45, quantity: 1}],
+                'shop2': [{name: "NBA 2k25", price: 55, quantity: 1}, {name: "Mario", price: 45, quantity: 1}, {name: "Zelda", price: 65, quantity: 1}],
+                'shop3': [{name: "Electric Guitar", price: 85, quantity: 1}, {name: "Acoustic Guitar", price: 95, quantity: 1},{name: "Guitar Pick", price: 105, quantity: 1}],
+                'shop4': [{name: "Teddy Bear", price: 25, quantity: 1}, {name: "Toy Car", price: 25, quantity: 1},{name: "Puzzle", price: 15, quantity: 1},{name: "Robot", price: 25, quantity: 1}],
                 'shop5': [""]
             };
 
@@ -152,7 +168,7 @@
             items[shopId].forEach(function(item){
                 var itemElement = document.createElement('div'); // this code creates <div> </div>
                 var itemName = document.createElement('span'); // this code create <span> </span>
-                itemName.innerText = item; // <span>Sneakers</span>
+                itemName.innerText = `${item.name} - $${item.price}, quantity: ${item.quantity}` ; // <span>Sneakers - $ 25</span>
 
                 var buyButton = document.createElement('button'); // <button></button>
                 buyButton.classList.add('btn', 'btn-success'); // <button class="btn btn-success"> </button>
