@@ -14,6 +14,8 @@
                     <form action="/register" method="POST">
                         <input  class="form-control mb-3" placeholder="Username" name = "username">
                         <input  class="form-control mb-3" placeholder="Password" name = "password">
+                        <input  class="form-control mb-3" placeholder="Gender" name = "gender">
+                        <input  class="form-control mb-3" placeholder="Age" name = "age">
 
                         {% with messages = get_flashed_messages() %}
                             {% if messages %}
