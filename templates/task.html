@@ -1,7 +1,85 @@
 {% extends "header.html" %}
 {% block task %}
     <head>
+        <style>
+            /* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;
+}
 
+/* Budget and Button Section */
+.budget {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.btn-primary, .btn-success {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Item Section */
+#itemSection {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+/* Grid Layout for Items */
+.shop-items-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Card Design */
+.shop-item-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+}
+
+.shop-item-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Item Image Styling */
+.shop-item-img {
+    width: 100%;
+    max-height: 150px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+/* Item Title */
+.shop-item-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Buy Button */
+.btn-buy {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buy:hover {
+    background-color: #218838;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 10px;
+}
+
+        </style>
     </head>
     <body>
 
@@ -100,7 +178,7 @@
                             </form>
                         </div>
 
-                        <div id = 'itemSection'>
+                        <div id="itemSection">
                             <div class="row mb-5">
                                 <div class="col-md-12 d-flex justify-content-end align-items-center">
                                     <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
@@ -109,11 +187,15 @@
                             </div>
 
                             <h2 class="text-center" id="currentShop">Current Store: </h2>
-                            <h3>Available Items</h3>
-                            <div id="shopItems">
+                            <h3 class="text-center mb-3">Available Items</h3>
 
+                            <div id="shopItems" class="row justify-content-center shop-items-grid mt-5">
+                                <!-- Items will be injected here by JavaScript -->
                             </div>
-                            <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
+
+                            <div class="text-center mt-4">
+                                <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
+                            </div>
                         </div>
 
                     </div>
@@ -168,61 +250,70 @@
             document.getElementById('shopSection').style.display = 'block';
         }
 
-        function showItems(shopId, shopName){
-            document.getElementById('shopSection').style.display = 'none';
-            document.getElementById('itemSection').style.display = 'block';
+function showItems(shopId, shopName) {
+    document.getElementById('shopSection').style.display = 'none';
+    document.getElementById('itemSection').style.display = 'block';
 
-            document.getElementById('currentShop').innerText = shopName;
+    document.getElementById('currentShop').innerText = shopName;
 
-            var items = {
-                'shop1': [{name:"Running Shoes", price: 25, quantity: 1}, {name: "Sneakers", price: 15, quantity: 1}, {name: "Boots", price: 45, quantity: 1}],
-                'shop2': [{name: "NBA 2k25", price: 55, quantity: 1}, {name: "Mario", price: 45, quantity: 1}, {name: "Zelda", price: 65, quantity: 1}],
-                'shop3': [{name: "Electric Guitar", price: 85, quantity: 1}, {name: "Acoustic Guitar", price: 95, quantity: 1},{name: "Guitar Pick", price: 105, quantity: 1}],
-                'shop4': [{name: "Teddy Bear", price: 25, quantity: 1}, {name: "Toy Car", price: 25, quantity: 1},{name: "Puzzle", price: 15, quantity: 1},{name: "Robot", price: 25, quantity: 1}],
-                'shop5': [""]
-            };
+    var items = {
+        'shop1': [{name: "Running Shoes", price: 25, quantity: 1}, {name: "Sneakers", price: 15, quantity: 1}, {name: "Boots", price: 45, quantity: 1}],
+        'shop2': [{name: "NBA 2k25", price: 55, quantity: 1}, {name: "Mario", price: 45, quantity: 1}, {name: "Zelda", price: 65, quantity: 1}],
+        'shop3': [{name: "Electric Guitar", price: 85, quantity: 1}, {name: "Acoustic Guitar", price: 95, quantity: 1}, {name: "Guitar Pick", price: 105, quantity: 1}],
+        'shop4': [{name: "Teddy Bear", price: 25, quantity: 1}, {name: "Toy Car", price: 25, quantity: 1}, {name: "Puzzle", price: 15, quantity: 1}, {name: "Robot", price: 25, quantity: 1}],
+        'shop5': []
+    };
 
-            itemsContainer = document.getElementById('shopItems');
-            itemsContainer.innerText = '';
+    var itemsContainer = document.getElementById('shopItems');
+    itemsContainer.innerHTML = ''; // Clear previous items
 
-            items[shopId].forEach(function(item){
-                var itemElement = document.createElement('div'); // this code creates <div> </div>
-                var itemName = document.createElement('span'); // this code create <span> </span>
-                itemName.innerText = `${item.name} - $${item.price}, quantity: ${item.quantity}` ; // <span>Sneakers - $ 25</span>
+    items[shopId].forEach(function(item) {
+        // Create card div
+        var card = document.createElement('div');
+        card.classList.add('col-md-3', 'shop-item-card');
 
-                var buyButton = document.createElement('button'); // <button></button>
-                buyButton.classList.add('btn', 'btn-success'); // <button class="btn btn-success"> </button>
-                buyButton.innerText = "Buy"; // <button class="btn btn-success"> Buy </button>
+        // Create item name
+        var itemTitle = document.createElement('h5');
+        itemTitle.classList.add('shop-item-title');
+        itemTitle.innerText = `${item.name} - $${item.price}`;
 
-                // Functionalites for buy buttons
-                buyButton.addEventListener('click', function(){
-                    if(availableBudget >= item.price && item.quantity > 0){ // only when user has enough budget AND item quantity is larger than 0.
-                        availableBudget = availableBudget - item.price; // availableBudge -= item.price Deduct price from budge
-                        item.quantity -= 1; // Decrease item quantity
-                        itemName.innerText = `${item.name} - $${item.price}, quantity: ${item.quantity}`; // re-render the item with updated quantity
+        // Create item image (dummy image for now)
+        var itemImage = document.createElement('img');
+        itemImage.classList.add('shop-item-img');
+        itemImage.src = '../static/img/default.png'; // Change to the actual image if available
 
-                        if (item.quantity === 0){
-                            buyButton.disabled = true;
-                            buyButton.innerText = "Out of Stock";
-                        }
+        // Create buy button
+        var buyButton = document.createElement('button');
+        buyButton.classList.add('btn', 'btn-buy');
+        buyButton.innerText = "Buy";
 
-                        updateAvailableBudget();
+        // Buy button functionality
+        buyButton.addEventListener('click', function() {
+            if (availableBudget >= item.price && item.quantity > 0) {
+                availableBudget -= item.price;
+                item.quantity--;
+                if (item.quantity === 0) {
+                    buyButton.disabled = true;
+                    buyButton.innerText = "Out of Stock";
+                }
+                updateAvailableBudget();
+                purchasedItems.push({name: item.name, price: item.price});
+                alert(`You bought ${item.name} for $${item.price}!`);
+            } else {
+                alert("Insufficient budget or item is out of stock!");
+            }
+        });
 
-                        purchasedItems.push({name: item.name, price: item.price}); // adding the purchased item to the list purchasedItems.
-                        alert(`You bought ${item.name} for $${item.price}!`);
-                    }else{ // when user does not have sufficient budget
-                        alert("Insufficient budget or item is out of stock!");
-                    }
-                });
+        // Append elements to card
+        card.appendChild(itemImage);
+        card.appendChild(itemTitle);
+        card.appendChild(buyButton);
 
+        // Append card to container
+        itemsContainer.appendChild(card);
+    });
+}
 
-                itemElement.appendChild(itemName); // <div><span>Sneakers</span></div>
-                itemElement.appendChild(buyButton); // <div><span>Sneakers</span><button class="btn btn-success"> Buy </button></div>
-
-                itemsContainer.appendChild(itemElement);
-
-            });
-        }
 
         function goBackShop(){
             document.getElementById('itemSection').style.display = 'none';
