@@ -1,16 +1,54 @@
 .login-card{
-    max-width: 500px;
-}
-.login-button{
-    background-color: transparent;
-    border: 1px solid black;
-}
-.login-button:hover{
-    border: 1px solid black;
-    background-color: black;
-    color:white;
+    max-width: 400px;
+    padding: 30px 30px;
 }
 
+#login{
+    background: linear-gradient(135deg, lightgreen 0%, mediumpurple 100%);
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    height: 100vh;
+}
+
+#register{
+    background: linear-gradient(135deg, mediumpurple 0%, lightgreen 100%);
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    height: 100vh;
+}
+
+.btn-login{
+    background-color: mediumspringgreen !important;
+    color: indigo !important;
+    font-size: 20px !important;
+    width: 100% !important;
+    border-radius:30px !important;
+    transition: 0.5s;
+}
+.btn-task{
+    width: 20% !important;
+}
+.cardh1{
+    font-size: 38px;
+}
+.availableBudget{
+
+}
+
+.btn-register{
+    background-color: mediumspringgreen !important;
+    color: indigo !important;
+    font-size: 20px !important;
+    width: 100% !important;
+    border-radius:30px !important;
+    transition: 0.5s;
+}
+.btn-login:hover{
+    background-color: indigo !important;
+    color: mediumspringgreen !important;
+}
 .navbar{
     height: 70px;
 }
@@ -99,4 +137,13 @@
 .budget{
     font-size: 22px;
     font-weight: 500;
+}
+
+.available-items{
+    font-size: 20px;
+    margin-top: 30px;
+    margin-left: 55px;
+}
+.font-italic{
+    font-style: italic;
 }

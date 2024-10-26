@@ -1,346 +1,234 @@
 {% extends "header.html" %}
 {% block task %}
-    <head>
-        <style>
-            /* General Styling */
-body {
-    font-family: 'Roboto', sans-serif;
-}
+<head>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
 
-/* Budget and Button Section */
-.budget {
-    font-size: 20px;
-    font-weight: bold;
-}
+        .budget {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-.btn-primary, .btn-success {
-    padding: 10px 20px;
-    border-radius: 5px;
-}
+        .btn-primary, .btn-success {
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
 
-/* Item Section */
-#itemSection {
-    margin-top: 30px;
-    padding: 20px;
-}
+        .shop-items-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
 
-/* Grid Layout for Items */
-.shop-items-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+        .shop-item-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            width: 220px;
+            text-align: center;
+        }
 
-/* Card Design */
-.shop-item-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-    padding: 15px;
-    width: 220px;
-    text-align: center;
-}
+        .shop-item-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-.shop-item-card:hover {
-    transform: translateY(-5px);
-}
+        .btn-buy {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
 
-/* Item Image Styling */
-.shop-item-img {
-    width: 100%;
-    max-height: 150px;
-    object-fit: contain;
-    margin-bottom: 15px;
-}
-
-/* Item Title */
-.shop-item-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-/* Buy Button */
-.btn-buy {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-buy:hover {
-    background-color: #218838;
-}
-
-/* Modal Styling */
-.modal-content {
-    border-radius: 10px;
-}
-
-        </style>
-    </head>
-    <body>
-
-<!--    mt : margin top, mb: margin bottom, ms: margin left, me: margin right-->
-        <div class="container">
-                <div class="card task-card mt-5">
-                    <div class="card-header">
-                        <h1 class="text-center">Economics Mini-Task</h1>
-                    </div>
-                    <div class="card-body">
-
-                        <div id="startSection">
-                            <h2>Welcome to the Economics Mini-Task!</h2>
-                            <p>Click the button below to start the task.</p>
-                            <button class="btn btn-primary" onclick="showBudgetSection()">Start!</button>
-                        </div>
-
-                        <div id="budgetSection">
-                            <h2>Select your budget</h2>
-                            <form>
-                                <select id="budgetSelect" class="form-control">
-                                    <option>100 USD</option>
-                                    <option>500 USD</option>
-                                    <option>1000 USD</option>
-                                </select>
-                                <button type="button" class="btn btn-success mt-3" onclick="showShopSection()">Submit</button>
-                            </form>
-                        </div>
-
-                        <div id="shopSection">
-                            <div class="row mb-5">
-                                <div class="col-md-12 d-flex justify-content-end align-items-center">
-                                    <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                                    <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
-                                </div>
-                            </div>
-
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="card shop-card d-block mx-auto">
-                                            <img class="shop-img d-block mx-auto" src="../static/img/shoes.png">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 1</h5>
-                                                <p class="text-center">Shoes Store</p>
-                                                <button type="button" class="btn btn-enter" onclick="showItems('shop1','Shores Store')">Enter</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card shop-card d-block mx-auto">
-                                            <img class="shop-img d-block mx-auto" src="../static/img/joystick.png">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 2</h5>
-                                                <p class="text-center">Video Game Store</p>
-                                                <button type="button" class="btn btn-enter" onclick="showItems('shop2','Video Game Store')">Enter</button>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="card shop-card d-block mx-auto">
-                                            <img class="shop-img d-block mx-auto" src="../static/img/electric-guitar.png">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 3</h5>
-                                                <p class="text-center">Guitar Store</p>
-                                                <button type="button" class="btn btn-enter" onclick="showItems('shop3','Guita Store')">Enter</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="card shop-card d-block mx-auto">
-                                            <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 4</h5>
-                                                <p class="text-center">Toy Store</p>
-                                                <button type="button" class="btn btn-enter" onclick="showItems('shop4','Toy Store')">Enter</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="col-md-3">
-                                        <div class="card shop-card d-block mx-auto">
-                                            <img class="shop-img d-block mx-auto" src="../static/img/toys.png">
-                                            <div class="card-body">
-                                                <h5 class="card-title text-center mt-3">Shop 5</h5>
-                                                <p class="text-center">Toy Store</p>
-                                                <button type="button" class="btn btn-enter" onclick="showItems('shop5','Random Store')">Enter</button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </form>
-                        </div>
-
-                        <div id="itemSection">
-                            <div class="row mb-5">
-                                <div class="col-md-12 d-flex justify-content-end align-items-center">
-                                    <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                                    <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
-                                </div>
-                            </div>
-
-                            <h2 class="text-center" id="currentShop">Current Store: </h2>
-                            <h3 class="text-center mb-3">Available Items</h3>
-
-                            <div id="shopItems" class="row justify-content-center shop-items-grid mt-5">
-                                <!-- Items will be injected here by JavaScript -->
-                            </div>
-
-                            <div class="text-center mt-4">
-                                <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-        </div>
-
-    <div class="modal fade" id ="purchasedItemsModal" tabindex="-1" area-labelledby ="purchasedItemsModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Items you Bought</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <ul id="purchasedItemsList">
-
+        .btn-buy:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card task-card mt-5">
+            <div class="card-header">
+                <h1 class="text-center">Economics Mini-Task</h1>
+            </div>
+            <div class="card-body">
+                <div id="startSection" class="px-5 py-5">
+                    <h2>Welcome to the Economics Mini-Task!</h2>
+                    <ul>
+                        <li>You have a budget of $5000.</li>
+                        <li>Buy one item from each category in every shop (16 items total).</li>
+                        <li>Review what others bought through the survey results.</li>
                     </ul>
+                    <button class="btn btn-login btn-task mt-4" onclick="showShopSection()">Start!</button>
+                </div>
+
+                <div id="shopSection" style="display:none;">
+                    <div class="row mb-5">
+                        <div class="col-md-12 d-flex justify-content-end align-items-center">
+                            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
+                            <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        {% for i in range(1, 5) %}
+                        <div class="col-md-3">
+                            <div class="card shop-card d-block mx-auto">
+                                <img class="shop-img d-block mx-auto" src="../static/img/shop{{ i }}.png">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center mt-3">Shop {{ i }}</h5>
+                                    <button type="button" class="btn btn-enter" onclick="showItems('shop{{ i }}', 'Shop {{ i }}')">Enter</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div id="itemSection" style="display:none;">
+                    <div class="row mb-5">
+                        <div class="col-md-12 d-flex justify-content-end align-items-center">
+                            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
+                            <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
+                        </div>
+                    </div>
+
+                    <h2 class="text-center" id="currentShop">Current Store: </h2>
+                    <ul class="nav nav-tabs mb-3" id="categoryTabs" role="tablist">
+                        {% for j in range(1, 5) %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {% if j == 1 %}active{% endif %}"
+                                    id="category{{ j }}-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#category{{ j }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="category{{ j }}"
+                                    aria-selected="{{ j == 1 }}">
+                                Category {{ j }}
+                            </button>
+                        </li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="tab-content" id="categoryTabsContent">
+                        {% for j in range(1, 5) %}
+                        <div class="tab-pane fade {% if j == 1 %}show active{% endif %}"
+                             id="category{{ j }}"
+                             role="tabpanel"
+                             aria-labelledby="category{{ j }}-tab">
+                            <div class="shop-items-grid" id="category{{ j }}-items">
+                                <!-- Items will be injected dynamically here -->
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-
     <script>
+        let availableBudget = 5000;
+        let purchasedItems = [];
 
-        budget = 0;
-        availableBudget = 0;
-        purchasedItems = []; // list to keep track of purchased items
+        const shopData = {
+            'shop1': generateItems('Shop 1'),
+            'shop2': generateItems('Shop 2'),
+            'shop3': generateItems('Shop 3'),
+            'shop4': generateItems('Shop 4')
+        };
 
-        // Function to show the budget selection when user clicks 'Start!'
-        function showBudgetSection(){
-            document.getElementById('startSection').style.display = 'none';
-            document.getElementById('budgetSection').style.display = 'block';
+        function generateItems(shopName) {
+            const items = {};
+            for (let i = 1; i <= 4; i++) {
+                items[`category${i}`] = [];
+                for (let j = 1; j <= 4; j++) {
+                    items[`category${i}`].push({
+                        name: `${shopName} Item ${i}-${j}`,
+                        price: Math.floor(Math.random() * 50) + 10,
+                        quantity: 1
+                    });
+                }
+            }
+            return items;
         }
 
-        // Function to Update all availableBudget elements
-        function updateAvailableBudget(){
-            budgetElements = document.querySelectorAll('.availableBudget'); // [<h1 class="availableBudte"></h1>, <span class="availableBudte"></span> ]
-            budgetElements.forEach(function(element){
-                element.innerText = availableBudget;
-            });
-        }
-
-
-        function showShopSection(){
-            selectedBudget = document.getElementById('budgetSelect').value; // 500 USD
-            budget = parseInt(selectedBudget);
-            availableBudget = budget;
-
+        function showShopSection() {
             updateAvailableBudget();
-            document.getElementById('budgetSection').style.display = 'none';
+            document.getElementById('startSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
         }
 
-function showItems(shopId, shopName) {
-    document.getElementById('shopSection').style.display = 'none';
-    document.getElementById('itemSection').style.display = 'block';
+        function showItems(shopId, shopName) {
+            document.getElementById('shopSection').style.display = 'none';
+            document.getElementById('itemSection').style.display = 'block';
+            document.getElementById('currentShop').innerText = shopName;
 
-    document.getElementById('currentShop').innerText = shopName;
+            const items = shopData[shopId];
+            Object.keys(items).forEach(category => {
+                const itemsContainer = document.getElementById(`${category}-items`);
+                itemsContainer.innerHTML = ''; // Clear previous items
 
-    var items = {
-        'shop1': [{name: "Running Shoes", price: 25, quantity: 1}, {name: "Sneakers", price: 15, quantity: 1}, {name: "Boots", price: 45, quantity: 1}],
-        'shop2': [{name: "NBA 2k25", price: 55, quantity: 1}, {name: "Mario", price: 45, quantity: 1}, {name: "Zelda", price: 65, quantity: 1}],
-        'shop3': [{name: "Electric Guitar", price: 85, quantity: 1}, {name: "Acoustic Guitar", price: 95, quantity: 1}, {name: "Guitar Pick", price: 105, quantity: 1}],
-        'shop4': [{name: "Teddy Bear", price: 25, quantity: 1}, {name: "Toy Car", price: 25, quantity: 1}, {name: "Puzzle", price: 15, quantity: 1}, {name: "Robot", price: 25, quantity: 1}],
-        'shop5': []
-    };
+                items[category].forEach(item => {
+                    const card = document.createElement('div');
+                    card.classList.add('shop-item-card');
 
-    var itemsContainer = document.getElementById('shopItems');
-    itemsContainer.innerHTML = ''; // Clear previous items
+                    const itemTitle = document.createElement('h5');
+                    itemTitle.classList.add('shop-item-title');
+                    itemTitle.innerText = `${item.name} - $${item.price}`;
 
-    items[shopId].forEach(function(item) {
-        // Create card div
-        var card = document.createElement('div');
-        card.classList.add('col-md-3', 'shop-item-card');
+                    const buyButton = document.createElement('button');
+                    buyButton.classList.add('btn', 'btn-buy');
+                    buyButton.innerText = 'Buy';
+                    buyButton.onclick = () => buyItem(item, buyButton);
 
-        // Create item name
-        var itemTitle = document.createElement('h5');
-        itemTitle.classList.add('shop-item-title');
-        itemTitle.innerText = `${item.name} - $${item.price}`;
+                    card.appendChild(itemTitle);
+                    card.appendChild(buyButton);
+                    itemsContainer.appendChild(card);
+                });
+            });
+        }
 
-        // Create item image (dummy image for now)
-        var itemImage = document.createElement('img');
-        itemImage.classList.add('shop-item-img');
-        itemImage.src = '../static/img/default.png'; // Change to the actual image if available
-
-        // Create buy button
-        var buyButton = document.createElement('button');
-        buyButton.classList.add('btn', 'btn-buy');
-        buyButton.innerText = "Buy";
-
-        // Buy button functionality
-        buyButton.addEventListener('click', function() {
+        function buyItem(item, button) {
             if (availableBudget >= item.price && item.quantity > 0) {
                 availableBudget -= item.price;
                 item.quantity--;
                 if (item.quantity === 0) {
-                    buyButton.disabled = true;
-                    buyButton.innerText = "Out of Stock";
+                    button.disabled = true;
+                    button.innerText = 'Out of Stock';
                 }
+                purchasedItems.push(item);
                 updateAvailableBudget();
-                purchasedItems.push({name: item.name, price: item.price});
                 alert(`You bought ${item.name} for $${item.price}!`);
             } else {
-                alert("Insufficient budget or item is out of stock!");
+                alert('Insufficient budget or item out of stock!');
             }
-        });
+        }
 
-        // Append elements to card
-        card.appendChild(itemImage);
-        card.appendChild(itemTitle);
-        card.appendChild(buyButton);
+        function updateAvailableBudget() {
+            document.querySelectorAll('.availableBudget').forEach(el => el.innerText = availableBudget);
+        }
 
-        // Append card to container
-        itemsContainer.appendChild(card);
-    });
-}
-
-
-        function goBackShop(){
+        function goBackShop() {
             document.getElementById('itemSection').style.display = 'none';
             document.getElementById('shopSection').style.display = 'block';
         }
 
-        // Function to show purchased items in the modal
-        function showPurchasedItems(){
-            var purchasedItemsList = document.getElementById('purchasedItemsList');
-            purchasedItemsList.innerHTML = '';
-
-            // user bought at least one item
-            if (purchasedItems.length > 0){
-                purchasedItems.forEach(function(item){
-                    var li = document.createElement('li');
-                    li.innerText = `${item.name} - $${item.price}`;
-                    purchasedItemsList.appendChild(li);
-                });
-            }else{ // user bought nothing
-                purchasedItemsList.innerHTML = "<p>No items purchased yet.</p>"
-            }
-
-            // show the modal
-            var purchasedItemsModal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
-            purchasedItemsModal.show();
+        function showPurchasedItems() {
+            const modal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
+            const list = document.getElementById('purchasedItemsList');
+            list.innerHTML = purchasedItems.length ? purchasedItems.map(item => `<li>${item.name} - $${item.price}</li>`).join('') : '<p>No items purchased yet.</p>';
+            modal.show();
         }
     </script>
-    </body>
-
 {% endblock %}
