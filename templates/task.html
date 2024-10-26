@@ -142,11 +142,39 @@
         let purchasedItems = [];
 
         const shopData = {
-            'shop1': generateItems('Shop 1'),
-            'shop2': generateItems('Shop 2'),
-            'shop3': generateItems('Shop 3'),
-            'shop4': generateItems('Shop 4')
+            'shop1': {
+                categories: ["Fridge","Oven","Stove","Microwave"],
+                items: generateItems('Shop 1', ["Fridge","Oven","Stove","Microwave"])
+            },
+            'shop2': {
+                categories: ["TV","Speaker","Vacuum Cleaner","AC/heater"],
+                items: generateItems('Shop 2', ["TV","Speaker","Vacuum Cleaner","AC/heater"])
+            },
+            'shop3': {
+                categories: ["Lamp","Desk","Office Chair","Dining Table"],
+                items: generateItems('Shop 3', ["Lamp","Desk","Office Chair","Dining Table"])
+            },
+            'shop4': {
+                categories: ["Sofa","Bed","Chairs","Dresser"],
+                items: generateItems('Shop 4', ["Sofa","Bed","Chairs","Dresser"])
+            }
         };
+        function getCategoryItems(category){
+            const itemsList = {
+                "Fridge": [
+                    {name: "Luxury 2-door Fridge", price: 1299},
+                    {name: "Modern 2-door Fridge", price: 1099},
+                    {name: "One door Fridge", price: 799},
+                    {name: "Mini Fridge", price: 399}
+                ],
+                "Oven": [
+                    {name: "Luxuary 2-door Oven", price: 1099},
+                    {name: "Modern 2-door Oven", price: 899},
+                    {name: "One door Fridge", price: 599},
+                    {name: "Mino Oven", price: 299}
+                ]
+            }
+        }
 
         function generateItems(shopName) {
             const items = {};
