@@ -168,26 +168,104 @@
                     {name: "Mini Fridge", price: 399}
                 ],
                 "Oven": [
-                    {name: "Luxuary 2-door Oven", price: 1099},
+                    {name: "Luxury 2-door Oven", price: 1099},
                     {name: "Modern 2-door Oven", price: 899},
                     {name: "One door Fridge", price: 599},
                     {name: "Mino Oven", price: 299}
+                ],
+                "Stove": [
+                    {name: "Luxury 6 Burner Stove", price: 1099},
+                    {name: "Modern 4 Burner Stove", price: 899},
+                    {name: "2 Burner Stove", price: 599},
+                    {name: "One Burner Stove", price: 299}
+                ],
+                "Microwave": [
+                    {name: "Luxury Microwave", price: 399},
+                    {name: "Modern Microwave", price: 299},
+                    {name: "Microwave", price: 199},
+                    {name: "Mini Microwave", price: 99}
+                ],
+                "TV":[ 
+                     {name: "SAMSUNG 98' 8K TV price", price: 3299.99},
+                     {name: "SAMSUNG 65' 4K TV price", price: 1559.99},
+                     {name: "LG 55' 4K TV", price: 329.99},
+                     {name: "Flat Screen 75' 4K TV", price: 649.99},
+                ],
+                
+                "Speaker":[
+                     {name: "KEF LS60 Wireless Bluetooth", price: 4999.99},
+                     {name: "DALI Oberon 5 Floor-Standing price", price: 1299.99},
+                     {name: "JBL Studio 630", price: 699.00},
+                     {name: "Sony BRAVIA Theater Bar", price: 1219.99},
+                ],
+                "Vacuum Cleaner":[ 
+                     {name: "Dyson V7 Advanced All Attachments", price: 259.99},
+                     {name: "Dyson V15 Detect Absolute Cordless", price: 599.99},
+                     {name: "dreame X40 Ultra Robotic Vacuum", price: 1399.99},
+                     {name: "iRobot Roomba Combo 10 Max", price: 1249.99},
+                ],
+                "AC/Heater":[ 
+                     {name: "LG-12k Cooling + Heating", price: 1608.35},
+                     {name: "Dyson Purifier Hot+Cool Formaldehyde HP09", price: 849.99},
+                     {name: "Hoffman Spectracool AC 115V 6000 BTU indoor", price: 4357.00},
+                     {name: "GoveeLife 42' Tower Fan 150 rotation", price: 149.99},
+                ],
+                "Jeans": [
+                    { name: "Premium Slim-Fit Jeans", price: 129 },
+                    { name: "Classic Straight Jeans", price: 99 },
+                    { name: "Relaxed Fit Jeans", price: 79 },
+                    { name: "Vintage Denim Jeans", price: 49 }
+                ],
+                "Hoodies": [
+                    { name: "Luxury Fleece Hoodie", price: 109 },
+                    { name: "Casual Zip-Up Hoodie", price: 89 },
+                    { name: "Graphic Pullover Hoodie", price: 59 },
+                    { name: "Lightweight Hoodie", price: 39 }
+                ],
+                "Shoes": [
+                    { name: "High-End Leather Sneakers", price: 199 },
+                    { name: "Classic Running Shoes", price: 149 },
+                    { name: "Casual Slip-Ons", price: 99 },
+                    { name: "Everyday Canvas Sneakers", price: 69 }
+                ],
+                "Trousers": [
+                    { name: "Tailored Chinos", price: 89 },
+                    { name: "Slim-Fit Dress Pants", price: 79 },
+                    { name: "Relaxed Cargo Trousers", price: 69 },
+                    { name: "Casual Jogger Pants", price: 49 }
+                ],
+                "Sofa": [
+                   {name: "King Sofa", price: 1900},
+                   {name: "Urban Corner Sofa", price: 1300},
+                   {name: "Classic cozy Couch", price: 950},
+                   {name: "Dollar bed Sofa", price: 400},
+                ],
+                "Bed": [
+                   {name: "Cloud nine luxury Bed", price: 2400},
+                   {name: "Modern platform Bed", price: 1800},
+                   {name: "Good night's sleep Bed", price: 1350},
+                   {name: "Compact bunk Bed", price: 940},
+                ],
+                "Chair": [
+                   {name: "Luxury leather Chair", price: 810},
+                   {name: "Vintage lounge Chair", price: 590},
+                   {name: "Cottage rocking Chair", price: 350},
+                   {name: "Office Chair", price: 120},
+                ],
+                "Dresser": [
+                   {name: "Royal bedroom Dresser", price: 2940},
+                   {name: "Sleek urban Dresser", price: 2200},
+                   {name: "Smoked oak wood Dresser", price: 1600},
+                   {name: "Mini compact Dresser", price: 1210},
                 ]
             }
         }
 
-        function generateItems(shopName) {
+        function generateItems(shopName, categories) {
             const items = {};
-            for (let i = 1; i <= 4; i++) {
-                items[`category${i}`] = [];
-                for (let j = 1; j <= 4; j++) {
-                    items[`category${i}`].push({
-                        name: `${shopName} Item ${i}-${j}`,
-                        price: Math.floor(Math.random() * 50) + 10,
-                        quantity: 1
-                    });
-                }
-            }
+            categories.forEach((category, index) => {
+                item[`category${index +1}`] = getCategoryItems(category);
+            })
             return items;
         }
 
