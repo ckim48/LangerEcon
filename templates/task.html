@@ -48,7 +48,14 @@
         .btn-buy:hover {
             background-color: #218838;
         }
+
+        #otherChoicesChart {
+            width: 100%;
+            height: 400px;
+        }
+
     </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -67,34 +74,69 @@
                     <button class="btn btn-login btn-task mt-4" onclick="showShopSection()">Start!</button>
                 </div>
 
-                <div id="shopSection" style="display:none;">
-                    <div class="row mb-5">
-                        <div class="col-md-12 d-flex justify-content-end align-items-center">
-                            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                            <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
-                        </div>
-                    </div>
+<div id="shopSection" style="display:none;">
+    <div class="row mb-5">
+        <div class="col-md-12 d-flex justify-content-end align-items-center">
+            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
+            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
+        </div>
+    </div>
 
-                    <div class="row">
-                        {% for i in range(1, 5) %}
-                        <div class="col-md-3">
-                            <div class="card shop-card d-block mx-auto">
-                                <img class="shop-img d-block mx-auto" src="../static/img/shop{{ i }}.png">
-                                <div class="card-body">
-                                    <h5 class="card-title text-center mt-3">Shop {{ i }}</h5>
-                                    <button type="button" class="btn btn-enter" onclick="showItems('shop{{ i }}', 'Shop {{ i }}')">Enter</button>
-                                </div>
-                            </div>
-                        </div>
-                        {% endfor %}
-                    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card shop-card d-block mx-auto">
+                <img class="shop-img d-block mx-auto" src="../static/img/shop1.png">
+                <div class="card-body">
+                    <h5 class="card-title text-center mt-3">Kitchen Kingdom</h5>
+                    <button type="button" class="btn btn-enter" onclick="showItems('shop1', 'Kitchen Kingdom')">Enter</button>
                 </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shop-card d-block mx-auto">
+                <img class="shop-img d-block mx-auto" src="../static/img/shop2.png">
+                <div class="card-body">
+                    <h5 class="card-title text-center mt-3">Tech Haven</h5>
+                    <button type="button" class="btn btn-enter" onclick="showItems('shop2', 'Tech Haven')">Enter</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shop-card d-block mx-auto">
+                <img class="shop-img d-block mx-auto" src="../static/img/shop3.png">
+                <div class="card-body">
+                    <h5 class="card-title text-center mt-3">Office Oasis</h5>
+                    <button type="button" class="btn btn-enter" onclick="showItems('shop3', 'Office Oasis')">Enter</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shop-card d-block mx-auto">
+                <img class="shop-img d-block mx-auto" src="../static/img/shop4.png">
+                <div class="card-body">
+                    <h5 class="card-title text-center mt-3">Cozy Living</h5>
+                    <button type="button" class="btn btn-enter" onclick="showItems('shop4', 'Cozy Living')">Enter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Finish Button -->
+    <div class="d-flex justify-content-end mt-5">
+        <button class="btn btn-success" onclick="finishTask()">Finish Task</button>
+    </div>
+</div>
+
+
 
                 <div id="itemSection" style="display:none;">
                     <div class="row mb-5">
                         <div class="col-md-12 d-flex justify-content-end align-items-center">
                             <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                            <button class="btn btn-primary" onclick="showPurchasedItems()">What you bought</button>
+                            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
                         </div>
                     </div>
 
@@ -122,9 +164,7 @@
                              id="category{{ j }}"
                              role="tabpanel"
                              aria-labelledby="category{{ j }}-tab">
-                            <div class="shop-items-grid" id="category{{ j }}-items">
-                                <!-- Items will be injected dynamically here -->
-                            </div>
+                            <div class="shop-items-grid" id="category{{ j }}-items"></div>
                         </div>
                         {% endfor %}
                     </div>
@@ -137,204 +177,303 @@
         </div>
     </div>
 
+    <!-- Purchased Items Modal -->
+    <div class="modal fade" id="purchasedItemsModal" tabindex="-1" aria-labelledby="purchasedItemsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="purchasedItemsModalLabel">Your Purchased Items</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="purchasedItemsList"></ul>
+                    <canvas id="otherChoicesChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        let availableBudget = 5000;
-        let purchasedItems = [];
+let availableBudget = 5000;
+let purchasedItems = [];
+let purchasedCategories = {}; // Tracks purchased items by category
 
-        const shopData = {
-            'shop1': {
-                categories: ["Fridge","Oven","Stove","Microwave"],
-                items: generateItems('Shop 1', ["Fridge","Oven","Stove","Microwave"])
-            },
-            'shop2': {
-                categories: ["TV","Speaker","Vacuum Cleaner","AC/heater"],
-                items: generateItems('Shop 2', ["TV","Speaker","Vacuum Cleaner","AC/heater"])
-            },
-            'shop3': {
-                categories: ["Lamp","Desk","Office Chair","Dining Table"],
-                items: generateItems('Shop 3', ["Lamp","Desk","Office Chair","Dining Table"])
-            },
-            'shop4': {
-                categories: ["Sofa","Bed","Chairs","Dresser"],
-                items: generateItems('Shop 4', ["Sofa","Bed","Chairs","Dresser"])
-            }
-        };
-        function getCategoryItems(category){
-            const itemsList = {
-                "Fridge": [
-                    {name: "Luxury 2-door Fridge", price: 1299},
-                    {name: "Modern 2-door Fridge", price: 1099},
-                    {name: "One door Fridge", price: 799},
-                    {name: "Mini Fridge", price: 399}
-                ],
-                "Oven": [
-                    {name: "Luxury 2-door Oven", price: 1099},
-                    {name: "Modern 2-door Oven", price: 899},
-                    {name: "One door Fridge", price: 599},
-                    {name: "Mino Oven", price: 299}
-                ],
-                "Stove": [
-                    {name: "Luxury 6 Burner Stove", price: 1099},
-                    {name: "Modern 4 Burner Stove", price: 899},
-                    {name: "2 Burner Stove", price: 599},
-                    {name: "One Burner Stove", price: 299}
-                ],
-                "Microwave": [
-                    {name: "Luxury Microwave", price: 399},
-                    {name: "Modern Microwave", price: 299},
-                    {name: "Microwave", price: 199},
-                    {name: "Mini Microwave", price: 99}
-                ],
-                "TV":[ 
-                     {name: "SAMSUNG 98' 8K TV price", price: 3299.99},
-                     {name: "SAMSUNG 65' 4K TV price", price: 1559.99},
-                     {name: "LG 55' 4K TV", price: 329.99},
-                     {name: "Flat Screen 75' 4K TV", price: 649.99},
-                ],
-                
-                "Speaker":[
-                     {name: "KEF LS60 Wireless Bluetooth", price: 4999.99},
-                     {name: "DALI Oberon 5 Floor-Standing price", price: 1299.99},
-                     {name: "JBL Studio 630", price: 699.00},
-                     {name: "Sony BRAVIA Theater Bar", price: 1219.99},
-                ],
-                "Vacuum Cleaner":[ 
-                     {name: "Dyson V7 Advanced All Attachments", price: 259.99},
-                     {name: "Dyson V15 Detect Absolute Cordless", price: 599.99},
-                     {name: "dreame X40 Ultra Robotic Vacuum", price: 1399.99},
-                     {name: "iRobot Roomba Combo 10 Max", price: 1249.99},
-                ],
-                "AC/Heater":[ 
-                     {name: "LG-12k Cooling + Heating", price: 1608.35},
-                     {name: "Dyson Purifier Hot+Cool Formaldehyde HP09", price: 849.99},
-                     {name: "Hoffman Spectracool AC 115V 6000 BTU indoor", price: 4357.00},
-                     {name: "GoveeLife 42' Tower Fan 150 rotation", price: 149.99},
-                ],
-                "Jeans": [
-                    { name: "Premium Slim-Fit Jeans", price: 129 },
-                    { name: "Classic Straight Jeans", price: 99 },
-                    { name: "Relaxed Fit Jeans", price: 79 },
-                    { name: "Vintage Denim Jeans", price: 49 }
-                ],
-                "Hoodies": [
-                    { name: "Luxury Fleece Hoodie", price: 109 },
-                    { name: "Casual Zip-Up Hoodie", price: 89 },
-                    { name: "Graphic Pullover Hoodie", price: 59 },
-                    { name: "Lightweight Hoodie", price: 39 }
-                ],
-                "Shoes": [
-                    { name: "High-End Leather Sneakers", price: 199 },
-                    { name: "Classic Running Shoes", price: 149 },
-                    { name: "Casual Slip-Ons", price: 99 },
-                    { name: "Everyday Canvas Sneakers", price: 69 }
-                ],
-                "Trousers": [
-                    { name: "Tailored Chinos", price: 89 },
-                    { name: "Slim-Fit Dress Pants", price: 79 },
-                    { name: "Relaxed Cargo Trousers", price: 69 },
-                    { name: "Casual Jogger Pants", price: 49 }
-                ],
-                "Sofa": [
-                   {name: "King Sofa", price: 1900},
-                   {name: "Urban Corner Sofa", price: 1300},
-                   {name: "Classic cozy Couch", price: 950},
-                   {name: "Dollar bed Sofa", price: 400},
-                ],
-                "Bed": [
-                   {name: "Cloud nine luxury Bed", price: 2400},
-                   {name: "Modern platform Bed", price: 1800},
-                   {name: "Good night's sleep Bed", price: 1350},
-                   {name: "Compact bunk Bed", price: 940},
-                ],
-                "Chair": [
-                   {name: "Luxury leather Chair", price: 810},
-                   {name: "Vintage lounge Chair", price: 590},
-                   {name: "Cottage rocking Chair", price: 350},
-                   {name: "Office Chair", price: 120},
-                ],
-                "Dresser": [
-                   {name: "Royal bedroom Dresser", price: 2940},
-                   {name: "Sleek urban Dresser", price: 2200},
-                   {name: "Smoked oak wood Dresser", price: 1600},
-                   {name: "Mini compact Dresser", price: 1210},
-                ]
-            }
-        }
+// Shop data with categories and generated items
+const shopData = {
+    'shop1': {
+        categories: ["Fridge", "Oven", "Stove", "Microwave"],
+        items: generateItems(["Fridge", "Oven", "Stove", "Microwave"])
+    },
+    'shop2': {
+        categories: ["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"],
+        items: generateItems(["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"])
+    },
+    'shop3': {
+        categories: ["Lamp", "Desk", "Office Chair", "Dining Table"],
+        items: generateItems(["Lamp", "Desk", "Office Chair", "Dining Table"])
+    },
+    'shop4': {
+        categories: ["Sofa", "Bed", "Chair", "Dresser"],
+        items: generateItems(["Sofa", "Bed", "Chair", "Dresser"])
+    }
+};
 
-        function generateItems(shopName, categories) {
-            const items = {};
-            categories.forEach((category, index) => {
-                item[`category${index +1}`] = getCategoryItems(category);
-            })
-            return items;
-        }
+// Generate items for each shop’s categories
+function generateItems(categories) {
+    const items = {};
+    categories.forEach(category => {
+        items[category] = getCategoryItems(category);
+    });
+    return items;
+}
 
-        function showShopSection() {
-            updateAvailableBudget();
-            document.getElementById('startSection').style.display = 'none';
-            document.getElementById('shopSection').style.display = 'block';
-        }
+function getCategoryItems(category) {
+    const itemsList = {
+        "Fridge": [
+            { name: "Luxury 2-door Fridge", price: 1299, image: "https://via.placeholder.com/150?text=Fridge", description: "A spacious fridge with advanced cooling technology and ice maker." },
+            { name: "Modern 2-door Fridge", price: 1099, image: "https://via.placeholder.com/150?text=Fridge", description: "Energy-efficient fridge with smart controls." },
+            { name: "One-door Fridge", price: 799, image: "https://via.placeholder.com/150?text=Fridge", description: "Compact fridge perfect for small kitchens." },
+            { name: "Mini Fridge", price: 399, image: "https://via.placeholder.com/150?text=Fridge", description: "Portable fridge for drinks and snacks." }
+        ],
+        "Oven": [
+            { name: "Luxury Oven", price: 1099, image: "https://via.placeholder.com/150?text=Oven", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Oven", price: 899, image: "https://via.placeholder.com/150?text=Oven", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Oven", price: 599, image: "https://via.placeholder.com/150?text=Oven", description: "Reliable oven for everyday baking." },
+            { name: "Compact Oven", price: 299, image: "https://via.placeholder.com/150?text=Oven", description: "Small oven for quick meals and snacks." }
+        ],
+        "TV": [
+            { name: "Samsung 98' 8K TV", price: 3299, image: "https://via.placeholder.com/150?text=TV", description: "Massive 8K TV with breathtaking visuals." },
+            { name: "LG 65' 4K TV", price: 1599, image: "https://via.placeholder.com/150?text=TV", description: "OLED TV with vivid colors and deep blacks." },
+            { name: "Sony 55' 4K TV", price: 999, image: "https://via.placeholder.com/150?text=TV", description: "55-inch TV with immersive sound and picture." },
+            { name: "Vizio 42' HD TV", price: 499, image: "https://via.placeholder.com/150?text=TV", description: "Affordable HD TV with great performance." }
+        ],
+        "Speaker": [
+            { name: "KEF LS50 Wireless Speaker", price: 2999, image: "https://via.placeholder.com/150?text=Speaker", description: "High-end speaker with premium sound quality." },
+            { name: "Bose SoundLink", price: 499, image: "https://via.placeholder.com/150?text=Speaker", description: "Portable Bluetooth speaker with deep bass." },
+            { name: "Sony Home Speaker", price: 199, image: "https://via.placeholder.com/150?text=Speaker", description: "Speaker with 360-degree sound and voice control." },
+            { name: "JBL Flip 6", price: 129, image: "https://via.placeholder.com/150?text=Speaker", description: "Waterproof Bluetooth speaker for outdoor use." }
+        ],
+        "Sofa": [
+            { name: "Luxury Leather Sofa", price: 2499, image: "https://via.placeholder.com/150?text=Sofa", description: "Comfortable leather sofa with deep seating." },
+            { name: "Modern Fabric Sofa", price: 1299, image: "https://via.placeholder.com/150?text=Sofa", description: "Fabric sofa with contemporary design." },
+            { name: "Corner Sofa", price: 999, image: "https://via.placeholder.com/150?text=Sofa", description: "Corner sofa that maximizes seating space." },
+            { name: "Basic Sofa", price: 599, image: "https://via.placeholder.com/150?text=Sofa", description: "Everyday sofa with great comfort." }
+        ],
+        "Bed": [
+            { name: "King Size Bed", price: 1799, image: "https://via.placeholder.com/150?text=Bed", description: "Spacious bed with plush mattress." },
+            { name: "Queen Size Bed", price: 1499, image: "https://via.placeholder.com/150?text=Bed", description: "Comfortable bed for restful sleep." },
+            { name: "Double Bed", price: 999, image: "https://via.placeholder.com/150?text=Bed", description: "Compact bed for guest rooms." },
+            { name: "Single Bed", price: 599, image: "https://via.placeholder.com/150?text=Bed", description: "Simple bed ideal for small spaces." }
+        ],
+        "Chair": [
+            { name: "Lounge Chair", price: 399, image: "https://via.placeholder.com/150?text=Chair", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Chair", price: 299, image: "https://via.placeholder.com/150?text=Chair", description: "Traditional rocking chair." },
+            { name: "Dining Chair", price: 149, image: "https://via.placeholder.com/150?text=Chair", description: "Stylish dining chair." },
+            { name: "Plastic Chair", price: 49, image: "https://via.placeholder.com/150?text=Chair", description: "Affordable plastic chair." }
+        ],
+        "Dresser": [
+            { name: "Modern Dresser", price: 999, image: "https://via.placeholder.com/150?text=Dresser", description: "Sleek modern dresser." },
+            { name: "Wooden Dresser", price: 799, image: "https://via.placeholder.com/150?text=Dresser", description: "Elegant wooden dresser." },
+            { name: "Compact Dresser", price: 599, image: "https://via.placeholder.com/150?text=Dresser", description: "Small dresser for tight spaces." },
+            { name: "Basic Dresser", price: 399, image: "https://via.placeholder.com/150?text=Dresser", description: "Simple and functional dresser." }
+        ],
+        "Lamp": [
+            { name: "Philips Hue Table Lamp", price: 199, image: "https://via.placeholder.com/150?text=Lamp", description: "Smart lamp with color-changing options." },
+            { name: "Ikea Floor Lamp", price: 99, image: "https://via.placeholder.com/150?text=Lamp", description: "Simple and elegant floor lamp." },
+            { name: "Bedside Lamp", price: 49, image: "https://via.placeholder.com/150?text=Lamp", description: "Compact lamp perfect for nightstands." },
+            { name: "Desk Lamp", price: 39, image: "https://via.placeholder.com/150?text=Lamp", description: "Adjustable desk lamp for study or work." }
+        ],
+        "Desk": [
+            { name: "Standing Desk", price: 799, image: "https://via.placeholder.com/150?text=Desk", description: "Height-adjustable standing desk." },
+            { name: "Office Desk", price: 499, image: "https://via.placeholder.com/150?text=Desk", description: "Spacious desk for office use." },
+            { name: "Compact Study Desk", price: 299, image: "https://via.placeholder.com/150?text=Desk", description: "Small desk ideal for students." },
+            { name: "Basic Wooden Desk", price: 199, image: "https://via.placeholder.com/150?text=Desk", description: "Simple desk with a wooden finish." }
+        ]
+    };
+    return itemsList[category] || [];
+}
 
-        function showItems(shopId, shopName) {
-            document.getElementById('shopSection').style.display = 'none';
-            document.getElementById('itemSection').style.display = 'block';
-            document.getElementById('currentShop').innerText = shopName;
+function showShopSection() {
+    updateAvailableBudget();
+    document.getElementById('startSection').style.display = 'none';
+    document.getElementById('shopSection').style.display = 'block';
+}
 
-            const items = shopData[shopId];
-            Object.keys(items).forEach(category => {
-                const itemsContainer = document.getElementById(`${category}-items`);
-                itemsContainer.innerHTML = ''; // Clear previous items
+function showItems(shopId, shopName) {
+    document.getElementById('shopSection').style.display = 'none';
+    document.getElementById('itemSection').style.display = 'block';
+    document.getElementById('currentShop').innerText = shopName;
 
-                items[category].forEach(item => {
-                    const card = document.createElement('div');
-                    card.classList.add('shop-item-card');
+    const shop = shopData[shopId];
+    Object.keys(shop.items).forEach((category, index) => {
+        const categoryId = `category${index + 1}-items`;
+        const itemsContainer = document.getElementById(categoryId);
 
-                    const itemTitle = document.createElement('h5');
-                    itemTitle.classList.add('shop-item-title');
-                    itemTitle.innerText = `${item.name} - $${item.price}`;
+        itemsContainer.innerHTML = ''; // Clear previous items
 
-                    const buyButton = document.createElement('button');
-                    buyButton.classList.add('btn', 'btn-buy');
-                    buyButton.innerText = 'Buy';
-                    buyButton.onclick = () => buyItem(item, buyButton);
+        shop.items[category].forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('shop-item-card');
 
-                    card.appendChild(itemTitle);
-                    card.appendChild(buyButton);
-                    itemsContainer.appendChild(card);
-                });
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.name;
+            img.style.width = "100%";
+
+            const itemTitle = document.createElement('h5');
+            itemTitle.classList.add('shop-item-title');
+            itemTitle.innerText = `${item.name} - $${item.price}`;
+
+            const tooltipButton = document.createElement('button');
+            tooltipButton.classList.add('btn', 'btn-info', 'm-2');
+            tooltipButton.setAttribute('data-bs-toggle', 'tooltip');
+            tooltipButton.setAttribute('title', item.description);
+            tooltipButton.innerText = 'Details';
+
+            tooltipButton.addEventListener('mouseover', () => {
+                const tooltip = new bootstrap.Tooltip(tooltipButton);
+                tooltip.show();
             });
-        }
 
-        function buyItem(item, button) {
-            if (availableBudget >= item.price && item.quantity > 0) {
-                availableBudget -= item.price;
-                item.quantity--;
-                if (item.quantity === 0) {
-                    button.disabled = true;
-                    button.innerText = 'Out of Stock';
-                }
-                purchasedItems.push(item);
-                updateAvailableBudget();
-                alert(`You bought ${item.name} for $${item.price}!`);
-            } else {
-                alert('Insufficient budget or item out of stock!');
+            const buyButton = document.createElement('button');
+            buyButton.classList.add('btn', 'btn-buy');
+            buyButton.innerText = 'Buy';
+            buyButton.onclick = () => buyItem(item, category, buyButton);
+            buyButton.setAttribute('data-category', category);
+
+            card.appendChild(img);
+            card.appendChild(itemTitle);
+            card.appendChild(tooltipButton);
+            card.appendChild(buyButton);
+            itemsContainer.appendChild(card);
+        });
+    });
+}
+
+function buyItem(item, category, button) {
+    if (purchasedCategories[category]) {
+        alert(`You already bought an item from the ${category} category.`);
+        return;
+    }
+
+    if (availableBudget >= item.price) {
+        availableBudget -= item.price;
+        purchasedItems.push({ ...item, category });
+        purchasedCategories[category] = item;
+
+        updateAvailableBudget();
+        button.disabled = true;
+        button.innerText = 'Purchased';
+        alert(`You bought ${item.name} for $${item.price}.`);
+    } else {
+        alert('Insufficient budget!');
+    }
+}
+
+function undoPurchase(category) {
+    if (!purchasedCategories[category]) {
+        alert(`No item purchased from ${category} category to undo.`);
+        return;
+    }
+
+    const item = purchasedCategories[category];
+    availableBudget += item.price;
+    purchasedItems = purchasedItems.filter(i => i.category !== category);
+    delete purchasedCategories[category];
+
+    updateAvailableBudget();
+    updatePurchasedItemsList(); // Refresh modal content
+    enableBuyButton(category); // Enable the "Buy" button
+    alert(`Undo purchase of ${item.name}. Budget refunded.`);
+}
+
+function enableBuyButton(category) {
+    const buttons = document.querySelectorAll(`[data-category="${category}"]`);
+    buttons.forEach(button => {
+        button.disabled = false;
+        button.innerText = 'Buy';
+    });
+}
+
+function updatePurchasedItemsList() {
+    const list = document.getElementById('purchasedItemsList');
+    list.innerHTML = purchasedItems.length
+        ? purchasedItems.map(item =>
+            `<li>${item.name} - $${item.price}
+                <button onclick="undoPurchase('${item.category}')">Undo</button>
+            </li>`).join('')
+        : '<p>No items purchased yet.</p>';
+}
+
+function showPurchasedItems() {
+    updatePurchasedItemsList(); // Ensure the list is updated
+    renderChart(); // Render the chart when the modal opens
+    const modal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
+    modal.show();
+}
+function updateAvailableBudget() {
+    document.querySelectorAll('.availableBudget').forEach(el => {
+        el.innerText = availableBudget;
+    });
+}
+
+function goBackShop() {
+    document.getElementById('itemSection').style.display = 'none';
+    document.getElementById('shopSection').style.display = 'block';
+}
+
+        const surveyData = {
+    Fridge: [5, 10, 3, 2],
+    Oven: [7, 6, 8, 5],
+    TV: [3, 9, 2, 1],
+    Speaker: [4, 7, 5, 6]
+};
+
+let chartInstance = null;
+
+function renderChart() {
+    const ctx = document.getElementById('otherChoicesChart').getContext('2d');
+
+    // Destroy existing chart if it exists
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    // Create a new chart instance
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(surveyData),
+            datasets: [{
+                label: 'Participants’ Choices',
+                data: Object.values(surveyData).map(arr => arr.reduce((a, b) => a + b)),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: { beginAtZero: true }
             }
         }
+    });
+}
+function finishTask() {
+    const allCategories = Object.keys(purchasedCategories);
+    const totalCategories = 16; // 4 shops * 4 categories each = 16 total categories
 
-        function updateAvailableBudget() {
-            document.querySelectorAll('.availableBudget').forEach(el => el.innerText = availableBudget);
-        }
+    if (allCategories.length === totalCategories) {
+        alert('Congratulations! You have completed the task successfully.');
+        // Redirect or perform any final actions
+        window.location.href = "/task-completed"; // Example redirection
+    } else {
+        const remaining = totalCategories - allCategories.length;
+        alert(`You need to purchase ${remaining} more item(s) to finish the task.`);
+    }
+}
 
-        function goBackShop() {
-            document.getElementById('itemSection').style.display = 'none';
-            document.getElementById('shopSection').style.display = 'block';
-        }
 
-        function showPurchasedItems() {
-            const modal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
-            const list = document.getElementById('purchasedItemsList');
-            list.innerHTML = purchasedItems.length ? purchasedItems.map(item => `<li>${item.name} - $${item.price}</li>`).join('') : '<p>No items purchased yet.</p>';
-            modal.show();
-        }
     </script>
 {% endblock %}
