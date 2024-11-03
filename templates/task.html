@@ -462,7 +462,8 @@ function renderChart() {
                 labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
                 datasets: [{
                     label: `Number of Purchases for ${category}`,
-                    data: surveyData[category]
+                    data: surveyData[category],
+                    backgroundColor: 'rgba(209, 152, 75, 0.9)',
                 }]
             },
             options: {
