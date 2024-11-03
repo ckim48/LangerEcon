@@ -456,8 +456,12 @@ function renderChart() {
             data: {
                 labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
                 datasets: [{
+                    label: `Number of Purchases for ${category}`,
                     data: surveyData[category]
                 }]
+            },
+            options: {
+                indexAxis: 'y',
             }
         });
     });
