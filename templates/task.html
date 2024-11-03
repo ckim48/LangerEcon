@@ -187,7 +187,7 @@
                 </div>
                 <div class="modal-body">
                     <ul id="purchasedItemsList"></ul>
-                    <canvas id="otherChoicesChart"></canvas>
+                    <div id="chartsContainer"></div>
                 </div>
             </div>
         </div>
@@ -436,42 +436,30 @@ function goBackShop() {
     document.getElementById('shopSection').style.display = 'block';
 }
 
-        const surveyData = {
+const surveyData = {
     Fridge: [5, 10, 3, 2],
     Oven: [7, 6, 8, 5],
-    TV: [3, 9, 2, 1],
+    TV: [15, 9, 2, 1],
     Speaker: [4, 7, 5, 6]
 };
-
-let chartInstance = null;
-
 function renderChart() {
-    const ctx = document.getElementById('otherChoicesChart').getContext('2d');
+    const container = document.getElementById('chartsContainer'); // <div id="chartsContainer></div>
+    container.innerHtml = ''; // clear exisiting chart
+    Object.keys(surveyData).forEach(category => {
+        const canvas = document.createElement('canvas'); // <canvas></canvas>
+        canvas.id = `chart-${category}`; // <canvas id="chart-Fridge"></canvas>
+        container.appendChild(canvas); // <div id="chartsContainer><canvas id="chart-Fridge"></canvas></div>
 
-    // Destroy existing chart if it exists
-    if (chartInstance) {
-        chartInstance.destroy();
-    }
-
-    // Create a new chart instance
-    chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: Object.keys(surveyData),
-            datasets: [{
-                label: 'Participants’ Choices',
-                data: Object.values(surveyData).map(arr => arr.reduce((a, b) => a + b)),
-                backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            indexAxis: 'y',
-            scales: {
-                x: { beginAtZero: true }
+        const ctx = canvas.getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
+                datasets: [{
+                    data: surveyData[category]
+                }]
             }
-        }
+        });
     });
 }
 function finishTask() {
