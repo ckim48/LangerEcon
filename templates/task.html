@@ -437,10 +437,15 @@ function goBackShop() {
 }
 
 const surveyData = {
-    Fridge: [5, 10, 3, 2],
-    Oven: [7, 6, 8, 5],
-    TV: [15, 9, 2, 1],
-    Speaker: [4, 7, 5, 6]
+    Fridge: [5, 4, 8, 12],
+    Oven: [2, 4, 8, 15],
+    Stove: [4,4,4,4],
+    TV: [20, 12, 2, 1],
+    Speaker: [1, 1, 5, 16],
+    ACandHeater: [4,4,4,4],
+    Lamp: [4,4,4,4],
+    Chair: [4,4,4,4],
+    Bed: [14,10,3,1],
 };
 function renderChart() {
     const container = document.getElementById('chartsContainer'); // <div id="chartsContainer></div>
@@ -462,6 +467,12 @@ function renderChart() {
             },
             options: {
                 indexAxis: 'y',
+                scales: {
+                    x:{
+                        min: 0,
+                        max: 18
+                    }
+                }
             }
         });
     });
