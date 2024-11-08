@@ -4,16 +4,137 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
-        .budget {
-            font-size: 20px;
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .task-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .card-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            text-align: center;
+        }
+
+        #startSection h2 {
+            font-size: 1.85rem;
+            color: #555;
+        }
+
+        #startSection ul {
+            list-style: none;
+            padding: 0;
+            font-size: 1.2rem;
+            color: #777;
+        }
+
+        #startSection ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        #startSection ul li:before {
+            content: "•";
+            color: #ff6b6b;
             font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-right: 10px;
         }
 
-        .btn-primary, .btn-success {
-            padding: 10px 20px;
-            border-radius: 5px;
+        .btn-task {
+            background: linear-gradient(45deg, #ff6b6b, #f06595);
+            border: none;
+            color: #fff;
+            font-size: 1rem;
+            padding: 12px 24px;
+            border-radius: 30px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-task:hover {
+            background: linear-gradient(45deg, #f06595, #ff6b6b);
+        }
+#shopSection {
+    position: relative;
+}
+
+#finishTaskBtnContainer {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+.shop-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 220px;
+    padding: 20px;
+    position: relative;
+}
+
+.btn-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 1.5rem;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.btn-icon i {
+    margin-right: 0;
+}
+
+.btn-icon:hover {
+    background-color: transparent;
+    color: #0056b3;
+}
+.shop-img {
+    width: 100%;
+    height: 80px;
+    margin-top: 35px;
+    object-fit: contain;
+}
+        .shop-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 1.0rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+ .btn-enter {
+     width: 100px;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 30px;
+    padding: 10px 20px;
+    margin-top: auto;
+    transition: background 0.3s ease;
+}
+
+        .btn-enter:hover {
+            background-color: #0056b3;
         }
 
         .shop-items-grid {
@@ -53,28 +174,53 @@
             width: 100%;
             height: 400px;
         }
+        .btn-success{
+            font-size: 19px;
+            padding:10px 20px;
+        }
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
+                 <div class="modal fade" id="shopDescriptionModal" tabindex="-1" aria-labelledby="shopDescriptionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="shopDescriptionModalLabel">Shop Description</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h4 id="shopName"></h4>
+        <p id="shopDescription"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
         <div class="card task-card mt-5">
             <div class="card-header">
                 <h1 class="text-center">Economics Mini-Task</h1>
             </div>
             <div class="card-body">
-                <div id="startSection" class="px-5 py-5">
+                <div id="startSection" class="text-center px-5 py-5">
                     <h2>Welcome to the Economics Mini-Task!</h2>
-                    <ul>
-                        <li>You have a budget of $5000.</li>
+                    <ul class="text-start mx-auto" style="max-width: 600px;">
+                        <li class="mt-4">You have a budget of $5000.</li>
                         <li>Buy one item from each category in every shop (16 items total).</li>
                         <li>Review what others bought through the survey results.</li>
                     </ul>
-                    <button class="btn btn-login btn-task mt-4" onclick="showShopSection()">Start!</button>
+                    <button class="btn btn-task mt-4" onclick="showShopSection()">Start!</button>
                 </div>
 
 <div id="shopSection" style="display:none;">
+
+
+
     <div class="row mb-5">
         <div class="col-md-12 d-flex justify-content-end align-items-center">
             <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
@@ -84,95 +230,108 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="card shop-card d-block mx-auto">
-                <img class="shop-img d-block mx-auto" src="../static/img/shop1.png">
+            <div class="card shop-card">
+                <img class="shop-img" src="../static/img/kitcenkingdom.png" alt="Kitchen Kingdom">
                 <div class="card-body">
-                    <h5 class="card-title text-center mt-3">Kitchen Kingdom</h5>
-                    <button type="button" class="btn btn-enter" onclick="showItems('shop1', 'Kitchen Kingdom')">Enter</button>
+                    <button class="btn btn-enter" onclick="showItems('shop1', 'Kitchen Kingdom')">Enter</button>
                 </div>
+                <button class="btn btn-info btn-icon" data-bs-toggle="modal" data-bs-target="#shopDescriptionModal" onclick="loadDescription('Kitchen Kingdom', 'Home & Kitchen essentials for everyone!')">
+                    <i class="bi bi-info-circle"></i> <!-- Bootstrap Icons info circle -->
+                </button>
             </div>
         </div>
 
         <div class="col-md-3">
-            <div class="card shop-card d-block mx-auto">
-                <img class="shop-img d-block mx-auto" src="../static/img/shop2.png">
+            <div class="card shop-card">
+                <img class="shop-img" src="../static/img/techhaven.png" alt="Kitchen Kingdom">
                 <div class="card-body">
-                    <h5 class="card-title text-center mt-3">Tech Haven</h5>
-                    <button type="button" class="btn btn-enter" onclick="showItems('shop2', 'Tech Haven')">Enter</button>
+                    <button class="btn btn-enter" onclick="showItems('shop2', 'Tech Haven')">Enter</button>
                 </div>
+                <button class="btn btn-info btn-icon" data-bs-toggle="modal" data-bs-target="#shopDescriptionModal" onclick="loadDescription('Tech Haven', 'Cutting-edge technology and gadgets for the modern world.')">
+                    <i class="bi bi-info-circle"></i> <!-- Bootstrap Icons info circle -->
+                </button>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shop-card">
+                <img class="shop-img" src="../static/img/officeoasis.png" alt="Kitchen Kingdom">
+                <div class="card-body">
+                    <button class="btn btn-enter" onclick="showItems('shop3', 'Office Oasis')">Enter</button>
+                </div>
+                <button class="btn btn-info btn-icon" data-bs-toggle="modal" data-bs-target="#shopDescriptionModal" onclick="loadDescription('Office Oasis', 'Furnishing and supplies to make your office a productive haven.')">
+                    <i class="bi bi-info-circle"></i> <!-- Bootstrap Icons info circle -->
+                </button>
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card shop-card d-block mx-auto">
-                <img class="shop-img d-block mx-auto" src="../static/img/shop3.png">
-                <div class="card-body">
-                    <h5 class="card-title text-center mt-3">Office Oasis</h5>
-                    <button type="button" class="btn btn-enter" onclick="showItems('shop3', 'Office Oasis')">Enter</button>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card shop-card d-block mx-auto">
-                <img class="shop-img d-block mx-auto" src="../static/img/shop4.png">
+                <div class="col-md-3">
+            <div class="card shop-card">
+                <img class="shop-img" src="../static/img/cozyliving.png" alt="Kitchen Kingdom">
                 <div class="card-body">
-                    <h5 class="card-title text-center mt-3">Cozy Living</h5>
-                    <button type="button" class="btn btn-enter" onclick="showItems('shop4', 'Cozy Living')">Enter</button>
+                    <button class="btn btn-enter" onclick="showItems('shop4', 'Cozy Living')">Enter</button>
                 </div>
+                <button class="btn btn-info btn-icon" data-bs-toggle="modal" data-bs-target="#shopDescriptionModal" onclick="loadDescription('Cozy Living', 'Comfortable furniture and home essentials to create your cozy space.')">
+                    <i class="bi bi-info-circle"></i> <!-- Bootstrap Icons info circle -->
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Finish Button -->
-    <div class="d-flex justify-content-end mt-5">
+    <div id="finishTaskBtnContainer">
         <button class="btn btn-success" onclick="finishTask()">Finish Task</button>
     </div>
 </div>
 
 
 
-                <div id="itemSection" style="display:none;">
-                    <div class="row mb-5">
-                        <div class="col-md-12 d-flex justify-content-end align-items-center">
-                            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-                            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
-                        </div>
-                    </div>
+ <div id="itemSection" style="display:none;">
+    <div class="row mb-5">
+        <div class="col-md-12 d-flex justify-content-end align-items-center">
+            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
+            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
+        </div>
 
-                    <h2 class="text-center" id="currentShop">Current Store: </h2>
-                    <ul class="nav nav-tabs mb-3" id="categoryTabs" role="tablist">
-                        {% for j in range(1, 5) %}
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link {% if j == 1 %}active{% endif %}"
-                                    id="category{{ j }}-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#category{{ j }}"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="category{{ j }}"
-                                    aria-selected="{{ j == 1 }}">
-                                Category {{ j }}
-                            </button>
-                        </li>
-                        {% endfor %}
-                    </ul>
+    </div>
+<div class="col-md-12 d-flex justify-content-between align-items-center">
+    <h2 id="currentShop" class="mt-5">Current Store: </h2>
 
-                    <div class="tab-content" id="categoryTabsContent">
-                        {% for j in range(1, 5) %}
-                        <div class="tab-pane fade {% if j == 1 %}show active{% endif %}"
-                             id="category{{ j }}"
-                             role="tabpanel"
-                             aria-labelledby="category{{ j }}-tab">
-                            <div class="shop-items-grid" id="category{{ j }}-items"></div>
-                        </div>
-                        {% endfor %}
-                    </div>
+    <div id="chartsContainer" style="max-width: 400px;"></div>
+</div>
+    <ul class="nav nav-tabs mb-3" id="categoryTabs" role="tablist">
+        {% for j in range(1, 5) %}
+        <li class="nav-item" role="presentation">
+            <button class="nav-link {% if j == 1 %}active{% endif %}"
+                    id="category{{ j }}-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#category{{ j }}"
+                    type="button"
+                    role="tab"
+                    aria-controls="category{{ j }}"
+                    aria-selected="{{ j == 1 }}">
+                Category {{ j }}
+            </button>
+        </li>
+        {% endfor %}
+    </ul>
 
-                    <div class="text-center mt-4">
-                        <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
-                    </div>
-                </div>
+    <div class="tab-content" id="categoryTabsContent">
+        {% for j in range(1, 5) %}
+        <div class="tab-pane fade {% if j == 1 %}show active{% endif %}"
+             id="category{{ j }}"
+             role="tabpanel"
+             aria-labelledby="category{{ j }}-tab">
+            <div class="shop-items-grid" id="category{{ j }}-items"></div>
+            <!-- Placeholder for category chart -->
+            <div id="category{{ j }}-chart" class="category-chart" style="display:none;"></div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+        <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
+    </div>
+</div>
             </div>
         </div>
     </div>
@@ -187,7 +346,7 @@
                 </div>
                 <div class="modal-body">
                     <ul id="purchasedItemsList"></ul>
-                    <div id="chartsContainer"></div>
+
                 </div>
             </div>
         </div>
@@ -218,7 +377,7 @@ const shopData = {
     }
 };
 
-// Generate items for each shop’s categories
+
 function generateItems(categories) {
     const items = {};
     categories.forEach(category => {
@@ -314,10 +473,11 @@ function showShopSection() {
 }
 
 function showItems(shopId, shopName) {
+
     document.getElementById('shopSection').style.display = 'none';
     document.getElementById('itemSection').style.display = 'block';
     document.getElementById('currentShop').innerText = shopName;
-
+    onCategoryClick("Fridge");
     const shop = shopData[shopId];
     Object.keys(shop.items).forEach((category, index) => {
         const categoryId = `category${index + 1}-items`;
@@ -396,8 +556,8 @@ function undoPurchase(category) {
     delete purchasedCategories[category];
 
     updateAvailableBudget();
-    updatePurchasedItemsList(); // Refresh modal content
-    enableBuyButton(category); // Enable the "Buy" button
+    updatePurchasedItemsList();
+    enableBuyButton(category);
     alert(`Undo purchase of ${item.name}. Budget refunded.`);
 }
 
@@ -420,8 +580,7 @@ function updatePurchasedItemsList() {
 }
 
 function showPurchasedItems() {
-    updatePurchasedItemsList(); // Ensure the list is updated
-    renderChart(); // Render the chart when the modal opens
+    updatePurchasedItemsList();
     const modal = new bootstrap.Modal(document.getElementById('purchasedItemsModal'));
     modal.show();
 }
@@ -447,51 +606,69 @@ const surveyData = {
     Chair: [4,4,4,4],
     Bed: [14,10,3,1],
 };
-function renderChart() {
-    const container = document.getElementById('chartsContainer'); // <div id="chartsContainer></div>
-    container.innerHtml = ''; // clear exisiting chart
-    Object.keys(surveyData).forEach(category => {
-        const canvas = document.createElement('canvas'); // <canvas></canvas>
-        canvas.id = `chart-${category}`; // <canvas id="chart-Fridge"></canvas>
-        container.appendChild(canvas); // <div id="chartsContainer><canvas id="chart-Fridge"></canvas></div>
+function renderChart(category) {
+    // Clear any existing charts in the container
+    const container = document.getElementById('chartsContainer');
+    container.innerHTML = ''; // clear previous charts
 
-        const ctx = canvas.getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
-                datasets: [{
-                    label: `Number of Purchases for ${category}`,
-                    data: surveyData[category],
-                    backgroundColor: 'rgba(209, 152, 75, 0.9)',
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                scales: {
-                    x:{
-                        min: 0,
-                        max: 18
-                    }
+    const canvas = document.createElement('canvas');
+    canvas.id = `chart-${category}`;
+    container.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
+            datasets: [{
+                label: `Number of Purchases for ${category}`,
+                data: surveyData[category],
+                backgroundColor: 'rgba(209, 152, 75, 0.9)',
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    min: 0,
+                    max: 18
                 }
             }
-        });
-    });
+        }
+    });  // Closing the Chart constructor
+}  // Closing the renderChart function
+
+
+function onCategoryClick(category) {
+    renderChart(category);
 }
+
 function finishTask() {
     const allCategories = Object.keys(purchasedCategories);
-    const totalCategories = 16; // 4 shops * 4 categories each = 16 total categories
+    const totalCategories = 16;
 
     if (allCategories.length === totalCategories) {
         alert('Congratulations! You have completed the task successfully.');
-        // Redirect or perform any final actions
-        window.location.href = "/task-completed"; // Example redirection
+        window.location.href = "/task-completed";
     } else {
         const remaining = totalCategories - allCategories.length;
         alert(`You need to purchase ${remaining} more item(s) to finish the task.`);
     }
 }
 
+function loadDescription(shopName, description) {
+    document.getElementById('shopName').innerText = shopName;
+    document.getElementById('shopDescription').innerText = description;
+}
+document.addEventListener("DOMContentLoaded", function() {
+    const categories = Object.keys(surveyData);
 
+    categories.forEach(category => {
+        const categoryButton = document.getElementById(`category1-tab`);
+        categoryButton.addEventListener('click', function() {
+            onCategoryClick("Fridge");
+        });
+    });
+});
     </script>
 {% endblock %}

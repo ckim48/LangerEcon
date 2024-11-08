@@ -114,6 +114,7 @@
 /*}*/
 .shop-img{
     width: 75%;
+
 }
 .btn-enter{
     background-color: orange;
@@ -133,6 +134,7 @@
 }
 .shop-card{
     width: 80%;
+    height: 220px;
 }
 .budget{
     color:white;
