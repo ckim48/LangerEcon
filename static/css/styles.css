@@ -54,15 +54,17 @@
 }
 
 .nav-bg{
-    background-color: #ffecec;
+    background-color: white;
 }
 .color-blue{
-    color: #4f229f;
+    color: #150f90;
+    font-weight: bold;
 }
 
 .hero{
     position: relative;
-    background: url('../img/hero-bg.jpg') no-repeat center center;
+    background: url('../img/hero-bg-econ.jpg') no-repeat center center;
+    background-size: cover;
     text-align:center;
     height: 100vh;
     display:flex;
@@ -176,4 +178,22 @@
 #shopSection > * {
     position: relative;
     z-index: 2;
+}
+
+.navbar-brand{
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 33px;
+}
+.hero-container{
+    background-color: rgba(86, 86, 86,0.6);
+    padding: 25px 5px;
+    border-radius: 15px;
+}
+.text-justify{
+    text-align: justify;
+}
+.btn-learnmore{
+    background-color: black;
+    color:white;
+    padding: 10px 20px;
 }
