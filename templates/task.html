@@ -178,12 +178,147 @@
             font-size: 19px;
             padding:10px 20px;
         }
+#shopSection {
+    background-image: url('../static/img/shoppingmall.jpg'); /* Replace with a stylized game mall background */
+    background-size: cover;
+    background-position: center;
+    padding: 50px 30px;
+    border-radius: 15px;
+    position: relative;
+    color: #fff;
+}
+
+#shopSection::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Slightly dark overlay for contrast */
+    z-index: 1;
+    border-radius: 15px;
+}
+
+.shop-card {
+    position: relative;
+    z-index: 2;
+    border-radius: 20px;
+    background: linear-gradient(145deg, #FFFF, #d1d1d1);
+    border: 3px solid #ff9f00; /* Neon-style border */
+    box-shadow: 0 4px 20px rgba(255, 159, 0, 0.6); /* Glowing shadow */
+    transition: transform 0.4s, box-shadow 0.4s;
+}
+
+.shop-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 6px 25px rgba(255, 159, 0, 1);
+}
+
+.btn-enter {
+    background-color: #e91e63; /* Bright, game-themed color */
+    color: #fff;
+    border-radius: 30px;
+    padding: 12px 28px;
+    font-family: 'Press Start 2P', cursive; /* Game-like font */
+}
+
+.btn-enter:hover {
+    background-color: #d81b60;
+}
+
+.btn-icon {
+    font-size: 1.75rem;
+    color: darkblue;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.btn-icon:hover {
+    color: #00bcd4;
+    transform: rotate(15deg);
+}
+.nav-tabs .nav-link {
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background-color: #f1f1f1;
+    color: #555;
+    padding: 10px 20px;
+    margin: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-tabs .nav-link:hover {
+    background-color: #d1d1d1;
+    color: #333;
+}
+
+.nav-tabs .nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+        .shop-item-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.shop-item-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+#itemSection{
+ padding: 10px 60px;
+}
+.shop-item-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.shop-item-card img {
+    border-radius: 10px;
+    object-fit: cover;
+    width: 100%;
+    height: 140px;
+    margin-bottom: 10px;
+}
+
+        #currentShop {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #ff6b6b;
+    background: linear-gradient(90deg, #ff6b6b, #f06595);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+#currentShop::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background-color: #ff6b6b;
+    margin: 8px auto 0;
+    border-radius: 2px;
+}
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-5">
                  <div class="modal fade" id="shopDescriptionModal" tabindex="-1" aria-labelledby="shopDescriptionModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -389,10 +524,10 @@ function generateItems(categories) {
 function getCategoryItems(category) {
     const itemsList = {
         "Fridge": [
-            { name: "Luxury 2-door Fridge", price: 1299, image: "https://via.placeholder.com/150?text=Fridge", description: "A spacious fridge with advanced cooling technology and ice maker." },
-            { name: "Modern 2-door Fridge", price: 1099, image: "https://via.placeholder.com/150?text=Fridge", description: "Energy-efficient fridge with smart controls." },
-            { name: "One-door Fridge", price: 799, image: "https://via.placeholder.com/150?text=Fridge", description: "Compact fridge perfect for small kitchens." },
-            { name: "Mini Fridge", price: 399, image: "https://via.placeholder.com/150?text=Fridge", description: "Portable fridge for drinks and snacks." }
+            { name: "Luxury 2-door Fridge", price: 1299, image: "../static/img/shop1/fridge1.png", description: "A spacious fridge with advanced cooling technology and ice maker." },
+            { name: "Modern 2-door Fridge", price: 1099, image: "../static/img/shop1/fridge2.png", description: "Energy-efficient fridge with smart controls." },
+            { name: "One-door Fridge", price: 799, image: "../static/img/shop1/fridge3.png", description: "Compact fridge perfect for small kitchens." },
+            { name: "Mini One-door Fridge", price: 399, image: "../static/img/shop1/fridge4.png", description: "Portable fridge for drinks and snacks." }
         ],
         "Oven": [
             { name: "Luxury Oven", price: 1099, image: "https://via.placeholder.com/150?text=Oven", description: "Oven with multiple cooking modes and self-cleaning feature." },
@@ -492,10 +627,12 @@ function showItems(shopId, shopName) {
             const img = document.createElement('img');
             img.src = item.image;
             img.alt = item.name;
-            img.style.width = "100%";
+            img.style.width = "100px";
+            img.style.height= "200px";
 
             const itemTitle = document.createElement('h5');
             itemTitle.classList.add('shop-item-title');
+            itemTitle.classList.add('mt-4');
             itemTitle.innerText = `${item.name} - $${item.price}`;
 
             const tooltipButton = document.createElement('button');
