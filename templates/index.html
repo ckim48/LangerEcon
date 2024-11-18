@@ -2,65 +2,89 @@
 {% block index %}
     <head>
         <style>
-            img {
-             border-radius: 15px;
-            }
-            .section-title{
-                color: midnightblue;
-                font-weight: bold;
-                font-size: 40px;
-                font-family: "Bebas Neue", sans-serif;
-                letter-spacing: 1px;
-                margin-bottom: 15px;
-            }
-            .card {
-                width: 90%;
-                height: 450px;
-                margin: 20px auto;
-                border: none;
-                border-radius: 15px;
-                background-color: #ffffff;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                transition: transform 0.2s, box-shadow 0.2s;
-            }
+          body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+}
 
-            .card:hover {
-                transform: translateY(-10px);
-                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            }
+.section-title {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 38px;
+    margin-bottom: 20px;
+}
 
-            .card-img-top {
+.card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 90%;
+    display: d-block;
+    margin: 0 auto;
+    height:450px;
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+    width: 50%;
+    display: d-block;
+    margin: 0 auto;
+    border-radius: 15px 15px 0 0;
+    height: 220px;
+    object-fit: cover;
+}
+
+.btn-learnmore {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.btn-learnmore:hover {
+    background-color: #2980b9;
+}
+
+#about {
+    background-color: #f0f4f8;
+    padding: 50px 0;
+}
+
+.hero-container h1 {
+    font-size: 50px;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.hero-container p {
+    font-size: 18px;
+    color: white;
+    margin-bottom: 25px;
+}
+          .card-img-top {
                 border-radius: 15px 15px 0 0;
                 height: 300px;
                 object-fit: contain;
                 margin-bottom: 15px;
             }
-
-            .card-body {
-                padding: 20px;
-                text-align: center;
-            }
-
-            .card h2 {
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 15px;
-            }
-
-            .card p {
-                font-size: 16px;
-                line-height: 1.5;
-                color: #333;
-            }
-            .card-img-top{
-                width: 60%;
-                height: 165px;
-                display: d-block;
-                margin: 0 auto;
-            }
-            #about{
-                background-color: #fffdf8;
-            }
+.hero-container .btn {
+    margin-top: 15px;
+}
+#about img{
+    max-width: 500px;
+    border-radius: 15px;
+    display: d-block;
+    margin: 0 auto;
+}
         </style>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     </head>
@@ -85,15 +109,15 @@
                         <p class="text-justify">Economy Teamr Langer Langer Langer Langer Lange for Langer Project made web appl ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. Economy Team for Langer Project made web applications for ~~fjoa. </p>
                     </div>
                     <div  data-aos="fade-left"  data-aos-duration="1000"  class="col-md-6 px-md-5">
-                        <img class="img-fluid" src="../static/img/hero-bg.jpg">
+                        <img class="img-fluid" src="../static/img/harvard.jpg">
                     </div>
                 </div>
 
                 <div class="row mt-5">
-                    <div class="col-md-6 px-md-5">
-                        <img class="img-fluid" src="../static/img/hero-bg.jpg">
+                    <div class="col-md-6 mt-md-5 px-md-5"data-aos="fade-left"  data-aos-duration="1000" >
+                        <img class="img-fluid" src="../static/img/ecnomoy.jpg">
                     </div>
-                    <div class="col-md-6 px-md-5">
+                    <div class="col-md-6 mt-md-5 px-md-5" data-aos="fade-right"  data-aos-duration="1000" >
                         <h2 class="section-title">About Economic Team</h2>
                         <p>Economy Team for Langer Project made web applications for ~~fjoa. </p>
                     </div>
@@ -102,10 +126,10 @@
         </section>
         <section>
             <div class="container">
-                <h2 class="section-title mt-5">Instruction for Project Langer Economic Tasks</h2>
+                <h2 class="section-title mt-5"data-aos="fade-up"  data-aos-duration="1000" >Instruction for Project Langer Economic Tasks</h2>
                 <div class="row mt-5 mb-5">
                     <div class="col-md-4">
-                        <div class="card p-4">
+                        <div class="card p-4" data-aos="fade-up"  data-aos-duration="1000" >
                             <img class="card-img-top" src="../static/img/cash.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 1</h2>
@@ -114,7 +138,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card p-4">
+                        <div class="card p-4" data-aos="fade-up"  data-aos-duration="1000" data-aos-delay="300">
                             <img class="card-img-top" src="../static/img/furniture.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 2</h2>
@@ -123,7 +147,7 @@
                         </div>
                     </div>
                      <div class="col-md-4">
-                        <div class="card p-4">
+                        <div class="card p-4" data-aos="fade-up"  data-aos-duration="1000" data-aos-delay="600">
                             <img class="card-img-top" src="../static/img/analyzing.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 3</h2>
