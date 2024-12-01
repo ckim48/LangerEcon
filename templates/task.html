@@ -204,8 +204,8 @@
     position: relative;
     z-index: 2;
     border-radius: 20px;
-    background: linear-gradient(145deg, #FFFF, #d1d1d1);
-    border: 3px solid #ff9f00; /* Neon-style border */
+    background: rgba(255,255,255,0.8);
+
     box-shadow: 0 4px 20px rgba(255, 159, 0, 0.6); /* Glowing shadow */
     transition: transform 0.4s, box-shadow 0.4s;
 }
@@ -220,7 +220,6 @@
     color: #fff;
     border-radius: 30px;
     padding: 12px 28px;
-    font-family: 'Press Start 2P', cursive; /* Game-like font */
 }
 
 .btn-enter:hover {
@@ -313,6 +312,46 @@
     margin: 8px auto 0;
     border-radius: 2px;
 }
+#room-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-image: url('../static/img/room-background.jpg'); /* Update to your actual image path */
+    background-size: cover; /* Scale the image to cover the entire div */
+    background-position: center; /* Center the image */
+    border: 2px solid #000;
+    overflow: hidden; /* Prevent items from going outside the container */
+    display: block;
+    margin: 0 auto;
+}
+
+#roomCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1; /* Ensure the canvas is above the background image */
+}
+
+#backButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2; /* Ensure the button is above the canvas */
+}
+
+
+#item-list {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.item {
+    cursor: grab;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: white;
+}
 
     </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
@@ -339,7 +378,7 @@
 
         <div class="card task-card mt-5">
             <div class="card-header">
-                <h1 class="text-center">Economics Mini-Task</h1>
+                <h1 class="text-center">Langer Economics</h1>
             </div>
             <div class="card-body">
                 <div id="startSection" class="text-center px-5 py-5">
@@ -356,12 +395,22 @@
 
 
 
-    <div class="row mb-5">
-        <div class="col-md-12 d-flex justify-content-end align-items-center">
-            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
+<div class="row mb-5">
+    <div class="col-md-12 d-flex justify-content-between align-items-center modern-section">
+        <div>
+            <button class="btn btn-view-room modern-btn" onclick="showRoom('shopSection')">
+                <i class="bi bi-house-door-fill"></i> View Room
+            </button>
+        </div>
+        <div class="text-end">
+            <h4 class="available-budget modern-budget">Budget: <span class="budget-amount">$<span class="availableBudget"></span></span></h4>
+            <button class="btn btn-see-data modern-btn" onclick="showPurchasedItems()">
+                <i class="bi bi-receipt-cutoff"></i> Receipt
+            </button>
         </div>
     </div>
+</div>
+
 
     <div class="row">
         <div class="col-md-3">
@@ -421,13 +470,22 @@
 
 
  <div id="itemSection" style="display:none;">
-    <div class="row mb-5">
-        <div class="col-md-12 d-flex justify-content-end align-items-center">
-            <h4 class="me-4 budget">Available Budget: $<span class="availableBudget"></span></h4>
-            <button class="btn btn-primary" onclick="showPurchasedItems()">See Purchased Data</button>
+<div class="row mb-5">
+    <div class="col-md-12 d-flex justify-content-between align-items-center modern-section">
+        <div>
+            <button class="btn btn-view-room modern-btn" onclick="showRoom('shopSection')">
+                <i class="bi bi-house-door-fill"></i> View Room
+            </button>
         </div>
-
+        <div class="text-end">
+            <h4 class="available-budget modern-budget">Budget: <span class="budget-amount">$<span class="availableBudget"></span></span></h4>
+            <button class="btn btn-see-data modern-btn" onclick="showPurchasedItems()">
+                <i class="bi bi-receipt-cutoff"></i> Receipt
+            </button>
+        </div>
     </div>
+</div>
+
 <div class="col-md-12 d-flex justify-content-between align-items-center">
     <h2 id="currentShop" class="mt-5">Current Store: </h2>
 
@@ -467,8 +525,18 @@
         <button class="btn btn-primary" onclick="goBackShop()">Back to Shops</button>
     </div>
 </div>
+    <div id="room-container" style="display: none;">
+        <canvas id="roomCanvas" width="800" height="600"></canvas>
+    </div>
+
             </div>
         </div>
+
+
+<div id="item-list">
+    <!-- Dynamically generated list of purchased items -->
+</div>
+
     </div>
 
     <!-- Purchased Items Modal -->
@@ -488,6 +556,25 @@
     </div>
 
     <script>
+
+        let previousSection = '';
+
+
+function showRoom(currentSectionId) {
+    previousSection = currentSectionId;
+    document.getElementById(currentSectionId).style.display = 'none';
+    document.getElementById('room-container').style.display = 'block';
+}
+
+
+function goBack() {
+    if (previousSection) {
+        document.getElementById(previousSection).style.display = 'block';
+    }
+    document.getElementById('room-container').style.display = 'none';
+}
+
+
 let availableBudget = 5000;
 let purchasedItems = [];
 let purchasedCategories = {}; // Tracks purchased items by category
@@ -530,10 +617,22 @@ function getCategoryItems(category) {
             { name: "Mini One-door Fridge", price: 399, image: "../static/img/shop1/fridge4.png", description: "Portable fridge for drinks and snacks." }
         ],
         "Oven": [
-            { name: "Luxury Oven", price: 1099, image: "https://via.placeholder.com/150?text=Oven", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Oven", price: 899, image: "https://via.placeholder.com/150?text=Oven", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Oven", price: 599, image: "https://via.placeholder.com/150?text=Oven", description: "Reliable oven for everyday baking." },
-            { name: "Compact Oven", price: 299, image: "https://via.placeholder.com/150?text=Oven", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Oven", price: 1099, image: "../static/img/shop1/oven1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Oven", price: 899, image: "../static/img/shop1/oven2.jpg", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Oven", price: 599, image: "../static/img/shop1/oven3.jpg", description: "Reliable oven for everyday baking." },
+            { name: "Compact Oven", price: 299, image: "../static/img/shop1/oven4.jpg", description: "Small oven for quick meals and snacks." }
+        ],
+        "Stove": [
+            { name: "Luxury Stove", price: 1099, image: "../static/img/shop1/stove1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Stove", price: 899, image: "../static/img/shop1/stove2.jpg", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Stove", price: 599, image: "../static/img/shop1/stove3.jpg", description: "Reliable oven for everyday baking." },
+            { name: "Compact Stove", price: 299, image: "../static/img/shop1/stove4.jpg", description: "Small oven for quick meals and snacks." }
+        ],
+        "Microwave": [
+            { name: "Luxury Microwave", price: 1099, image: "../static/img/shop1/microwave1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Microwave", price: 899, image: "../static/img/shop1/microwave2.jpg", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Microwave", price: 599, image: "../static/img/shop1/microwave3.jpg", description: "Reliable oven for everyday baking." },
+            { name: "Compact Microwave", price: 299, image: "../static/img/shop1/microwave4.jpg", description: "Small oven for quick meals and snacks." }
         ],
         "TV": [
           { name: "Samsung 98' 8K TV", price: 3299, image: "../static/img/shop2/TV1.png", description: "Massive 8K TV with breathtaking visuals." },
@@ -578,6 +677,18 @@ function getCategoryItems(category) {
             { name: "Rocking Chair", price: 299, image: "https://via.placeholder.com/150?text=Chair", description: "Traditional rocking chair." },
             { name: "Dining Chair", price: 149, image: "https://via.placeholder.com/150?text=Chair", description: "Stylish dining chair." },
             { name: "Plastic Chair", price: 49, image: "https://via.placeholder.com/150?text=Chair", description: "Affordable plastic chair." }
+        ],
+                "Office Chair": [
+            { name: "Lounge Office Chair", price: 399, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Office Chair", price: 299, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Traditional rocking chair." },
+            { name: "Dining Office Chair", price: 149, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Stylish dining chair." },
+            { name: "Plastic Office Chair", price: 49, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Affordable plastic chair." }
+        ],
+                        "Dining Table": [
+            { name: "Lounge Dining Table", price: 399, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Dining Table", price: 299, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Traditional rocking chair." },
+            { name: "Dining Dining Table", price: 149, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Stylish dining chair." },
+            { name: "Plastic Dining Table", price: 49, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Affordable plastic chair." }
         ],
         "Dresser": [
             { name: "Modern Dresser", price: 999, image: "https://via.placeholder.com/150?text=Dresser", description: "Sleek modern dresser." },
@@ -660,7 +771,6 @@ function showItems(shopId, shopName) {
         });
     });
 }
-
 function buyItem(item, category, button) {
     if (purchasedCategories[category]) {
         alert(`You already bought an item from the ${category} category.`);
@@ -676,10 +786,14 @@ function buyItem(item, category, button) {
         button.disabled = true;
         button.innerText = 'Purchased';
         alert(`You bought ${item.name} for $${item.price}.`);
+
+        // Place the purchased item in the virtual room
+        placeItemInRoom(item);
     } else {
         alert('Insufficient budget!');
     }
 }
+
 
 function undoPurchase(category) {
     if (!purchasedCategories[category]) {
@@ -808,4 +922,181 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
     </script>
+<script>
+const canvas = document.getElementById('roomCanvas');
+const ctx = canvas.getContext('2d');
+const itemsInRoom = []; // Stores items placed in the room
+
+let defaultPositionX = 50; // Initial position X for the first item
+let defaultPositionY = 50; // Initial position Y for the first item
+let selectedItem = null; // Item being dragged
+let offsetX = 0; // X offset of the mouse from the item's origin
+let offsetY = 0; // Y offset of the mouse from the item's origin
+
+const MAX_ITEM_WIDTH = 100; // Maximum item width
+const MAX_ITEM_HEIGHT = 100; // Maximum item height
+
+// Preloaded images cache
+const imageCache = {};
+
+// Background image for the room
+const backgroundImage = new Image();
+backgroundImage.src = "../static/img/room-background.jpg"; // Replace with your image path
+
+// Function to preload images
+function preloadImage(src) {
+    if (!imageCache[src]) {
+        const img = new Image();
+        img.src = src;
+        imageCache[src] = img;
+    }
+    return imageCache[src];
+}
+
+// Function to draw the room with background and items
+function drawRoom() {
+    // Draw the background image
+    if (backgroundImage.complete) {
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+        console.log("A");
+    } else {
+        backgroundImage.onload = () => {
+            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+            console.log("B");
+        };
+    }
+
+    // Draw the items in the room
+    itemsInRoom.forEach(item => {
+        const img = preloadImage(item.image);
+        if (img.complete) {
+            // Calculate scaled dimensions based on original aspect ratio
+            const aspectRatio = img.width / img.height;
+            let width = MAX_ITEM_WIDTH;
+            let height = MAX_ITEM_HEIGHT;
+
+            if (aspectRatio > 1) {
+                // Landscape image
+                height = MAX_ITEM_HEIGHT / aspectRatio;
+            } else {
+                // Portrait image
+                width = MAX_ITEM_WIDTH * aspectRatio;
+            }
+
+            ctx.drawImage(img, item.x, item.y, width, height);
+        } else {
+            // Wait for image to load before drawing
+            img.onload = () => {
+                drawRoom(); // Redraw room after the image is loaded
+            };
+        }
+    });
+}
+
+// Function to place an item in the room
+function placeItemInRoom(item) {
+    if (itemsInRoom.length >= (canvas.width / MAX_ITEM_WIDTH) * (canvas.height / MAX_ITEM_HEIGHT)) {
+        alert("Room is full!"); // Notify if the room is full
+        return;
+    }
+
+    // Add the new item to the room at the default position
+    itemsInRoom.push({ ...item, x: defaultPositionX, y: defaultPositionY });
+
+    console.log("Item added to room:", item); // Debug log
+    console.log("Items in room:", itemsInRoom); // Debug log
+
+    // Adjust default positions for the next item
+    defaultPositionX += MAX_ITEM_WIDTH + 10; // Increment X position with padding
+    if (defaultPositionX + MAX_ITEM_WIDTH > canvas.width) {
+        defaultPositionX = 50; // Reset X position if it exceeds canvas width
+        defaultPositionY += MAX_ITEM_HEIGHT + 10; // Move to the next row with padding
+    }
+
+    if (defaultPositionY + MAX_ITEM_HEIGHT > canvas.height) {
+        alert("No more space available in the room!"); // Notify if no more space is available
+    }
+
+    drawRoom(); // Re-render the room with the new item
+}
+
+// Function to buy an item
+function buyItem(item, category, button) {
+    if (purchasedCategories[category]) {
+        alert(`You already bought an item from the ${category} category.`);
+        return;
+    }
+
+    if (availableBudget >= item.price) {
+        availableBudget -= item.price;
+        purchasedItems.push({ ...item, category });
+        purchasedCategories[category] = item;
+
+        updateAvailableBudget();
+        button.disabled = true;
+        button.innerText = 'Purchased';
+        alert(`You bought ${item.name} for $${item.price}.`);
+
+        // Debug log to confirm item details before placing it in the room
+        console.log("Placing item in room:", item);
+
+        // Place the purchased item in the virtual room
+        placeItemInRoom(item);
+    } else {
+        alert('Insufficient budget!');
+    }
+}
+
+// Dragging functionality
+canvas.addEventListener('mousedown', (event) => {
+    const mouseX = event.offsetX;
+    const mouseY = event.offsetY;
+
+    // Check if an item is clicked
+    selectedItem = itemsInRoom.find(item =>
+        mouseX >= item.x &&
+        mouseX <= item.x + MAX_ITEM_WIDTH &&
+        mouseY >= item.y &&
+        mouseY <= item.y + MAX_ITEM_HEIGHT
+    );
+
+    if (selectedItem) {
+        offsetX = mouseX - selectedItem.x;
+        offsetY = mouseY - selectedItem.y;
+    }
+});
+
+canvas.addEventListener('mousemove', (event) => {
+    if (selectedItem) {
+        const mouseX = event.offsetX;
+        const mouseY = event.offsetY;
+
+        // Ensure item stays within canvas boundaries
+        selectedItem.x = Math.min(Math.max(mouseX - offsetX, 0), canvas.width - MAX_ITEM_WIDTH);
+        selectedItem.y = Math.min(Math.max(mouseY - offsetY, 0), canvas.height - MAX_ITEM_HEIGHT);
+
+        drawRoom(); // Re-render the room
+    }
+});
+
+canvas.addEventListener('mouseup', () => {
+    selectedItem = null; // Stop dragging
+});
+
+// Add a Back button to the top-left corner of the room
+const roomContainer = document.getElementById('room-container');
+const backButton = document.createElement('button');
+backButton.innerText = "Back";
+backButton.classList.add('btn', 'btn-primary');
+backButton.style.position = 'absolute';
+backButton.style.top = '10px';
+backButton.style.left = '10px';
+backButton.style.zIndex = '10'; // Ensure it stays on top of the canvas
+backButton.onclick = goBack;
+roomContainer.appendChild(backButton);
+
+
+
+</script>
+
 {% endblock %}

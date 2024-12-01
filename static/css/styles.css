@@ -139,6 +139,9 @@
     height: 220px;
 }
 .budget{
+    background-color: rgba(33,33,33,0.7);
+    border-radius: 5px;
+    padding: 10px 20px;
     color:white;
     font-size: 22px;
     font-weight: 500;
@@ -196,4 +199,64 @@
     background-color: black;
     color:white;
     padding: 10px 20px;
+}
+
+
+/* General Styling */
+.modern-section {
+    padding: 15px 20px;
+    background: rgba(196, 196, 196, 0.9);
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.modern-btn {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-view-room {
+    background-color: #6c63ff;
+}
+
+.btn-view-room:hover {
+    background-color: #5247d1;
+}
+
+.btn-see-data {
+    background-color: #ff6b6b;
+}
+
+.btn-see-data:hover {
+    background-color: #e35d5d;
+}
+
+/* Budget Display */
+.modern-budget {
+    font-size: 20px;
+    font-weight: bold;
+    color: #343a40;
+
+    margin: 0;
+    margin-bottom: 20px;
+}
+
+.budget-amount {
+    font-weight: 700;
+    color: black;
+}
+
+/* Icon Styling */
+.modern-btn i {
+    font-size: 20px;
+    color: white;
 }
