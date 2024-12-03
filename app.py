@@ -1,79 +1,108 @@
-# Flask --> Library (Pre-written Python code) which allows you to make web application using Python
-from flask import Flask, render_template, request, redirect, url_for, flash, session
-import sqlite3
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
+import pyrebase
+from config import firebase_config
 
 app = Flask(__name__)
 app.secret_key = "abc"
 
-# sesssion = {}
+# Firebase configuration
+firebase = pyrebase.initialize_app(firebase_config)
+auth = firebase.auth()
+db = firebase.database()
 
 
-# adding contents to our website
+# Routes
 @app.route('/')
 def index():
-    isLogin = False # variable check whehter the user is loggined or not.
-    if 'username' in session:
-        isLogin = True
-    return render_template('index.html', isLogin = isLogin)
+    isLogin = 'username' in session
+    return render_template('index.html', isLogin=isLogin)
 
-@app.route('/register', methods = ["GET", "POST"])
+
+@app.route('/study_process', methods=["GET", "POST"])
+def study_process():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session["username"].replace(".", "_").replace("@", "_")
+
+    if request.method == "POST":
+        next_step = request.json.get("next_step")
+        db.child("users").child(user_id).update({"current_step": int(next_step)})
+        return jsonify({"status": "success", "current_step": int(next_step)})
+
+    # Fetch user progress
+    user_data = db.child("users").child(user_id).get().val() or {}
+    current_step = user_data.get("current_step", 1)
+
+    # Render study process page
+    total_steps = 6
+    steps = [
+        {"step_number": 1, "title": "Informed Consent", "description": "Please review and provide consent.",
+         "link": "#", "button_text": "Proceed"},
+        {"step_number": 2, "title": "Pre-task Survey", "description": "Complete the pre-task survey.",
+         "link": "https://www.jotform.com/build/243311350088449", "button_text": "Take Survey"},
+        {"step_number": 3, "title": "Warm-up Activities", "description": "Engage in warm-up activities.",
+         "link": "#", "button_text": "Start Warm-up"},
+        {"step_number": 4, "title": "Main Tasks", "description": "Participate in the main study tasks.",
+         "link": "/task", "button_text": "Start Task"},
+        {"step_number": 5, "title": "Post-task Surveys", "description": "Complete the post-task surveys.",
+         "link": "https://www.jotform.com/build/243311949113452", "button_text": "Take Survey"},
+        {"step_number": 6, "title": "Debriefing", "description": "Read the debriefing information.",
+         "link": "#", "button_text": "Finish"},
+    ]
+
+    return render_template(
+        "index2.html",
+        isLogin=True,
+        current_step=current_step,
+        total_steps=total_steps,
+        steps=steps
+    )
+
+
+@app.route('/register', methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         username = request.form.get("username")
         password = request.form.get("password")
-        conn = sqlite3.connect('database.db')
-        cursor = conn.cursor()
-        command = "SELECT password FROM Users WHERE username = ?;"
-        cursor.execute(command, (username,))
-        result = cursor.fetchone()
-        if result is None: # there is no user with the same username
-            command = "INSERT INTO Users (username, password) VALUES (?,?);"
-            cursor.execute(command, (username, password, ))
-            conn.commit()
-            conn.close()
-            print("Successfully registered! ")
+        user_data = db.child("users").child(username.replace(".", "_").replace("@", "_")).get().val()
+
+        if user_data is None:
+            db.child("users").child(username.replace(".", "_").replace("@", "_")).set({"password": password})
+            flash("Successfully registered!")
             return redirect(url_for('login'))
-        else: # there is already user that has same username
-            flash("Exisiting Username")
-            return render_template('register.html')
+        else:
+            flash("Existing Username")
     return render_template('register.html')
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"] # scott
-        password = request.form["password"] # 123 # password what user put in the login page
-        conn = sqlite3.connect('database.db') # Connecting to DB
-        cursor = conn.cursor()
-        command = "SELECT password FROM Users WHERE username = ?;"
-        cursor.execute(command, (username, ))
-        password_db = cursor.fetchone() # The acutal password that is stored in our db
-        if password_db is None: # when user tries to login with the username that have not registered yet.
-            flash("Wrong username or password")
-            return render_template('login.html')
+        username = request.form["username"]
+        password = request.form["password"]
+        user_data = db.child("users").child(username.replace(".", "_").replace("@", "_")).get().val()
 
-        if password == password_db[0]: # when username and password are valid
+        if user_data and user_data["password"] == password:
             session["username"] = username
             return redirect(url_for('index'))
         else:
             flash("Wrong username or password")
-            return render_template('login.html')
-    else: # When user sends HTTP request with GET
-        return render_template('login.html')
+    return render_template('login.html')
+
 
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect(url_for('index'))
 
+
 @app.route("/task")
 def task():
-    isLogin = False
-    if 'username' in session:
-        isLogin = True
+    isLogin = 'username' in session
     return render_template('task.html', isLogin=isLogin)
 
-# For running the web applications
+
+# Run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
-

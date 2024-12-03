@@ -1,0 +1,212 @@
+{% extends 'header.html' %}
+{% block index2 %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step-by-Step Study Process</title>
+    <!-- Bootstrap CSS -->
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #333;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 40px;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .step-item.completed {
+            background: #e6f7e9;
+            border-left: 5px solid #4caf50;
+        }
+
+        .step-item.active {
+            border-left: 5px solid #6a11cb;
+        }
+
+        .step-number {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #6a11cb;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            margin-right: 20px;
+        }
+
+        .step-number.completed {
+            background: #4caf50;
+        }
+
+        .step-content h3 {
+            margin: 0 0 10px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .step-content p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #666;
+        }
+
+        .step-actions {
+            margin-left: auto;
+        }
+
+        .btn-primary {
+            background: #6a11cb;
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #4a0dcb;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #666;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: not-allowed;
+        }
+
+        /* Arrow styling */
+        .arrow-down {
+            width: 100%;
+            text-align: center;
+            margin: -10px 0 20px;
+        }
+
+        .arrow-down i {
+            font-size: 35px;
+            color: #ccc;
+        }
+
+        .arrow-down i.active {
+            color: #6a11cb;
+        }
+        .mt-8{
+    margin-top: 120px !important;
+
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-8">Step-by-Step Study Process</h1>
+
+        <!-- Steps List -->
+        <ul class="step-list">
+            {% for step in steps %}
+            <li class="step-item
+                {% if step.step_number < current_step %}completed{% elif step.step_number == current_step %}active{% endif %}">
+                <div class="step-number
+                    {% if step.step_number < current_step %}completed{% endif %}">
+                    {{ step.step_number }}
+                </div>
+                <div class="step-content">
+                    <h3>{{ step.title }}</h3>
+                    <p>{{ step.description }}</p>
+                </div>
+                <div class="step-actions">
+                    {% if step.step_number < current_step %}
+                    <button class="btn btn-secondary" disabled>Completed</button>
+                    {% else %}
+                    <a href="{{ step.link }}"
+                       class="btn btn-primary {% if step.step_number > current_step %}disabled{% endif %}"
+                       data-step="{{ step.step_number }}"
+                       {% if step.step_number <= current_step and step.link != "#" %}target="_blank"{% endif %}>
+                        {{ step.button_text }}
+                    </a>
+
+
+                    {% endif %}
+                </div>
+            </li>
+            {% if not loop.last %}
+            <div class="arrow-down">
+                <i class="bi bi-arrow-down-circle {% if step.step_number == current_step %}active{% endif %}"></i>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.btn-primary:not(.disabled)');
+    buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            const step = button.getAttribute('data-step');
+            const link = button.getAttribute('href');
+
+            if (link && link !== '#') {
+                // Open the survey link
+                window.open(link, '_blank');
+            }
+
+            // Send a POST request to mark the step as complete
+            fetch('{{ url_for("study_process") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ next_step: parseInt(step) + 1 })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    // Reload the page to update the progress
+                    location.reload();
+                }
+            })
+            .catch(err => console.error("Error updating step:", err));
+        });
+    });
+});
+</script>
+
+
+
+</body>
+{% endblock %}

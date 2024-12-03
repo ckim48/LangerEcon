@@ -96,7 +96,12 @@
                 <div class="hero-container">
                     <h1 data-aos="fade-up" data-aos-duration="1000"><span style="color:#3498db;"> <strong> Mood and Money:</strong></span> The Interplay Between Mental States and Economic Choices</h1>
                     <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">To participate in our study, please create an account and complete the assigned tasks to finalize your involvement.</p>
+                                        {% if isLogin %}
+                    <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('register')}}" class="btn btn-learnmore">Start Task</a>
+                        {% else %}
                     <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('register')}}" class="btn btn-learnmore">Register</a>
+                        {% endif %}
+
                 </div>
             </div>
         </section>

@@ -13,11 +13,8 @@
                 <div class="card-body">
                     <h1 class="text-center">Register</h1>
                     <form action="/register" method="POST">
-                        <input  class="form-control mb-4" placeholder="Username" name = "username">
+                    <input class="form-control mb-3" placeholder="Prolific/Email" name="username">
                         <input id="password" class="form-control mb-4" placeholder="Password" name = "password">
-                        <input id="confirm_password" class="form-control mb-4" placeholder="Re-Password" name = "re-password">
-                        <input  class="form-control mb-4" placeholder="Gender" name = "gender">
-                        <input  class="form-control mb-4" placeholder="Age" name = "age">
 
                         {% with messages = get_flashed_messages() %}
                             {% if messages %}

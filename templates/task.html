@@ -489,24 +489,30 @@
 <div class="col-md-12 d-flex justify-content-between align-items-center">
     <h2 id="currentShop" class="mt-5">Current Store: </h2>
 
-    <div id="chartsContainer" style="max-width: 400px;"></div>
+<div id="chartsContainer">
+
 </div>
-    <ul class="nav nav-tabs mb-3" id="categoryTabs" role="tablist">
-        {% for j in range(1, 5) %}
-        <li class="nav-item" role="presentation">
-            <button class="nav-link {% if j == 1 %}active{% endif %}"
-                    id="category{{ j }}-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#category{{ j }}"
-                    type="button"
-                    role="tab"
-                    aria-controls="category{{ j }}"
-                    aria-selected="{{ j == 1 }}">
-                Category {{ j }}
-            </button>
-        </li>
-        {% endfor %}
-    </ul>
+
+</div>
+ <ul class="nav nav-tabs mb-3" id="categoryTabs" role="tablist">
+    {% for j in range(1, 17) %}
+    <li class="nav-item" role="presentation">
+        <button class="nav-link {% if j == 1 %}active{% endif %}"
+                id="category{{ j }}-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#category{{ j }}"
+                data-index="{{ j - 1 }}"
+                type="button"
+                role="tab"
+                aria-controls="category{{ j }}"
+                aria-selected="{{ j == 1 }}">
+            Category {{ j }}
+        </button>
+    </li>
+    {% endfor %}
+</ul>
+
+
 
     <div class="tab-content" id="categoryTabsContent">
         {% for j in range(1, 5) %}
@@ -556,7 +562,43 @@
     </div>
 
     <script>
+const categoryMapping = {
+    "category1": "Fridge",
+    "category2": "Oven",
+    "category3": "Stove",
+    "category4": "Microwave",
+    "category5": "TV",
+    "category6": "Speaker",
+    "category7": "Vacuum Cleaner",
+    "category8": "AC/Heater",
+    "category9": "Lamp",
+    "category10": "Desk",
+    "category11": "Office Chair",
+    "category12": "Dining Table",
+    "category13": "Sofa",
+    "category14": "Bed",
+    "category15": "Chair",
+    "category16": "Dresser"
+};
 
+const surveyData = {
+    "Fridge": [12, 8, 15, 10],
+    "Oven": [9, 14, 11, 7],
+    "Stove": [10, 6, 12, 14],
+    "Microwave": [8, 16, 10, 6],
+    "TV": [18, 12, 8, 5],
+    "Speaker": [10, 7, 15, 12],
+    "Vacuum Cleaner": [6, 11, 14, 10],
+    "AC/Heater": [14, 10, 12, 8],
+    "Lamp": [10, 8, 14, 12],
+    "Desk": [9, 15, 10, 6],
+    "Office Chair": [8, 12, 14, 10],
+    "Dining Table": [7, 10, 16, 9],
+    "Sofa": [15, 11, 8, 10],
+    "Bed": [14, 12, 9, 10],
+    "Chair": [12, 8, 14, 10],
+    "Dresser": [10, 6, 15, 9]
+};
         let previousSection = '';
 
 
@@ -717,20 +759,55 @@ function showShopSection() {
     document.getElementById('startSection').style.display = 'none';
     document.getElementById('shopSection').style.display = 'block';
 }
-
 function showItems(shopId, shopName) {
-
     document.getElementById('shopSection').style.display = 'none';
     document.getElementById('itemSection').style.display = 'block';
+
     document.getElementById('currentShop').innerText = shopName;
-    onCategoryClick("Fridge");
+
     const shop = shopData[shopId];
+    const tabsContainer = document.getElementById('categoryTabs');
+    const tabsContent = document.getElementById('categoryTabsContent');
+    tabsContainer.innerHTML = ''; // Clear previous tabs
+    tabsContent.innerHTML = ''; // Clear previous content
+
     Object.keys(shop.items).forEach((category, index) => {
-        const categoryId = `category${index + 1}-items`;
-        const itemsContainer = document.getElementById(categoryId);
+        const categoryId = `category${index + 1}`;
 
-        itemsContainer.innerHTML = ''; // Clear previous items
+        // Create tab for the category
+        const tab = document.createElement('li');
+        tab.classList.add('nav-item');
+        tab.setAttribute('role', 'presentation');
 
+        const tabButton = document.createElement('button');
+        tabButton.classList.add('nav-link');
+        if (index === 0) tabButton.classList.add('active'); // Set the first tab as active
+        tabButton.id = `${categoryId}-tab`;
+        tabButton.setAttribute('data-bs-toggle', 'tab');
+        tabButton.setAttribute('data-bs-target', `#${categoryId}`);
+        tabButton.setAttribute('type', 'button');
+        tabButton.setAttribute('role', 'tab');
+        tabButton.setAttribute('aria-controls', categoryId);
+        tabButton.setAttribute('aria-selected', index === 0 ? 'true' : 'false');
+        tabButton.innerText = `Category ${index + 1}`;
+
+        tab.appendChild(tabButton);
+        tabsContainer.appendChild(tab);
+
+        // Create tab content for the category
+        const content = document.createElement('div');
+        content.classList.add('tab-pane', 'fade');
+        if (index === 0) content.classList.add('show', 'active'); // Show the first tab content by default
+        content.id = categoryId;
+        content.setAttribute('role', 'tabpanel');
+        content.setAttribute('aria-labelledby', `${categoryId}-tab`);
+
+        // Create items grid
+        const itemsGrid = document.createElement('div');
+        itemsGrid.classList.add('shop-items-grid');
+        itemsGrid.id = `${categoryId}-items`;
+
+        // Populate items for the category
         shop.items[category].forEach(item => {
             const card = document.createElement('div');
             card.classList.add('shop-item-card');
@@ -739,23 +816,11 @@ function showItems(shopId, shopName) {
             img.src = item.image;
             img.alt = item.name;
             img.style.width = "100px";
-            img.style.height= "200px";
+            img.style.height = "200px";
 
             const itemTitle = document.createElement('h5');
-            itemTitle.classList.add('shop-item-title');
-            itemTitle.classList.add('mt-4');
+            itemTitle.classList.add('shop-item-title', 'mt-4');
             itemTitle.innerText = `${item.name} - $${item.price}`;
-
-            const tooltipButton = document.createElement('button');
-            tooltipButton.classList.add('btn', 'btn-info', 'm-2');
-            tooltipButton.setAttribute('data-bs-toggle', 'tooltip');
-            tooltipButton.setAttribute('title', item.description);
-            tooltipButton.innerText = 'Details';
-
-            tooltipButton.addEventListener('mouseover', () => {
-                const tooltip = new bootstrap.Tooltip(tooltipButton);
-                tooltip.show();
-            });
 
             const buyButton = document.createElement('button');
             buyButton.classList.add('btn', 'btn-buy');
@@ -765,12 +830,49 @@ function showItems(shopId, shopName) {
 
             card.appendChild(img);
             card.appendChild(itemTitle);
-            card.appendChild(tooltipButton);
             card.appendChild(buyButton);
-            itemsContainer.appendChild(card);
+            itemsGrid.appendChild(card);
+        });
+
+        // Add items grid to content
+        content.appendChild(itemsGrid);
+
+        // Create chart container for the category
+        const chartContainer = document.createElement('div');
+        chartContainer.id = `${categoryId}-chart`;
+        chartContainer.classList.add('category-chart', 'mt-4');
+        chartContainer.style.display = index === 0 ? 'block' : 'none'; // Show the first chart by default
+        content.appendChild(chartContainer);
+
+        // Add content to tabs content
+        tabsContent.appendChild(content);
+    });
+
+    // Render the chart for the active tab on first load
+    const firstCategoryId = `category1`; // Assuming the first tab corresponds to category1
+    const firstCategoryName = categoryMapping[firstCategoryId]; // Map to category name
+    if (firstCategoryName) {
+        renderChart(firstCategoryName); // Render the initial chart
+    }
+
+    // Add event listeners for tab switching to update charts
+    const tabs = document.querySelectorAll(".nav-link");
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+            const categoryId = this.getAttribute("aria-controls");
+            const allCharts = document.querySelectorAll(".category-chart");
+            allCharts.forEach(chart => chart.style.display = 'none'); // Hide all charts
+
+            const activeChart = document.getElementById(`${categoryId}-chart`);
+            if (activeChart) activeChart.style.display = 'block'; // Show the active chart
+            const categoryName = categoryMapping[categoryId];
+            if (categoryName) renderChart(categoryName); // Render the corresponding chart
         });
     });
 }
+
+
+
 function buyItem(item, category, button) {
     if (purchasedCategories[category]) {
         alert(`You already bought an item from the ${category} category.`);
@@ -806,6 +908,15 @@ function undoPurchase(category) {
     purchasedItems = purchasedItems.filter(i => i.category !== category);
     delete purchasedCategories[category];
 
+    // Remove the item from the room
+    const itemIndex = itemsInRoom.findIndex(roomItem => roomItem.name === item.name);
+    if (itemIndex !== -1) {
+        itemsInRoom.splice(itemIndex, 1); // Remove item from the array
+    }
+
+    // Redraw the room to reflect the change
+    drawRoom();
+
     updateAvailableBudget();
     updatePurchasedItemsList();
     enableBuyButton(category);
@@ -837,62 +948,97 @@ function showPurchasedItems() {
 }
 function updateAvailableBudget() {
     document.querySelectorAll('.availableBudget').forEach(el => {
-        el.innerText = availableBudget;
+        el.innerText = Math.ceil(availableBudget); // Round up to the nearest integer
     });
 }
+
 
 function goBackShop() {
     document.getElementById('itemSection').style.display = 'none';
     document.getElementById('shopSection').style.display = 'block';
 }
 
-const surveyData = {
-    Fridge: [5, 4, 8, 12],
-    Oven: [2, 4, 8, 15],
-    Stove: [4,4,4,4],
-    TV: [20, 12, 2, 1],
-    Speaker: [1, 1, 5, 16],
-    ACandHeater: [4,4,4,4],
-    Lamp: [4,4,4,4],
-    Chair: [4,4,4,4],
-    Bed: [14,10,3,1],
-};
 function renderChart(category) {
-    // Clear any existing charts in the container
-    const container = document.getElementById('chartsContainer');
-    container.innerHTML = ''; // clear previous charts
+    const chartsContainer = document.getElementById('chartsContainer');
+    if (!chartsContainer) return;
 
+    // Clear any previous chart
+    chartsContainer.innerHTML = '';
+
+    // Create a new canvas element for the chart
     const canvas = document.createElement('canvas');
     canvas.id = `chart-${category}`;
-    container.appendChild(canvas);
+    chartsContainer.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
+    const data = surveyData[category]; // Assuming your data is keyed by category name
+
+    if (!data) {
+        console.error(`No data available for category: ${category}`);
+        return;
+    }
+
+    // Render the chart
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: surveyData[category].map((_, index) => `Option ${index + 1}`),
+            labels: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], // Example labels
             datasets: [{
-                label: `Number of Purchases for ${category}`,
-                data: surveyData[category],
-                backgroundColor: 'rgba(209, 152, 75, 0.9)',
+                label: `Purchases for ${category}`,
+                data: data,
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(153, 102, 255, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(153, 102, 255, 1)'
+                ],
+                borderWidth: 1
             }]
         },
         options: {
-            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
             scales: {
-                x: {
-                    min: 0,
-                    max: 18
+                y: {
+                    beginAtZero: true
                 }
             }
         }
-    });  // Closing the Chart constructor
-}  // Closing the renderChart function
-
-
-function onCategoryClick(category) {
-    renderChart(category);
+    });
 }
+
+
+
+function onCategoryClick(categoryId) {
+    const category = categoryMapping[categoryId];
+    if (!category) {
+        console.error(`No mapping found for categoryId: ${categoryId}`);
+        return;
+    }
+    renderChart(category); // Draw the chart for the selected category
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".nav-link");
+
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+            const categoryId = this.getAttribute("aria-controls"); // Get the category ID from the 'aria-controls' attribute
+            onCategoryClick(categoryId);
+        });
+    });
+});
+
+
+
+
 
 function finishTask() {
     const allCategories = Object.keys(purchasedCategories);
@@ -911,13 +1057,13 @@ function loadDescription(shopName, description) {
     document.getElementById('shopName').innerText = shopName;
     document.getElementById('shopDescription').innerText = description;
 }
-document.addEventListener("DOMContentLoaded", function() {
-    const categories = Object.keys(surveyData);
+document.addEventListener("DOMContentLoaded", function () {
+    const tabs = document.querySelectorAll(".nav-link");
 
-    categories.forEach(category => {
-        const categoryButton = document.getElementById(`category1-tab`);
-        categoryButton.addEventListener('click', function() {
-            onCategoryClick("Fridge");
+    tabs.forEach((tab) => {
+        tab.addEventListener("click", function () {
+            const category = this.getAttribute("aria-controls"); // Get the category ID from the 'aria-controls' attribute
+            onCategoryClick(category);
         });
     });
 });
@@ -1094,7 +1240,6 @@ backButton.style.left = '10px';
 backButton.style.zIndex = '10'; // Ensure it stays on top of the canvas
 backButton.onclick = goBack;
 roomContainer.appendChild(backButton);
-
 
 
 </script>
