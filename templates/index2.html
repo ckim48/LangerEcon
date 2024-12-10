@@ -133,9 +133,9 @@
         <h1 class="text-center mt-8">Step-by-Step Study Process</h1>
 
         <!-- Steps List -->
-        <ul class="step-list">
+        <ul class=" step-list">
             {% for step in steps %}
-            <li class="step-item
+            <li class="step-item step-card
                 {% if step.step_number < current_step %}completed{% elif step.step_number == current_step %}active{% endif %}">
                 <div class="step-number
                     {% if step.step_number < current_step %}completed{% endif %}">
@@ -172,39 +172,36 @@
     <!-- Bootstrap JS -->
     <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    const buttons = document.querySelectorAll('.btn-primary:not(.disabled)');
-    buttons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            const step = button.getAttribute('data-step');
-            const link = button.getAttribute('href');
+ <script>
+      document.addEventListener('DOMContentLoaded', () => {
+    const steps = document.querySelectorAll('.step-card.active .btn-primary');
+          console.log(steps);
 
-            if (link && link !== '#') {
-                // Open the survey link
-                window.open(link, '_blank');
-            }
-
-            // Send a POST request to mark the step as complete
+    steps.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            console.log("ABC");
+            const nextStep = parseInt(btn.closest('.step-card').querySelector('.step-number').innerText) + 1;
             fetch('{{ url_for("study_process") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ next_step: parseInt(step) + 1 })
+                body: JSON.stringify({ next_step: nextStep })
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === "success") {
-                    // Reload the page to update the progress
+                if (data.status === 'redirect') {
+                    window.location.href = data.url;  // Redirect to the task page
+                } else if (data.status === 'success') {
                     location.reload();
                 }
-            })
-            .catch(err => console.error("Error updating step:", err));
+            });
         });
     });
 });
-</script>
+
+    </script>
 
 
 

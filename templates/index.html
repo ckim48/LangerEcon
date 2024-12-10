@@ -95,9 +95,9 @@
             <div class="container">
                 <div class="hero-container">
                     <h1 data-aos="fade-up" data-aos-duration="1000"><span style="color:#3498db;"> <strong> Mood and Money:</strong></span> The Interplay Between Mental States and Economic Choices</h1>
-                    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">To participate in our study, please create an account and complete the assigned tasks to finalize your involvement.</p>
+                    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">To participate in our study, please create an account and complete the assigned tasks.</p>
                                         {% if isLogin %}
-                    <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('register')}}" class="btn btn-learnmore">Start Task</a>
+                    <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('study_process')}}" class="btn btn-learnmore">Start Task</a>
                         {% else %}
                     <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('register')}}" class="btn btn-learnmore">Register</a>
                         {% endif %}
@@ -132,14 +132,14 @@
         </section>
         <section>
             <div class="container">
-                <h2 class="section-title mt-5"data-aos="fade-up"  data-aos-duration="1000" >Instruction for Project Langer Economic Tasks</h2>
+                <h2 class="section-title mt-5"data-aos="fade-up"  data-aos-duration="1000" >Instructions for the Economics Task</h2>
                 <div class="row mt-5 mb-5">
                     <div class="col-md-4">
                         <div class="card p-4" data-aos="fade-up"  data-aos-duration="1000" >
                             <img class="card-img-top" src="../static/img/cash.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 1</h2>
-                                <p>You will have $5000 as a budget to buy items for your home. There 4 categories for each of 4 stores. Your task is to buy every 16 items with the limited budgets. </p>
+                                <p>You have a $10000 budget to buy items for your new home. There are 4 categories in each of the 4 shops, making a total of 16 items to purchase within your budget.</p>
                             </div>
                         </div>
                     </div>
@@ -148,7 +148,7 @@
                             <img class="card-img-top" src="../static/img/furniture.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 2</h2>
-                                <p>For each category, you can look the data which shows what the other users bought. You can use this data to make your purchasing decision.</p>
+                                <p> For each category, you can view product description and data showing what other users have bought. Use this information to help make your decisions.</p>
                             </div>
                         </div>
                     </div>
@@ -157,7 +157,7 @@
                             <img class="card-img-top" src="../static/img/analyzing.png">
                             <div class="card-body">
                                 <h2 class="text-center mt-4">Step 3</h2>
-                                <p>After you bought every item, click "Finish Task". Then we will analyze your shopping patterns for you. </p>
+                                <p>Once you’ve purchased all items, click ‘Finish Task.’ We’ll then analyze your shopping patterns! </p>
                             </div>
                         </div>
                     </div>

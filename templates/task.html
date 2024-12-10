@@ -24,8 +24,9 @@
         .card-header h1 {
             font-size: 2rem;
             font-weight: 700;
-            color: #333;
             text-align: center;
+                    font-size: 2.5rem;
+        color: #ff6b6b;
         }
 
         #startSection h2 {
@@ -257,7 +258,9 @@
     font-weight: bold;
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.4);
 }
-
+#shoppingStyleSurveySection{
+    display:none;
+}
         .shop-item-card {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
@@ -345,6 +348,15 @@
     display: flex;
     gap: 10px;
 }
+.price-tag {
+    font-size: 14px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    border-radius: 5px;
+    position: absolute;
+    z-index: 10; /* Ensure the price tag is above the item */
+}
 
 .item {
     cursor: grab;
@@ -354,6 +366,240 @@
 }
 
     </style>
+    <style>
+    /* Survey Container */
+    .survey-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 30px;
+/*        background-color: #f9f9f9;*/
+        border-radius: 8px;
+/*        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+    }
+
+    /* Survey Header */
+    .survey-header {
+/*        text-align: center;*/
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-family: 'Arial', sans-serif;
+        color: #333;
+    }
+
+    /* Survey Form */
+    .survey-form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Survey Question */
+    .survey-question {
+        padding: 15px;
+        font-weight:700;
+        background-color: #fff;
+        border-radius: 6px;
+/*        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+    }
+
+    .survey-question p {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .survey-options label {
+        display: block;
+        font-size: 16px;
+        font-weight:400;
+        color: #555;
+        margin-bottom: 8px;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+
+    .survey-options label:hover {
+        color: #007BFF;
+    }
+
+    /* Radio Buttons */
+    .survey-options input[type="radio"] {
+        margin-right: 10px;
+    }
+
+    /* Submit Button */
+    .submit-btn {
+        align-self: center;
+        padding: 12px 25px;
+        background-color: #007BFF;
+        color: #fff;
+        font-size: 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .submit-btn:focus {
+        outline: none;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .survey-container {
+            padding: 20px;
+        }
+
+        .survey-header {
+            font-size: 20px;
+        }
+
+        .survey-question p {
+            font-size: 16px;
+        }
+
+        .survey-options label {
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+        }
+    }
+        #instruction-final{
+            display:none;
+        }
+
+
+    .instruction-container {
+        border-radius: 15px;
+        padding: 40px;
+        max-width: 900px;
+        margin: auto;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Header Styles */
+    .instruction-header {
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: #ff6b6b;
+        text-align: center;
+        margin-bottom: 15px;
+        background: linear-gradient(90deg, #ff6b6b, #f06595);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .instruction-subtitle {
+        font-size: 1.5rem;
+        color: #555;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    /* Instruction Content Styles */
+    .instruction-content {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #444;
+        margin-bottom: 40px;
+        text-align: left;
+        padding: 0 20px;
+    }
+
+   .instruction-list {
+    list-style: none;
+    padding: 0;
+    font-size: 1.2rem;
+    color: #555;
+    margin-left: 20px; /* Space for the bullet */
+}
+#instruction-final li{
+        display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+#instruction-final li:before {
+    content: '';
+    position: absolute;
+    left: -20px; /* Adjust position of bullet */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ff6b6b; /* Bullet color */
+    animation: pulse 1.5s ease-out infinite; /* Optional pulsing animation */
+}
+
+/* Hover effect */
+#instruction-final li:hover {
+    color: #ff6b6b; /* Change text color on hover */
+    font-weight: bold;
+}
+
+
+.instruction-list li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.instruction-list li:before {
+    content: '';
+    position: absolute;
+    left: -20px; /* Adjust position of bullet */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ff6b6b; /* Bullet color */
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.6); /* Glowing effect */
+    animation: pulse 1.5s ease-out infinite; /* Optional pulsing animation */
+}
+
+/* Hover effect */
+.instruction-list li:hover {
+    color: #ff6b6b; /* Change text color on hover */
+    font-weight: bold;
+}
+
+
+    /* Button Styles */
+    .instruction-button {
+        background-color: #ff6b6b;
+        color: white;
+        padding: 16px 40px;
+        font-size: 1.2rem;
+        border: none;
+        border-radius: 50px;
+        text-align: center;
+        display: block;
+        margin: 40px auto 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .instruction-button:hover {
+        background-color: #f06595;
+    }
+
+    .instruction-button:focus {
+        outline: none;
+    }
+
+</style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
 </head>
 <body>
@@ -376,21 +622,189 @@
   </div>
 </div>
 
-        <div class="card task-card mt-5">
+        <div class="card task-card mt-1">
             <div class="card-header">
-                <h1 class="text-center">Langer Economics</h1>
+                <h1 class="text-center">Virtual Shopping Task</h1>
             </div>
             <div class="card-body">
-                <div id="startSection" class="text-center px-5 py-5">
-                    <h2>Welcome to the Economics Mini-Task!</h2>
-                    <ul class="text-start mx-auto" style="max-width: 600px;">
-                        <li class="mt-4">You have a budget of $5000.</li>
-                        <li>Buy one item from each category in every shop (16 items total).</li>
-                        <li>Review what others bought through the survey results.</li>
-                    </ul>
-                    <button class="btn btn-task mt-4" onclick="showShopSection()">Start!</button>
-                </div>
+<div id="startSection" class="text-center px-5 py-5">
+    <h2 class="mb-4">Welcome to the Virtual Mall!</h2>
+    <div id="instructions" style="font-size:18px;">
+        <!-- Instruction Page 1 -->
+        <div class="instruction-page" id="instruction1">
+            <p>Congratulations! You’re about to move into a new home! Thank you for visiting our Virtual Mall to shop for appliances and furniture for your new space.</p>
+            <button class="btn btn-task mt-4" onclick="showNextInstruction(2)">Next</button>
+        </div>
+        <!-- Instruction Page 2 -->
+        <div class="instruction-page" id="instruction2" style="display: none;">
+            <p>Although we know you’re on a limited budget, we hope you can maximize your satisfaction by making thoughtful purchase decisions. Our customers have diverse tastes and preferences when it comes to home products, so we’ve prepared a variety of options for each product type just for you!</p>
+            <button class="btn btn-task mt-4" onclick="showNextInstruction(3)">Next</button>
+        </div>
+        <!-- Instruction Page 3 -->
+        <div class="instruction-page" id="instruction3" style="display: none;">
+            <p>Additionally, we’ve included information on which products have been chosen by other customers so far. Be sure to review the product descriptions and check out which options are the most popular before making your choices.</p>
+            <button class="btn btn-task mt-4" onclick="showNextInstruction(4)">Next</button>
+        </div>
+        <!-- Instruction Page 4 -->
+        <div class="instruction-page" id="instruction4" style="display: none;">
+            <p>Before you begin shopping, we’d like to understand your usual shopping style to better assist you. Please take a brief survey, and you’ll be all set to start your shopping journey!</p>
+            <button class="btn btn-task mt-4" onclick="startSurvey()">Take Survey</button>
+        </div>
+    </div>
+</div>
+<div id="shoppingStyleSurveySection" class="text-center px-5 py-5">
+    <h2 class="mb-4">Shopping Style Survey</h2>
+        <form id="shoppingStyleForm" class="survey-form">
+        <!-- Question 1 -->
+        <div class="survey-question">
+        <p>1. What is your attitude toward owning designer or branded items (e.g., clothing, bags, watches)?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="designerItems" value="A"> I don’t consider brands when making purchases</label><br>
+            <label><input type="radio" name="designerItems" value="B"> I actively avoid them</label><br>
+            <label><input type="radio" name="designerItems" value="C"> I occasionally buy them if affordable</label><br>
+            <label><input type="radio" name="designerItems" value="D"> I enjoy owning high-end brands and buy them if possible</label>
+        </div>
+        </div>
 
+        <div class="survey-question">
+        <p>2. How do you usually handle unexpected expenses (e.g., repairs, medical bills)?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="handleUnexpectedExpenses" value="A"> Save and plan for them in advance</label><br>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="B"> Use a credit card or loan if needed</label><br>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="C"> Spend as needed without worrying too much</label><br>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="D"> Spend as wanted</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>3. If you received an unexpected bonus or windfall, how would you spend it?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="windfallSpending" value="A"> Save or invest it</label><br>
+            <label><input type="radio" name="windfallSpending" value="B"> Use it for practical needs (e.g., debt repayment, household items)</label><br>
+            <label><input type="radio" name="windfallSpending" value="C"> Spend it on something luxurious or enjoyable</label><br>
+            <label><input type="radio" name="windfallSpending" value="D"> Other</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>4. What is your perception of luxury?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="luxuryPerception" value="A"> Luxury is unnecessary and wasteful</label><br>
+            <label><input type="radio" name="luxuryPerception" value="B"> Luxury is something to enjoy occasionally</label><br>
+            <label><input type="radio" name="luxuryPerception" value="C"> Luxury is a marker of success</label><br>
+            <label><input type="radio" name="luxuryPerception" value="D"> Luxury indicates good quality products and can be bought occasionally if needed</label>
+        </div>
+        </div>
+        <div class="survey-question">
+        <p>5. How important is it for you to find products that are cost-effective or budget-friendly?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="costEffectiveness" value="A"> Extremely important</label><br>
+            <label><input type="radio" name="costEffectiveness" value="B"> Very important</label><br>
+            <label><input type="radio" name="costEffectiveness" value="C"> Moderately important</label><br>
+            <label><input type="radio" name="costEffectiveness" value="D"> Slightly important</label><br>
+            <label><input type="radio" name="costEffectiveness" value="E"> Not important at all</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>6. How likely are you to prioritize luxury or premium features in a product, even if it means paying more?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="luxuryPrioritization" value="A"> Very likely</label><br>
+            <label><input type="radio" name="luxuryPrioritization" value="B"> Likely</label><br>
+            <label><input type="radio" name="luxuryPrioritization" value="C"> Neutral</label><br>
+            <label><input type="radio" name="luxuryPrioritization" value="D"> Unlikely</label><br>
+            <label><input type="radio" name="luxuryPrioritization" value="E"> Very unlikely</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>7. When shopping, which of the following best describes your approach?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="shoppingApproach" value="A"> I always seek the lowest price, even if the brand is unfamiliar.</label><br>
+            <label><input type="radio" name="shoppingApproach" value="B"> I prefer affordable products but consider brand reputation.</label><br>
+            <label><input type="radio" name="shoppingApproach" value="C"> I focus on finding reputable brands, even if they cost slightly more.</label><br>
+            <label><input type="radio" name="shoppingApproach" value="D"> I prioritize premium or luxury brands, regardless of the price.</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>8. How willing are you to spend more for a product that is associated with a high-end or luxury brand?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="willingnessForLuxury" value="A"> Very willing</label><br>
+            <label><input type="radio" name="willingnessForLuxury" value="B"> Willing</label><br>
+            <label><input type="radio" name="willingnessForLuxury" value="C"> Neutral</label><br>
+            <label><input type="radio" name="willingnessForLuxury" value="D"> Unwilling</label><br>
+            <label><input type="radio" name="willingnessForLuxury" value="E"> Very unwilling</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>9. Which statement best reflects your shopping behavior?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="shoppingBehavior" value="A"> I buy products based on affordability and practicality.</label><br>
+            <label><input type="radio" name="shoppingBehavior" value="B"> I consider both price and the brand’s reputation.</label><br>
+            <label><input type="radio" name="shoppingBehavior" value="C"> I am willing to pay more for products that represent luxury or exclusivity.</label><br>
+            <label><input type="radio" name="shoppingBehavior" value="D"> My purchasing decisions vary depending on the product type.</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>10. How important are reviews or other people’s opinions when you make a purchase?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="reviewsImportance" value="A"> Very important – I always read reviews before making a purchase</label><br>
+            <label><input type="radio" name="reviewsImportance" value="B"> Somewhat important – I read reviews for most products</label><br>
+            <label><input type="radio" name="reviewsImportance" value="C"> Neutral – I occasionally check reviews but don’t rely heavily on them</label><br>
+            <label><input type="radio" name="reviewsImportance" value="D"> Not very important – I rarely read reviews</label><br>
+            <label><input type="radio" name="reviewsImportance" value="E"> Not important at all – I never consider other people’s opinions</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>11. What do you usually do before making a major purchase (e.g., furniture, electronics)?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="majorPurchasePrep" value="A"> Spend hours researching and comparing prices</label><br>
+            <label><input type="radio" name="majorPurchasePrep" value="B"> Check for quality and warranty without focusing on price</label><br>
+            <label><input type="radio" name="majorPurchasePrep" value="C"> Buy what feels right at the moment</label><br>
+            <label><input type="radio" name="majorPurchasePrep" value="D"> Wait for recommendations or promotions</label>
+        </div>
+        </div>
+
+        <div class="survey-question">
+        <p>12. When making a purchase, how often do you pause to think about why you are buying the product?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="pauseForReflection" value="A"> Always – I reflect on my choices carefully</label><br>
+            <label><input type="radio" name="pauseForReflection" value="B"> Often – I consider it for most purchases</label><br>
+            <label><input type="radio" name="pauseForReflection" value="C"> Sometimes – I think about it for major purchases</label><br>
+            <label><input type="radio" name="pauseForReflection" value="D"> Rarely – I rely on impulse or habit</label>
+        </div>
+        </div>
+        <div class="survey-question">
+        <p>13. How often do advertisements or marketing influence your purchases?</p>
+        <div class="survey-options">
+            <label><input type="radio" name="adsInfluence" value="A"> Rarely – I prefer to make independent decisions</label><br>
+            <label><input type="radio" name="adsInfluence" value="B"> Sometimes – I consider advertised products</label><br>
+            <label><input type="radio" name="adsInfluence" value="C"> Frequently – I am often drawn to advertised items</label><br>
+            <label><input type="radio" name="adsInfluence" value="D"> Almost always – Ads strongly influence my choices</label>
+        </div>
+        </div>
+        <!-- Submit Button -->
+        <button type="button" class="btn btn-task mt-4d-block mx-auto" onclick="submitSurvey()">Submit Survey</button>
+    </form>
+</div>
+    <div class="instruction-container" id="instruction-final">
+        <h1 class="instruction-header mb-5">Shopping Instructions</h1>
+<!--        <h2 class="instruction-subtitle">Survey completed!</h2>-->
+        <div class="instruction-content">
+<ul>            <li> You have a limited budget of $1,5000.</li>
+            <li>Visit 4 different shops, each offering 4 unique product types.</li>
+            <li>You need to purchase all 16 item types for your new home.</li>
+            <li>Each item has 4 options; choose the one that best fits your needs and preferences.</li>
+            <li>Review the product descriptions carefully and see which options are the most popular before making your choices.</li>
+            <li>Happy shopping!</li>
+</ul>
+        </div>
+        <button class="instruction-button" onclick="showShopSection()">Start</button>
+    </div>
 <div id="shopSection" style="display:none;">
 
 
@@ -414,7 +828,7 @@
 
     <div class="row">
         <div class="col-md-3">
-            <div class="card shop-card">
+            <div class="card shop-card"  data-shop-id="shop1">
                 <img class="shop-img" src="../static/img/kitcenkingdom.png" alt="Kitchen Kingdom">
                 <div class="card-body">
                     <button class="btn btn-enter" onclick="showItems('shop1', 'Kitchen Kingdom')">Enter</button>
@@ -426,7 +840,7 @@
         </div>
 
         <div class="col-md-3">
-            <div class="card shop-card">
+            <div class="card shop-card" data-shop-id="shop2">
                 <img class="shop-img" src="../static/img/techhaven.png" alt="Kitchen Kingdom">
                 <div class="card-body">
                     <button class="btn btn-enter" onclick="showItems('shop2', 'Tech Haven')">Enter</button>
@@ -437,7 +851,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card shop-card">
+            <div class="card shop-card" data-shop-id="shop3">
                 <img class="shop-img" src="../static/img/officeoasis.png" alt="Kitchen Kingdom">
                 <div class="card-body">
                     <button class="btn btn-enter" onclick="showItems('shop3', 'Office Oasis')">Enter</button>
@@ -450,7 +864,7 @@
 
 
                 <div class="col-md-3">
-            <div class="card shop-card">
+            <div class="card shop-card" data-shop-id="shop4">
                 <img class="shop-img" src="../static/img/cozyliving.png" alt="Kitchen Kingdom">
                 <div class="card-body">
                     <button class="btn btn-enter" onclick="showItems('shop4', 'Cozy Living')">Enter</button>
@@ -462,9 +876,9 @@
         </div>
     </div>
 
-    <div id="finishTaskBtnContainer">
-        <button class="btn btn-success" onclick="finishTask()">Finish Task</button>
-    </div>
+<div id="finishTaskBtnContainer" style="display: none;">
+    <button class="btn btn-success" onclick="finishTask()">Finish Task</button>
+</div>
 </div>
 
 
@@ -560,97 +974,43 @@
             </div>
         </div>
     </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script>
-const categoryMapping = {
-    "category1": "Fridge",
-    "category2": "Oven",
-    "category3": "Stove",
-    "category4": "Microwave",
-    "category5": "TV",
-    "category6": "Speaker",
-    "category7": "Vacuum Cleaner",
-    "category8": "AC/Heater",
-    "category9": "Lamp",
-    "category10": "Desk",
-    "category11": "Office Chair",
-    "category12": "Dining Table",
-    "category13": "Sofa",
-    "category14": "Bed",
-    "category15": "Chair",
-    "category16": "Dresser"
-};
+<script>
 
-const surveyData = {
-    "Fridge": [12, 8, 15, 10],
-    "Oven": [9, 14, 11, 7],
-    "Stove": [10, 6, 12, 14],
-    "Microwave": [8, 16, 10, 6],
-    "TV": [18, 12, 8, 5],
-    "Speaker": [10, 7, 15, 12],
-    "Vacuum Cleaner": [6, 11, 14, 10],
-    "AC/Heater": [14, 10, 12, 8],
-    "Lamp": [10, 8, 14, 12],
-    "Desk": [9, 15, 10, 6],
-    "Office Chair": [8, 12, 14, 10],
-    "Dining Table": [7, 10, 16, 9],
-    "Sofa": [15, 11, 8, 10],
-    "Bed": [14, 12, 9, 10],
-    "Chair": [12, 8, 14, 10],
-    "Dresser": [10, 6, 15, 9]
-};
-        let previousSection = '';
+    function submitShoppingStyleSurvey() {
+    const form = document.getElementById("shoppingStyleForm");
+    const formData = new FormData(form);
 
-
-function showRoom(currentSectionId) {
-    previousSection = currentSectionId;
-    document.getElementById(currentSectionId).style.display = 'none';
-    document.getElementById('room-container').style.display = 'block';
-}
-
-
-function goBack() {
-    if (previousSection) {
-        document.getElementById(previousSection).style.display = 'block';
+    const responses = {};
+    for (const [key, value] of formData.entries()) {
+        responses[key] = value;
     }
-    document.getElementById('room-container').style.display = 'none';
+    console.log("Shopping Style Survey Responses:", responses);
+
+    alert("Thank you for completing the survey!");
+            updateAvailableBudget();
+    document.getElementById('shoppingStyleSurveySection').style.display = 'none';
+        document.getElementById('shopSection').style.display = 'block';
 }
+</script>
 
 
-let availableBudget = 5000;
-let purchasedItems = [];
-let purchasedCategories = {}; // Tracks purchased items by category
+      <script>
+          function updateFinishTaskButton() {
+    const finishTaskBtn = document.getElementById('finishTaskBtnContainer');
+    const totalCategories = 16; // Total number of categories
+    const purchasedCategoriesCount = Object.keys(purchasedCategories).length;
 
-// Shop data with categories and generated items
-const shopData = {
-    'shop1': {
-        categories: ["Fridge", "Oven", "Stove", "Microwave"],
-        items: generateItems(["Fridge", "Oven", "Stove", "Microwave"])
-    },
-    'shop2': {
-        categories: ["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"],
-        items: generateItems(["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"])
-    },
-    'shop3': {
-        categories: ["Lamp", "Desk", "Office Chair", "Dining Table"],
-        items: generateItems(["Lamp", "Desk", "Office Chair", "Dining Table"])
-    },
-    'shop4': {
-        categories: ["Sofa", "Bed", "Chair", "Dresser"],
-        items: generateItems(["Sofa", "Bed", "Chair", "Dresser"])
+    if (purchasedCategoriesCount === totalCategories) {
+        finishTaskBtn.style.display = 'block'; // Show button if all categories are purchased
+    } else {
+        finishTaskBtn.style.display = 'none'; // Hide button otherwise
     }
-};
-
-
-function generateItems(categories) {
-    const items = {};
-    categories.forEach(category => {
-        items[category] = getCategoryItems(category);
-    });
-    return items;
 }
 
-function getCategoryItems(category) {
+
+          function getCategoryItems(category) {
     const itemsList = {
         "Fridge": [
             { name: "Luxury 2-door Fridge", price: 1299, image: "../static/img/shop1/fridge1.png", description: "A spacious fridge with advanced cooling technology and ice maker." },
@@ -754,11 +1114,176 @@ function getCategoryItems(category) {
     return itemsList[category] || [];
 }
 
+const categoryMapping = {
+    "category1": "Fridge",
+    "category2": "Oven",
+    "category3": "Stove",
+    "category4": "Microwave",
+    "category5": "TV",
+    "category6": "Speaker",
+    "category7": "Vacuum Cleaner",
+    "category8": "AC/Heater",
+    "category9": "Lamp",
+    "category10": "Desk",
+    "category11": "Office Chair",
+    "category12": "Dining Table",
+    "category13": "Sofa",
+    "category14": "Bed",
+    "category15": "Chair",
+    "category16": "Dresser"
+};
+
+const surveyData = {
+    "Fridge": [12, 8, 15, 10],
+    "Oven": [9, 14, 11, 7],
+    "Stove": [10, 6, 12, 14],
+    "Microwave": [8, 16, 10, 6],
+    "TV": [18, 12, 8, 5],
+    "Speaker": [10, 7, 15, 12],
+    "Vacuum Cleaner": [6, 11, 14, 10],
+    "AC/Heater": [14, 10, 12, 8],
+    "Lamp": [10, 8, 14, 12],
+    "Desk": [9, 15, 10, 6],
+    "Office Chair": [8, 12, 14, 10],
+    "Dining Table": [7, 10, 16, 9],
+    "Sofa": [15, 11, 8, 10],
+    "Bed": [14, 12, 9, 10],
+    "Chair": [12, 8, 14, 10],
+    "Dresser": [10, 6, 15, 9]
+};
+        function submitSurvey() {
+            var formData = $('#shoppingStyleForm').serializeArray();  // Serialize form data
+
+            // Convert serialized data into an object
+            var responses = {};
+            formData.forEach(function(item) {
+                responses[item.name] = item.value;
+            });
+
+            // AJAX request to send data to the Flask server
+            $.ajax({
+                url: '/submit_survey',  // The Flask route to handle survey submission
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(responses),  // Send data as JSON
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert("Survey submitted successfully!");
+
+    document.getElementById('shoppingStyleSurveySection').style.display = 'none';
+        document.getElementById('instruction-final').style.display = 'block';
+                    } else {
+                        alert("There was an error submitting the survey.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(error);
+                    alert("Failed to submit the survey.");
+                }
+            });
+        }
+    </script>
+    <script>
+
+        function showNextInstruction(pageNumber) {
+
+    document.querySelectorAll('.instruction-page').forEach(page => {
+        page.style.display = 'none';
+    });
+
+
+    document.getElementById(`instruction${pageNumber}`).style.display = 'block';
+}
+
+function startSurvey() {
+
+
+
+    document.getElementById('startSection').style.display = 'none';
+    document.getElementById('shoppingStyleSurveySection').style.display = 'block';
+
+}
+
+        let previousSection = '';
+
+
+function showRoom(currentSectionId) {
+    previousSection = currentSectionId;
+    document.getElementById(currentSectionId).style.display = 'none';
+    document.getElementById('room-container').style.display = 'block';
+}
+
+
+function goBack() {
+    if (previousSection) {
+        document.getElementById(previousSection).style.display = 'block';
+    }
+    document.getElementById('room-container').style.display = 'none';
+}
+
+
+let availableBudget = 15000;
+let purchasedItems = [];
+let purchasedCategories = {}; // Tracks purchased items by category
+
+// Shop data with categories and generated items
+const shopData = {
+    'shop1': {
+        categories: ["Fridge", "Oven", "Stove", "Microwave"],
+        items: generateItems(["Fridge", "Oven", "Stove", "Microwave"])
+    },
+    'shop2': {
+        categories: ["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"],
+        items: generateItems(["TV", "Speaker", "Vacuum Cleaner", "AC/Heater"])
+    },
+    'shop3': {
+        categories: ["Lamp", "Desk", "Office Chair", "Dining Table"],
+        items: generateItems(["Lamp", "Desk", "Office Chair", "Dining Table"])
+    },
+    'shop4': {
+        categories: ["Sofa", "Bed", "Chair", "Dresser"],
+        items: generateItems(["Sofa", "Bed", "Chair", "Dresser"])
+    }
+};
+
+
+function generateItems(categories) {
+    const items = {};
+    categories.forEach(category => {
+        items[category] = getCategoryItems(category);
+    });
+    return items;
+}
+
+
+
 function showShopSection() {
     updateAvailableBudget();
     document.getElementById('startSection').style.display = 'none';
+    document.getElementById('instruction-final').style.display = 'none';
     document.getElementById('shopSection').style.display = 'block';
 }
+        function updateShopStatus(shopId) {
+    const shop = shopData[shopId];
+    const categories = shop.categories;
+    const allPurchased = categories.every(category => purchasedCategories[category]);
+
+    const shopCard = document.querySelector(`[data-shop-id="${shopId}"]`);
+    if (allPurchased) {
+        let purchasedMessage = shopCard.querySelector('.purchased-message');
+        if (!purchasedMessage) {
+            purchasedMessage = document.createElement('div');
+            purchasedMessage.classList.add('purchased-message');
+            purchasedMessage.innerText = 'All items purchased!';
+            purchasedMessage.style.color = '#28a745';
+            purchasedMessage.style.fontWeight = 500;
+            purchasedMessage.style.marginTop = '1px';
+//            purchasedMessage.style.marginTop = '10px';
+            shopCard.appendChild(purchasedMessage);
+        }
+    }
+}
+
 function showItems(shopId, shopName) {
     document.getElementById('shopSection').style.display = 'none';
     document.getElementById('itemSection').style.display = 'block';
@@ -870,9 +1395,6 @@ function showItems(shopId, shopName) {
         });
     });
 }
-
-
-
 function buyItem(item, category, button) {
     if (purchasedCategories[category]) {
         alert(`You already bought an item from the ${category} category.`);
@@ -889,13 +1411,13 @@ function buyItem(item, category, button) {
         button.innerText = 'Purchased';
         alert(`You bought ${item.name} for $${item.price}.`);
 
-        // Place the purchased item in the virtual room
-        placeItemInRoom(item);
+        // Update shop status
+        const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
+        if (shopId) updateShopStatus(shopId);
     } else {
         alert('Insufficient budget!');
     }
 }
-
 
 function undoPurchase(category) {
     if (!purchasedCategories[category]) {
@@ -908,20 +1430,15 @@ function undoPurchase(category) {
     purchasedItems = purchasedItems.filter(i => i.category !== category);
     delete purchasedCategories[category];
 
-    // Remove the item from the room
-    const itemIndex = itemsInRoom.findIndex(roomItem => roomItem.name === item.name);
-    if (itemIndex !== -1) {
-        itemsInRoom.splice(itemIndex, 1); // Remove item from the array
-    }
-
-    // Redraw the room to reflect the change
-    drawRoom();
-
     updateAvailableBudget();
-    updatePurchasedItemsList();
-    enableBuyButton(category);
     alert(`Undo purchase of ${item.name}. Budget refunded.`);
+
+    // Update shop status
+    const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
+    if (shopId) updateShopStatus(shopId);
 }
+
+
 
 function enableBuyButton(category) {
     const buttons = document.querySelectorAll(`[data-category="${category}"]`);
@@ -1098,40 +1615,61 @@ function preloadImage(src) {
     }
     return imageCache[src];
 }
-
-// Function to draw the room with background and items
 function drawRoom() {
+    // Clear the canvas before redrawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // Draw the background image
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-        console.log("A");
     } else {
         backgroundImage.onload = () => {
             ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-            console.log("B");
         };
     }
 
-    // Draw the items in the room
+    // Draw the items in the room (canvas-based)
     itemsInRoom.forEach(item => {
         const img = preloadImage(item.image);
         if (img.complete) {
-            // Calculate scaled dimensions based on original aspect ratio
             const aspectRatio = img.width / img.height;
             let width = MAX_ITEM_WIDTH;
             let height = MAX_ITEM_HEIGHT;
 
             if (aspectRatio > 1) {
-                // Landscape image
                 height = MAX_ITEM_HEIGHT / aspectRatio;
             } else {
-                // Portrait image
                 width = MAX_ITEM_WIDTH * aspectRatio;
             }
 
             ctx.drawImage(img, item.x, item.y, width, height);
+
+            // Draw the price tag with background and padding on the canvas
+            const padding = 5; // Padding around the price text
+            const text = `$${item.price}`;
+
+            // Calculate text width and height
+            ctx.font = '12px Arial';
+            const textWidth = ctx.measureText(text).width;
+            const textHeight = 12; // Using the font size as the height
+
+            // Draw the background rectangle (price tag background)
+            const rectX = item.x + 5; // Adjusted position for background
+            const rectY = item.y + MAX_ITEM_HEIGHT + 10; // Adjusted position below item
+            const rectWidth = textWidth + padding * 2; // Width with padding
+            const rectHeight = textHeight + padding * 2; // Height with padding
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; // Background color with transparency
+            ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
+
+            // Draw the price text over the background
+            ctx.fillStyle = 'white'; // Text color
+
+            // Adjust text Y position to vertically center it within the rectangle
+            const textYPosition = rectY + rectHeight / 2 + textHeight / 4;
+
+            ctx.fillText(text, rectX + padding, textYPosition);
         } else {
-            // Wait for image to load before drawing
             img.onload = () => {
                 drawRoom(); // Redraw room after the image is loaded
             };
@@ -1139,61 +1677,48 @@ function drawRoom() {
     });
 }
 
-// Function to place an item in the room
+
+// Place the item in the room (create DOM elements for the item and price tag)
 function placeItemInRoom(item) {
     if (itemsInRoom.length >= (canvas.width / MAX_ITEM_WIDTH) * (canvas.height / MAX_ITEM_HEIGHT)) {
         alert("Room is full!"); // Notify if the room is full
         return;
     }
 
-    // Add the new item to the room at the default position
-    itemsInRoom.push({ ...item, x: defaultPositionX, y: defaultPositionY });
+    // Add the item to the itemsInRoom array
+    itemsInRoom.push({
+        ...item,
+        x: defaultPositionX,
+        y: defaultPositionY
+    });
 
-    console.log("Item added to room:", item); // Debug log
-    console.log("Items in room:", itemsInRoom); // Debug log
+    // Create the item element in the DOM
+    const itemElement = document.createElement('div');
+    itemElement.classList.add('item');
+    itemElement.style.position = 'absolute';
+    itemElement.style.left = `${defaultPositionX}px`;
+    itemElement.style.top = `${defaultPositionY}px`;
+    itemElement.innerHTML = item.name;
 
-    // Adjust default positions for the next item
-    defaultPositionX += MAX_ITEM_WIDTH + 10; // Increment X position with padding
-    if (defaultPositionX + MAX_ITEM_WIDTH > canvas.width) {
-        defaultPositionX = 50; // Reset X position if it exceeds canvas width
-        defaultPositionY += MAX_ITEM_HEIGHT + 10; // Move to the next row with padding
+    // Append the item element to the room container
+    const roomContainer = document.getElementById('room-container');
+    roomContainer.appendChild(itemElement);
+
+    // Store the DOM element for later access during dragging
+    item.element = itemElement;
+
+    // Update the position for the next item
+    defaultPositionX += 120; // Adjust space between items
+    if (defaultPositionX > canvas.width - 150) { // Check if item goes beyond canvas width
+        defaultPositionX = 50; // Reset X position for next row
+        defaultPositionY += 120; // Move to the next row
     }
 
-    if (defaultPositionY + MAX_ITEM_HEIGHT > canvas.height) {
-        alert("No more space available in the room!"); // Notify if no more space is available
-    }
-
-    drawRoom(); // Re-render the room with the new item
+    drawRoom(); // Redraw the room (canvas-based items only)
 }
 
-// Function to buy an item
-function buyItem(item, category, button) {
-    if (purchasedCategories[category]) {
-        alert(`You already bought an item from the ${category} category.`);
-        return;
-    }
 
-    if (availableBudget >= item.price) {
-        availableBudget -= item.price;
-        purchasedItems.push({ ...item, category });
-        purchasedCategories[category] = item;
-
-        updateAvailableBudget();
-        button.disabled = true;
-        button.innerText = 'Purchased';
-        alert(`You bought ${item.name} for $${item.price}.`);
-
-        // Debug log to confirm item details before placing it in the room
-        console.log("Placing item in room:", item);
-
-        // Place the purchased item in the virtual room
-        placeItemInRoom(item);
-    } else {
-        alert('Insufficient budget!');
-    }
-}
-
-// Dragging functionality
+// Mouse events to handle dragging and moving the item and its price tag
 canvas.addEventListener('mousedown', (event) => {
     const mouseX = event.offsetX;
     const mouseY = event.offsetY;
@@ -1221,13 +1746,26 @@ canvas.addEventListener('mousemove', (event) => {
         selectedItem.x = Math.min(Math.max(mouseX - offsetX, 0), canvas.width - MAX_ITEM_WIDTH);
         selectedItem.y = Math.min(Math.max(mouseY - offsetY, 0), canvas.height - MAX_ITEM_HEIGHT);
 
-        drawRoom(); // Re-render the room
+        // Move the item element in the DOM
+        if (selectedItem.element) {
+            selectedItem.element.style.left = `${selectedItem.x}px`;
+            selectedItem.element.style.top = `${selectedItem.y}px`;
+        }
+
+        // Move the price tag element in the DOM to follow the item
+        if (selectedItem.priceTag) {
+            selectedItem.priceTag.style.left = `${selectedItem.x + 5}px`; // Slight offset from the item
+            selectedItem.priceTag.style.top = `${selectedItem.y + 80}px`; // Slight offset from the item
+        }
+
+        drawRoom(); // Redraw the room (canvas-based items only)
     }
 });
 
 canvas.addEventListener('mouseup', () => {
     selectedItem = null; // Stop dragging
 });
+
 
 // Add a Back button to the top-left corner of the room
 const roomContainer = document.getElementById('room-container');

@@ -1,0 +1,157 @@
+{% extends 'header.html' %}
+{% block mindful %}
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Mindful Activity</title>
+    <style>
+        body {
+            background-color: #fff8e1; /* Light cream background */
+            font-family: 'Roboto', sans-serif;
+            color: #4d4d4d;
+        }
+
+        .card {
+            border-radius: 15px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-orange {
+            color: #ff8c42;
+        }
+
+        .btn-orange {
+            background-color: #ff8c42;
+            border-color: #e67630;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        .btn-orange:hover {
+            background-color: #e67630;
+            border-color: #c46220;
+        }
+
+        img {
+            border-radius: 8px;
+        }
+
+        .form-control {
+            border: 1px solid #ff8c42;
+            border-radius: 5px;
+        }
+
+        .form-check-input:checked {
+            background-color: #ff8c42;
+            border-color: #ff8c42;
+        }
+    </style>
+</head>
+<body>
+    <div class="modal fade" id="startModal" tabindex="-1" role="dialog" aria-labelledby="startModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center">
+                    <h5 class="text-orange mb-4">Welcome to the Mindful Activity!</h5>
+                    <p>These are warm-up tasks to prepare you for the main tasks. They are not scored, so enjoy and do your best!</p>
+                    <button type="button" class="btn btn-orange" data-bs-dismiss="modal">Start</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-5">
+        <div class="card shadow-lg">
+            <div class="card-body">
+                <h1 class="card-title text-center text-orange mb-4">Mindful Group Activity</h1>
+                <form method="POST">
+                    <!-- Question 1 -->
+                    <div class="mb-4">
+                        <p class="fw-bold">1. Can you spot the difference? </p>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <img src="../static/img/Fruits_ver1.jpg" alt="Fruits Version 1" class="img-fluid rounded shadow-sm">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../static/img/Fruits_ver2.jpg" alt="Fruits Version 2" class="img-fluid rounded shadow-sm">
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q1" value="Yes" id="q1Yes">
+                            <label for="q1Yes" class="form-check-label">Yes, I see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q1" value="No" id="q1No">
+                            <label for="q1No" class="form-check-label">No, I don’t see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q1" value="NotSure" id="q1NotSure">
+                            <label for="q1NotSure" class="form-check-label">No, I don’t think there is a difference.</label>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="mb-4">
+                        <p class="fw-bold">2. Can you spot the difference? </p>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <img src="../static/img/Cellular_automaton_ver1.jpg" alt="Cellular Automaton Version 1" class="img-fluid rounded shadow-sm">
+                            </div>
+                            <div class="col-md-6">
+                                <img src="../static/img/Cellular_automaton_ver2.jpg" alt="Cellular Automaton Version 2" class="img-fluid rounded shadow-sm">
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q2" value="Yes" id="q2Yes">
+                            <label for="q2Yes" class="form-check-label">Yes, I see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q2" value="No" id="q2No">
+                            <label for="q2No" class="form-check-label">No, I don’t see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q2" value="NotSure" id="q2NotSure">
+                            <label for="q2NotSure" class="form-check-label">No, I don’t think there is a difference.</label>
+                        </div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="mb-4">
+                        <p class="fw-bold">3. Can you spot the difference? </p>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <img src="../static/img/Vase_and_faces_3D.jpg" alt="Vase and Faces 3D" class="img-fluid rounded shadow-sm">
+                            </div>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q3" value="Yes" id="q3Yes">
+                            <label for="q3Yes" class="form-check-label">Yes, I see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q3" value="No" id="q3No">
+                            <label for="q3No" class="form-check-label">No, I don’t see the difference.</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="radio" class="form-check-input" name="q3" value="NotSure" id="q3NotSure">
+                            <label for="q3NotSure" class="form-check-label">No, I don’t think there is a difference.</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="text-center">
+                        <a href="{{url_for('study_process')}}"><button type="submit" class="btn btn-orange px-5 mt-3">Submit</button></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+            $(document).ready(function () {
+            $('#startModal').modal('show');
+        });
+</script>
+{% endblock %}
