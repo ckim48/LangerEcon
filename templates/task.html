@@ -154,7 +154,7 @@
         }
 
         .shop-item-title {
-            font-size: 18px;
+            font-size: 17px !important;
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -289,9 +289,9 @@
 
 .shop-item-card img {
     border-radius: 10px;
-    object-fit: cover;
-    width: 100%;
-    height: 140px;
+    object-fit: contain; /* Preserve aspect ratio without cropping */
+    width: 100%; /* Maintain full width of the card */
+    height: auto; /* Adjust height automatically based on aspect ratio */
     margin-bottom: 10px;
 }
 
@@ -1019,22 +1019,22 @@
             { name: "Mini One-door Fridge", price: 399, image: "../static/img/shop1/fridge4.png", description: "Portable fridge for drinks and snacks." }
         ],
         "Oven": [
-            { name: "Luxury Oven", price: 1099, image: "../static/img/shop1/oven1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Oven", price: 899, image: "../static/img/shop1/oven2.jpg", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Oven", price: 599, image: "../static/img/shop1/oven3.jpg", description: "Reliable oven for everyday baking." },
-            { name: "Compact Oven", price: 299, image: "../static/img/shop1/oven4.jpg", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Oven", price: 1099, image: "../static/img/shop1/oven1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Oven", price: 899, image: "../static/img/shop1/oven2.png", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Oven", price: 599, image: "../static/img/shop1/oven3.png", description: "Reliable oven for everyday baking." },
+            { name: "Compact Oven", price: 299, image: "../static/img/shop1/oven4.png", description: "Small oven for quick meals and snacks." }
         ],
         "Stove": [
-            { name: "Luxury Stove", price: 1099, image: "../static/img/shop1/stove1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Stove", price: 899, image: "../static/img/shop1/stove2.jpg", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Stove", price: 599, image: "../static/img/shop1/stove3.jpg", description: "Reliable oven for everyday baking." },
-            { name: "Compact Stove", price: 299, image: "../static/img/shop1/stove4.jpg", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Stove", price: 1099, image: "../static/img/shop1/stove1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Stove", price: 899, image: "../static/img/shop1/stove2.png", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Stove", price: 599, image: "../static/img/shop1/stove3.png", description: "Reliable oven for everyday baking." },
+            { name: "Compact Stove", price: 299, image: "../static/img/shop1/stove4.png", description: "Small oven for quick meals and snacks." }
         ],
         "Microwave": [
-            { name: "Luxury Microwave", price: 1099, image: "../static/img/shop1/microwave1.jpg", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Microwave", price: 899, image: "../static/img/shop1/microwave2.jpg", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Microwave", price: 599, image: "../static/img/shop1/microwave3.jpg", description: "Reliable oven for everyday baking." },
-            { name: "Compact Microwave", price: 299, image: "../static/img/shop1/microwave4.jpg", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Microwave", price: 1099, image: "../static/img/shop1/microwave1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
+            { name: "Modern Microwave", price: 899, image: "../static/img/shop1/microwave2.png", description: "Stylish oven with precise temperature control." },
+            { name: "Basic Microwave", price: 599, image: "../static/img/shop1/microwave3.png", description: "Reliable oven for everyday baking." },
+            { name: "Compact Microwave", price: 299, image: "../static/img/shop1/microwave4.png", description: "Small oven for quick meals and snacks." }
         ],
         "TV": [
           { name: "Samsung 98' 8K TV", price: 3299, image: "../static/img/shop2/TV1.png", description: "Massive 8K TV with breathtaking visuals." },
@@ -1063,52 +1063,52 @@
           {name: "GoveeLife 42 Tower Fan 150 rotation", price: 149.99, image: "../static/img/shop2/AC4.png", description: "Portable, very small"}
 ],
         "Sofa": [
-            { name: "Luxury Leather Sofa", price: 2499, image: "https://via.placeholder.com/150?text=Sofa", description: "Comfortable leather sofa with deep seating." },
-            { name: "Modern Fabric Sofa", price: 1299, image: "https://via.placeholder.com/150?text=Sofa", description: "Fabric sofa with contemporary design." },
-            { name: "Corner Sofa", price: 999, image: "https://via.placeholder.com/150?text=Sofa", description: "Corner sofa that maximizes seating space." },
-            { name: "Basic Sofa", price: 599, image: "https://via.placeholder.com/150?text=Sofa", description: "Everyday sofa with great comfort." }
+            { name: "Luxury Leather Sofa", price: 2499, image: "../static/img/shop4/sofa1.png", description: "Comfortable leather sofa with deep seating." },
+            { name: "Modern Fabric Sofa", price: 1299, image: "../static/img/shop4/sofa2.png", description: "Fabric sofa with contemporary design." },
+            { name: "Corner Sofa", price: 999, image: "../static/img/shop4/sofa3.png", description: "Corner sofa that maximizes seating space." },
+            { name: "Basic Sofa", price: 599, image: "../static/img/shop4/sofa4.png", description: "Everyday sofa with great comfort." }
         ],
         "Bed": [
-            { name: "King Size Bed", price: 1799, image: "https://via.placeholder.com/150?text=Bed", description: "Spacious bed with plush mattress." },
-            { name: "Queen Size Bed", price: 1499, image: "https://via.placeholder.com/150?text=Bed", description: "Comfortable bed for restful sleep." },
-            { name: "Double Bed", price: 999, image: "https://via.placeholder.com/150?text=Bed", description: "Compact bed for guest rooms." },
-            { name: "Single Bed", price: 599, image: "https://via.placeholder.com/150?text=Bed", description: "Simple bed ideal for small spaces." }
+            { name: "King Size Bed", price: 1799, image: "../static/img/shop4/bed1.png", description: "Spacious bed with plush mattress." },
+            { name: "Queen Size Bed", price: 1499, image: "../static/img/shop4/bed2.png", description: "Comfortable bed for restful sleep." },
+            { name: "Double Bed", price: 999, image: "../static/img/shop4/bed3.png", description: "Compact bed for guest rooms." },
+            { name: "Single Bed", price: 599, image: "../static/img/shop4/bed4.png", description: "Simple bed ideal for small spaces." }
         ],
         "Chair": [
-            { name: "Lounge Chair", price: 399, image: "https://via.placeholder.com/150?text=Chair", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Chair", price: 299, image: "https://via.placeholder.com/150?text=Chair", description: "Traditional rocking chair." },
-            { name: "Dining Chair", price: 149, image: "https://via.placeholder.com/150?text=Chair", description: "Stylish dining chair." },
-            { name: "Plastic Chair", price: 49, image: "https://via.placeholder.com/150?text=Chair", description: "Affordable plastic chair." }
+            { name: "Lounge Chair", price: 399, image: "../static/img/shop4/chair1.png", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Chair", price: 299, image: "../static/img/shop4/chair2.png", description: "Traditional rocking chair." },
+            { name: "Dining Chair", price: 149, image: "../static/img/shop4/chair3.png", description: "Stylish dining chair." },
+            { name: "Plastic Chair", price: 49, image: "../static/img/shop4/chair4.png", description: "Affordable plastic chair." }
         ],
                 "Office Chair": [
-            { name: "Lounge Office Chair", price: 399, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Office Chair", price: 299, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Traditional rocking chair." },
-            { name: "Dining Office Chair", price: 149, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Stylish dining chair." },
-            { name: "Plastic Office Chair", price: 49, image: "https://via.placeholder.com/150?text=Office_Chair", description: "Affordable plastic chair." }
+            { name: "Lounge Office Chair", price: 399, image: "../static/img/shop3/oc1.png", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Office Chair", price: 299, image: "../static/img/shop3/oc2.png", description: "Traditional rocking chair." },
+            { name: "Dining Office Chair", price: 149, image: "../static/img/shop3/oc3.png", description: "Stylish dining chair." },
+            { name: "Plastic Office Chair", price: 49, image: "../static/img/shop3/oc4.png", description: "Affordable plastic chair." }
         ],
                         "Dining Table": [
-            { name: "Lounge Dining Table", price: 399, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Dining Table", price: 299, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Traditional rocking chair." },
-            { name: "Dining Dining Table", price: 149, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Stylish dining chair." },
-            { name: "Plastic Dining Table", price: 49, image: "https://via.placeholder.com/150?text=Dining_Table", description: "Affordable plastic chair." }
+            { name: "Lounge Dining Table", price: 399, image: "../static/img/shop3/dt1.png", description: "Comfortable chair for relaxing." },
+            { name: "Rocking Dining Table", price: 299, image: "../static/img/shop3/dt2.png", description: "Traditional rocking chair." },
+            { name: "Dining Dining Table", price: 149, image: "../static/img/shop3/dt3.png", description: "Stylish dining chair." },
+            { name: "Plastic Dining Table", price: 49, image: "../static/img/shop3/dt4.png", description: "Affordable plastic chair." }
         ],
         "Dresser": [
-            { name: "Modern Dresser", price: 999, image: "https://via.placeholder.com/150?text=Dresser", description: "Sleek modern dresser." },
-            { name: "Wooden Dresser", price: 799, image: "https://via.placeholder.com/150?text=Dresser", description: "Elegant wooden dresser." },
-            { name: "Compact Dresser", price: 599, image: "https://via.placeholder.com/150?text=Dresser", description: "Small dresser for tight spaces." },
-            { name: "Basic Dresser", price: 399, image: "https://via.placeholder.com/150?text=Dresser", description: "Simple and functional dresser." }
+            { name: "Modern Dresser", price: 999, image: "../static/img/shop1/dresser1.png", description: "Sleek modern dresser." },
+            { name: "Wooden Dresser", price: 799, image: "../static/img/shop2/dresser2.png", description: "Elegant wooden dresser." },
+            { name: "Compact Dresser", price: 599, image: "../static/img/shop3/dresser3.png", description: "Small dresser for tight spaces." },
+            { name: "Basic Dresser", price: 399, image: "../static/img/shop4/dresser4.png", description: "Simple and functional dresser." }
         ],
         "Lamp": [
-            { name: "Philips Hue Table Lamp", price: 199, image: "https://via.placeholder.com/150?text=Lamp", description: "Smart lamp with color-changing options." },
-            { name: "Ikea Floor Lamp", price: 99, image: "https://via.placeholder.com/150?text=Lamp", description: "Simple and elegant floor lamp." },
-            { name: "Bedside Lamp", price: 49, image: "https://via.placeholder.com/150?text=Lamp", description: "Compact lamp perfect for nightstands." },
-            { name: "Desk Lamp", price: 39, image: "https://via.placeholder.com/150?text=Lamp", description: "Adjustable desk lamp for study or work." }
+            { name: "Philips Hue Table Lamp", price: 199, image: "../static/img/shop3/lamp1.png", description: "Smart lamp with color-changing options." },
+            { name: "Ikea Floor Lamp", price: 99, image: "../static/img/shop3/lamp2.png", description: "Simple and elegant floor lamp." },
+            { name: "Bedside Lamp", price: 49, image: "../static/img/shop3/lamp3.png", description: "Compact lamp perfect for nightstands." },
+            { name: "Desk Lamp", price: 39, image: "../static/img/shop3/lamp4.png", description: "Adjustable desk lamp for study or work." }
         ],
         "Desk": [
-            { name: "Standing Desk", price: 799, image: "https://via.placeholder.com/150?text=Desk", description: "Height-adjustable standing desk." },
-            { name: "Office Desk", price: 499, image: "https://via.placeholder.com/150?text=Desk", description: "Spacious desk for office use." },
-            { name: "Compact Study Desk", price: 299, image: "https://via.placeholder.com/150?text=Desk", description: "Small desk ideal for students." },
-            { name: "Basic Wooden Desk", price: 199, image: "https://via.placeholder.com/150?text=Desk", description: "Simple desk with a wooden finish." }
+            { name: "Standing Desk", price: 799, image: "../static/img/shop3/desk1.png", description: "Height-adjustable standing desk." },
+            { name: "Office Desk", price: 499, image: "../static/img/shop3/desk2.png", description: "Spacious desk for office use." },
+            { name: "Compact Study Desk", price: 299, image: "../static/img/shop3/desk3.png", description: "Small desk ideal for students." },
+            { name: "Basic Wooden Desk", price: 199, image: "../static/img/shop3/desk4.png", description: "Simple desk with a wooden finish." }
         ]
     };
     return itemsList[category] || [];
