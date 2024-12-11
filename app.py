@@ -63,6 +63,7 @@ def study_process():
             if next_step == 4:
                 group = random.choice(["mindful", "non_mindful"])
                 db.child("users").child(user_id).child("warmup_group").set(group)  # Save chosen group to Firebase
+                db.child("users").child(user_id).child("study_progress").set({"current_step": int(next_step)})
                 return jsonify({"status": "redirect", "url": url_for(group)})
 
             if next_step == 5:  # Step 4: Main Tasks
