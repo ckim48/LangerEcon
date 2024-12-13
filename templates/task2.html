@@ -1,0 +1,300 @@
+{% extends "header.html" %}
+{% block task %}
+<head>
+    <style>
+        /* Reusing styles from Virtual Mall for consistency */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .task-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .card-header {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .card-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #ff6b6b;
+        }
+
+        .instruction-container {
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .instruction-header {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ff6b6b;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .instruction-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            margin-bottom: 40px;
+            text-align: left;
+            padding: 0 20px;
+        }
+
+        .instruction-button {
+            background-color: #ff6b6b;
+            color: white;
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            text-align: center;
+            display: block;
+            margin: 40px auto 0;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .instruction-button:hover {
+            background: linear-gradient(45deg, #f06595, #ff6b6b);
+        }
+
+        .trial-container {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .deck-card {
+            display: inline-block;
+            width: 150px;
+            height: 200px;
+            margin: 10px;
+            padding: 20px;
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            border-radius: 15px;
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .deck-card:hover {
+            transform: scale(1.05);
+            box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.9);
+        }
+
+        .deck-card h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff6b6b;
+        }
+
+        .deck-card p {
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .feedback {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .loading-screen {
+            display: none;
+            text-align: center;
+            font-size: 1.8rem;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            border-radius: 10px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+        }
+
+        .budget-display {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card task-card">
+            <div class="card-header">
+                <h1>Psychological Task: Iowa Gambling Task</h1>
+            </div>
+            <div class="card-body">
+                <!-- Instructions Section -->
+                <div class="instruction-container" id="instructions">
+                    <h1 class="instruction-header">Welcome to the Iowa Gambling Task!</h1>
+                    <div class="instruction-content">
+                        <p>The task is designed to measure decision-making skills in uncertain situations. You will be presented with four decks of cards. Your goal is to maximize your total winnings by choosing cards wisely.</p>
+                        <p>Some decks are riskier than others. Take your time and think before making a choice!</p>
+                    </div>
+                    <button class="instruction-button" onclick="startTask()">Start Task</button>
+                </div>
+
+                <!-- Trial Section -->
+                <div id="trialSection" class="trial-container">
+                    <div class="budget-display" id="budgetDisplay">Budget: $0</div>
+                    <h2>Choose a Deck</h2>
+                    <div id="deckChoices">
+                        <div class="deck-card" onclick="chooseDeck('A')">
+                            <h3>Deck A</h3>
+                            <p>Risk: High</p>
+                        </div>
+                        <div class="deck-card" onclick="chooseDeck('B')">
+                            <h3>Deck B</h3>
+                            <p>Risk: Moderate</p>
+                        </div>
+                        <div class="deck-card" onclick="chooseDeck('C')">
+                            <h3>Deck C</h3>
+                            <p>Risk: Low</p>
+                        </div>
+                        <div class="deck-card" onclick="chooseDeck('D')">
+                            <h3>Deck D</h3>
+                            <p>Risk: Minimal</p>
+                        </div>
+                    </div>
+                    <div id="feedback" class="feedback"></div>
+                </div>
+
+                <!-- Loading Screen -->
+                <div id="loadingScreen" class="loading-screen">
+                    Preparing next round...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const trialsPerRound = 100;
+        const totalRounds = 3;
+        let currentRound = 1;
+        let currentTrial = 0;
+        let totalScore = 0;
+
+        const deckRewards = {
+            A: { reward: 250, risk: 0.6 },
+            B: { reward: 150, risk: 0.4 },
+            C: { reward: 100, risk: 0.3 },
+            D: { reward: 250, risk: 0.1 },
+        };
+
+        function startTask() {
+            document.getElementById('instructions').style.display = 'none';
+            document.getElementById('trialSection').style.display = 'block';
+            updateBudgetDisplay();
+            currentTrial = 0;
+            currentRound = 1;
+        }
+
+        function updateBudgetDisplay() {
+            document.getElementById('budgetDisplay').innerText = `Budget: $${totalScore}`;
+        }
+
+        function chooseDeck(deck) {
+            const randomChance = Math.random();
+            const deckData = deckRewards[deck];
+            let reward = deckData.reward;
+
+            if (randomChance < deckData.risk) {
+                reward = -Math.abs(reward); // Apply loss
+            }
+
+            totalScore += reward;
+            updateBudgetDisplay();
+
+            document.getElementById('feedback').innerText = `You chose Deck ${deck}. You ${reward > 0 ? 'won' : 'lost'} $${Math.abs(reward)}.`;
+
+            currentTrial++;
+
+            if (currentTrial < trialsPerRound) {
+                setTimeout(() => {
+                    document.getElementById('feedback').innerText = '';
+                }, 1000);
+            } else if (currentRound < totalRounds) {
+                currentRound++;
+                showLoadingScreen();
+                setTimeout(() => {
+                    document.getElementById('feedback').innerText = '';
+                    currentTrial = 0;
+                    hideLoadingScreen();
+                }, 3000);
+            } else {
+                endTask();
+            }
+        }
+
+        function showLoadingScreen() {
+            document.getElementById('trialSection').style.display = 'none';
+            document.getElementById('loadingScreen').style.display = 'block';
+        }
+
+        function hideLoadingScreen() {
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('trialSection').style.display = 'block';
+        }
+
+function endTask() {
+    const resultData = { totalScore: totalScore };
+
+    fetch("/submit_task2_result", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(resultData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === "success") {
+            alert(`Task completed! Your total score is $${totalScore}. Thank you for participating.`);
+            window.location.href = "https://www.jotform.com/build/243311949113452?iak=c5d330888d0e73bbb5a20b8e3647e954-4968caa490b0d312";
+        } else {
+            alert("Error saving task result. Please try again.");
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Failed to submit task result.");
+    });
+}
+
+    </script>
+</body>
+{% endblock %}

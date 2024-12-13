@@ -83,7 +83,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: 220px;
+    height: 250px;
     padding: 20px;
     position: relative;
 }
@@ -144,32 +144,80 @@
             gap: 20px;
         }
 
-        .shop-item-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 15px;
-            width: 220px;
-            text-align: center;
-        }
+   .shop-item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 220px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
-        .shop-item-title {
-            font-size: 17px !important;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+.shop-item-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
 
-        .btn-buy {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+.shop-item-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 12px;
+}
 
-        .btn-buy:hover {
-            background-color: #218838;
-        }
+.shop-item-card button {
+    margin: 5px 0;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-buy {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buy:hover {
+    background-color: #218838;
+}
+
+.btn-detail {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    margin-right: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-detail:hover {
+    background-color: #0056b3;
+}
+
+.modal-content {
+    border-radius: 15px;
+}
+
+.product-detail-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
 
         #otherChoicesChart {
             width: 100%;
@@ -280,10 +328,11 @@
  padding: 10px 60px;
 }
 .shop-item-title {
-    font-size: 20px;
+    font-size: 16px;
     font-weight: bold;
     color: #333;
     margin-bottom: 8px;
+    margin-top: 12px;
     text-transform: uppercase;
 }
 
@@ -367,78 +416,48 @@
 
     </style>
     <style>
-    /* Survey Container */
-    .survey-container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 30px;
-/*        background-color: #f9f9f9;*/
-        border-radius: 8px;
-/*        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
-    }
+.survey-question {
+    text-align: left;
+    padding: 10px; /* Reduce padding */
+    font-weight: 700;
+    background-color: #fff;
+    border-radius: 6px;
+    margin-bottom: 10px; /* Reduce margin between questions */
+}
 
-    /* Survey Header */
-    .survey-header {
-/*        text-align: center;*/
-        font-size: 24px;
-        margin-bottom: 20px;
-        font-family: 'Arial', sans-serif;
-        color: #333;
-    }
+.survey-question p {
+    font-size: 16px; /* Slightly smaller font size */
+    color: #333;
+    margin-bottom: 5px; /* Reduce margin below the question */
+    text-align: left;
+}
 
-    /* Survey Form */
-    .survey-form {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-    }
+.survey-options label {
+    display: block;
+    font-size: 15px; /* Smaller font size */
+    font-weight: 400;
+    color: #555;
+    margin-bottom: 5px; /* Reduce space between options */
+    cursor: pointer;
+    transition: color 0.3s;
+}
 
-    /* Survey Question */
-    .survey-question {
-        padding: 15px;
-        font-weight:700;
-        background-color: #fff;
-        border-radius: 6px;
-/*        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
-    }
+.survey-options input[type="radio"] {
+    margin-right: 8px; /* Adjust spacing between radio button and label */
+}
 
-    .survey-question p {
-        font-size: 18px;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .survey-options label {
-        display: block;
-        font-size: 16px;
-        font-weight:400;
-        color: #555;
-        margin-bottom: 8px;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .survey-options label:hover {
-        color: #007BFF;
-    }
-
-    /* Radio Buttons */
-    .survey-options input[type="radio"] {
-        margin-right: 10px;
-    }
-
-    /* Submit Button */
-    .submit-btn {
-        align-self: center;
-        padding: 12px 25px;
-        background-color: #007BFF;
-        color: #fff;
-        font-size: 16px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
+.submit-btn {
+    align-self: center;
+    padding: 10px 20px; /* Slightly smaller padding */
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 14px; /* Smaller font size */
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 15px; /* Adjust space above the button */
+}
 
     .submit-btn:hover {
         background-color: #0056b3;
@@ -622,32 +641,61 @@
   </div>
 </div>
 
+        <!-- Product Detail Modal -->
+<div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productDetailModalLabel">Product Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="product-detail-content text-center">
+          <img id="productDetailImage" src="" alt="" class="img-fluid mb-3" style="max-height: 300px;">
+          <h4 id="productDetailName"></h4>
+          <p id="productDetailPrice"></p>
+          <p id="productDetailDescription"></p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-buy btn-buy-modal">Buy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         <div class="card task-card mt-1">
             <div class="card-header">
                 <h1 class="text-center">Virtual Shopping Task</h1>
             </div>
             <div class="card-body">
-<div id="startSection" class="text-center px-5 py-5">
+<div id="startSection" class=" px-5 py-5">
     <h2 class="mb-4">Welcome to the Virtual Mall!</h2>
     <div id="instructions" style="font-size:18px;">
         <!-- Instruction Page 1 -->
         <div class="instruction-page" id="instruction1">
-            <p>Congratulations! You’re about to move into a new home! Thank you for visiting our Virtual Mall to shop for appliances and furniture for your new space.</p>
+            <p>Congratulations! You’re about to move into a new home!</p>
+            <p>Thank you for visiting our Virtual Mall to shop for appliances and furniture for your new space.</p>
             <button class="btn btn-task mt-4" onclick="showNextInstruction(2)">Next</button>
         </div>
         <!-- Instruction Page 2 -->
         <div class="instruction-page" id="instruction2" style="display: none;">
-            <p>Although we know you’re on a limited budget, we hope you can maximize your satisfaction by making thoughtful purchase decisions. Our customers have diverse tastes and preferences when it comes to home products, so we’ve prepared a variety of options for each product type just for you!</p>
+            <p>Although we know you’re on a limited budget, we hope you can maximize your satisfaction by making thoughtful purchase decisions.</p>
+            <p>Our customers have diverse tastes and preferences when it comes to home products, so we’ve prepared a variety of options for each product type just for you!</p>
             <button class="btn btn-task mt-4" onclick="showNextInstruction(3)">Next</button>
         </div>
         <!-- Instruction Page 3 -->
         <div class="instruction-page" id="instruction3" style="display: none;">
-            <p>Additionally, we’ve included information on which products have been chosen by other customers so far. Be sure to review the product descriptions and check out which options are the most popular before making your choices.</p>
+            <p>Additionally, we’ve included information on which products have been chosen by other customers so far. </p>
+            <p>Be sure to review the product descriptions and check out which options are the most popular before making your choices.</p>
             <button class="btn btn-task mt-4" onclick="showNextInstruction(4)">Next</button>
         </div>
         <!-- Instruction Page 4 -->
         <div class="instruction-page" id="instruction4" style="display: none;">
-            <p>Before you begin shopping, we’d like to understand your usual shopping style to better assist you. Please take a brief survey, and you’ll be all set to start your shopping journey!</p>
+            <p>Before you begin shopping, we’d like to understand your usual shopping style to better assist you. </p>
+            <p>Please take a brief survey, and you’ll be all set to start your shopping journey!</p>
             <button class="btn btn-task mt-4" onclick="startSurvey()">Take Survey</button>
         </div>
     </div>
@@ -659,9 +707,9 @@
         <div class="survey-question">
         <p>1. What is your attitude toward owning designer or branded items (e.g., clothing, bags, watches)?</p>
         <div class="survey-options">
-            <label><input type="radio" name="designerItems" value="A"> I don’t consider brands when making purchases</label><br>
-            <label><input type="radio" name="designerItems" value="B"> I actively avoid them</label><br>
-            <label><input type="radio" name="designerItems" value="C"> I occasionally buy them if affordable</label><br>
+            <label><input type="radio" name="designerItems" value="A"> I don’t consider brands when making purchases</label>
+            <label><input type="radio" name="designerItems" value="B"> I actively avoid them</label>
+            <label><input type="radio" name="designerItems" value="C"> I occasionally buy them if affordable</label>
             <label><input type="radio" name="designerItems" value="D"> I enjoy owning high-end brands and buy them if possible</label>
         </div>
         </div>
@@ -669,9 +717,9 @@
         <div class="survey-question">
         <p>2. How do you usually handle unexpected expenses (e.g., repairs, medical bills)?</p>
         <div class="survey-options">
-            <label><input type="radio" name="handleUnexpectedExpenses" value="A"> Save and plan for them in advance</label><br>
-            <label><input type="radio" name="handleUnexpectedExpenses" value="B"> Use a credit card or loan if needed</label><br>
-            <label><input type="radio" name="handleUnexpectedExpenses" value="C"> Spend as needed without worrying too much</label><br>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="A"> Save and plan for them in advance</label>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="B"> Use a credit card or loan if needed</label>
+            <label><input type="radio" name="handleUnexpectedExpenses" value="C"> Spend as needed without worrying too much</label>
             <label><input type="radio" name="handleUnexpectedExpenses" value="D"> Spend as wanted</label>
         </div>
         </div>
@@ -679,9 +727,9 @@
         <div class="survey-question">
         <p>3. If you received an unexpected bonus or windfall, how would you spend it?</p>
         <div class="survey-options">
-            <label><input type="radio" name="windfallSpending" value="A"> Save or invest it</label><br>
-            <label><input type="radio" name="windfallSpending" value="B"> Use it for practical needs (e.g., debt repayment, household items)</label><br>
-            <label><input type="radio" name="windfallSpending" value="C"> Spend it on something luxurious or enjoyable</label><br>
+            <label><input type="radio" name="windfallSpending" value="A"> Save or invest it</label>
+            <label><input type="radio" name="windfallSpending" value="B"> Use it for practical needs (e.g., debt repayment, household items)</label>
+            <label><input type="radio" name="windfallSpending" value="C"> Spend it on something luxurious or enjoyable</label>
             <label><input type="radio" name="windfallSpending" value="D"> Other</label>
         </div>
         </div>
@@ -689,19 +737,19 @@
         <div class="survey-question">
         <p>4. What is your perception of luxury?</p>
         <div class="survey-options">
-            <label><input type="radio" name="luxuryPerception" value="A"> Luxury is unnecessary and wasteful</label><br>
-            <label><input type="radio" name="luxuryPerception" value="B"> Luxury is something to enjoy occasionally</label><br>
-            <label><input type="radio" name="luxuryPerception" value="C"> Luxury is a marker of success</label><br>
+            <label><input type="radio" name="luxuryPerception" value="A"> Luxury is unnecessary and wasteful</label>
+            <label><input type="radio" name="luxuryPerception" value="B"> Luxury is something to enjoy occasionally</label>
+            <label><input type="radio" name="luxuryPerception" value="C"> Luxury is a marker of success</label>
             <label><input type="radio" name="luxuryPerception" value="D"> Luxury indicates good quality products and can be bought occasionally if needed</label>
         </div>
         </div>
         <div class="survey-question">
         <p>5. How important is it for you to find products that are cost-effective or budget-friendly?</p>
         <div class="survey-options">
-            <label><input type="radio" name="costEffectiveness" value="A"> Extremely important</label><br>
-            <label><input type="radio" name="costEffectiveness" value="B"> Very important</label><br>
-            <label><input type="radio" name="costEffectiveness" value="C"> Moderately important</label><br>
-            <label><input type="radio" name="costEffectiveness" value="D"> Slightly important</label><br>
+            <label><input type="radio" name="costEffectiveness" value="A"> Extremely important</label>
+            <label><input type="radio" name="costEffectiveness" value="B"> Very important</label>
+            <label><input type="radio" name="costEffectiveness" value="C"> Moderately important</label>
+            <label><input type="radio" name="costEffectiveness" value="D"> Slightly important</label>
             <label><input type="radio" name="costEffectiveness" value="E"> Not important at all</label>
         </div>
         </div>
@@ -709,10 +757,10 @@
         <div class="survey-question">
         <p>6. How likely are you to prioritize luxury or premium features in a product, even if it means paying more?</p>
         <div class="survey-options">
-            <label><input type="radio" name="luxuryPrioritization" value="A"> Very likely</label><br>
-            <label><input type="radio" name="luxuryPrioritization" value="B"> Likely</label><br>
-            <label><input type="radio" name="luxuryPrioritization" value="C"> Neutral</label><br>
-            <label><input type="radio" name="luxuryPrioritization" value="D"> Unlikely</label><br>
+            <label><input type="radio" name="luxuryPrioritization" value="A"> Very likely</label>
+            <label><input type="radio" name="luxuryPrioritization" value="B"> Likely</label>
+            <label><input type="radio" name="luxuryPrioritization" value="C"> Neutral</label>
+            <label><input type="radio" name="luxuryPrioritization" value="D"> Unlikely</label>
             <label><input type="radio" name="luxuryPrioritization" value="E"> Very unlikely</label>
         </div>
         </div>
@@ -720,9 +768,9 @@
         <div class="survey-question">
         <p>7. When shopping, which of the following best describes your approach?</p>
         <div class="survey-options">
-            <label><input type="radio" name="shoppingApproach" value="A"> I always seek the lowest price, even if the brand is unfamiliar.</label><br>
-            <label><input type="radio" name="shoppingApproach" value="B"> I prefer affordable products but consider brand reputation.</label><br>
-            <label><input type="radio" name="shoppingApproach" value="C"> I focus on finding reputable brands, even if they cost slightly more.</label><br>
+            <label><input type="radio" name="shoppingApproach" value="A"> I always seek the lowest price, even if the brand is unfamiliar.</label>
+            <label><input type="radio" name="shoppingApproach" value="B"> I prefer affordable products but consider brand reputation.</label>
+            <label><input type="radio" name="shoppingApproach" value="C"> I focus on finding reputable brands, even if they cost slightly more.</label>
             <label><input type="radio" name="shoppingApproach" value="D"> I prioritize premium or luxury brands, regardless of the price.</label>
         </div>
         </div>
@@ -730,10 +778,10 @@
         <div class="survey-question">
         <p>8. How willing are you to spend more for a product that is associated with a high-end or luxury brand?</p>
         <div class="survey-options">
-            <label><input type="radio" name="willingnessForLuxury" value="A"> Very willing</label><br>
-            <label><input type="radio" name="willingnessForLuxury" value="B"> Willing</label><br>
-            <label><input type="radio" name="willingnessForLuxury" value="C"> Neutral</label><br>
-            <label><input type="radio" name="willingnessForLuxury" value="D"> Unwilling</label><br>
+            <label><input type="radio" name="willingnessForLuxury" value="A"> Very willing</label>
+            <label><input type="radio" name="willingnessForLuxury" value="B"> Willing</label>
+            <label><input type="radio" name="willingnessForLuxury" value="C"> Neutral</label>
+            <label><input type="radio" name="willingnessForLuxury" value="D"> Unwilling</label>
             <label><input type="radio" name="willingnessForLuxury" value="E"> Very unwilling</label>
         </div>
         </div>
@@ -741,9 +789,9 @@
         <div class="survey-question">
         <p>9. Which statement best reflects your shopping behavior?</p>
         <div class="survey-options">
-            <label><input type="radio" name="shoppingBehavior" value="A"> I buy products based on affordability and practicality.</label><br>
-            <label><input type="radio" name="shoppingBehavior" value="B"> I consider both price and the brand’s reputation.</label><br>
-            <label><input type="radio" name="shoppingBehavior" value="C"> I am willing to pay more for products that represent luxury or exclusivity.</label><br>
+            <label><input type="radio" name="shoppingBehavior" value="A"> I buy products based on affordability and practicality.</label>
+            <label><input type="radio" name="shoppingBehavior" value="B"> I consider both price and the brand’s reputation.</label>
+            <label><input type="radio" name="shoppingBehavior" value="C"> I am willing to pay more for products that represent luxury or exclusivity.</label>
             <label><input type="radio" name="shoppingBehavior" value="D"> My purchasing decisions vary depending on the product type.</label>
         </div>
         </div>
@@ -751,10 +799,10 @@
         <div class="survey-question">
         <p>10. How important are reviews or other people’s opinions when you make a purchase?</p>
         <div class="survey-options">
-            <label><input type="radio" name="reviewsImportance" value="A"> Very important – I always read reviews before making a purchase</label><br>
-            <label><input type="radio" name="reviewsImportance" value="B"> Somewhat important – I read reviews for most products</label><br>
-            <label><input type="radio" name="reviewsImportance" value="C"> Neutral – I occasionally check reviews but don’t rely heavily on them</label><br>
-            <label><input type="radio" name="reviewsImportance" value="D"> Not very important – I rarely read reviews</label><br>
+            <label><input type="radio" name="reviewsImportance" value="A"> Very important – I always read reviews before making a purchase</label>
+            <label><input type="radio" name="reviewsImportance" value="B"> Somewhat important – I read reviews for most products</label>
+            <label><input type="radio" name="reviewsImportance" value="C"> Neutral – I occasionally check reviews but don’t rely heavily on them</label>
+            <label><input type="radio" name="reviewsImportance" value="D"> Not very important – I rarely read reviews</label>
             <label><input type="radio" name="reviewsImportance" value="E"> Not important at all – I never consider other people’s opinions</label>
         </div>
         </div>
@@ -762,9 +810,9 @@
         <div class="survey-question">
         <p>11. What do you usually do before making a major purchase (e.g., furniture, electronics)?</p>
         <div class="survey-options">
-            <label><input type="radio" name="majorPurchasePrep" value="A"> Spend hours researching and comparing prices</label><br>
-            <label><input type="radio" name="majorPurchasePrep" value="B"> Check for quality and warranty without focusing on price</label><br>
-            <label><input type="radio" name="majorPurchasePrep" value="C"> Buy what feels right at the moment</label><br>
+            <label><input type="radio" name="majorPurchasePrep" value="A"> Spend hours researching and comparing prices</label>
+            <label><input type="radio" name="majorPurchasePrep" value="B"> Check for quality and warranty without focusing on price</label>
+            <label><input type="radio" name="majorPurchasePrep" value="C"> Buy what feels right at the moment</label>
             <label><input type="radio" name="majorPurchasePrep" value="D"> Wait for recommendations or promotions</label>
         </div>
         </div>
@@ -772,18 +820,18 @@
         <div class="survey-question">
         <p>12. When making a purchase, how often do you pause to think about why you are buying the product?</p>
         <div class="survey-options">
-            <label><input type="radio" name="pauseForReflection" value="A"> Always – I reflect on my choices carefully</label><br>
-            <label><input type="radio" name="pauseForReflection" value="B"> Often – I consider it for most purchases</label><br>
-            <label><input type="radio" name="pauseForReflection" value="C"> Sometimes – I think about it for major purchases</label><br>
+            <label><input type="radio" name="pauseForReflection" value="A"> Always – I reflect on my choices carefully</label>
+            <label><input type="radio" name="pauseForReflection" value="B"> Often – I consider it for most purchases</label>
+            <label><input type="radio" name="pauseForReflection" value="C"> Sometimes – I think about it for major purchases</label>
             <label><input type="radio" name="pauseForReflection" value="D"> Rarely – I rely on impulse or habit</label>
         </div>
         </div>
         <div class="survey-question">
         <p>13. How often do advertisements or marketing influence your purchases?</p>
         <div class="survey-options">
-            <label><input type="radio" name="adsInfluence" value="A"> Rarely – I prefer to make independent decisions</label><br>
-            <label><input type="radio" name="adsInfluence" value="B"> Sometimes – I consider advertised products</label><br>
-            <label><input type="radio" name="adsInfluence" value="C"> Frequently – I am often drawn to advertised items</label><br>
+            <label><input type="radio" name="adsInfluence" value="A"> Rarely – I prefer to make independent decisions</label>
+            <label><input type="radio" name="adsInfluence" value="B"> Sometimes – I consider advertised products</label>
+            <label><input type="radio" name="adsInfluence" value="C"> Frequently – I am often drawn to advertised items</label>
             <label><input type="radio" name="adsInfluence" value="D"> Almost always – Ads strongly influence my choices</label>
         </div>
         </div>
@@ -997,123 +1045,118 @@
 
 
       <script>
-          function updateFinishTaskButton() {
+function updateFinishTaskButton() {
     const finishTaskBtn = document.getElementById('finishTaskBtnContainer');
     const totalCategories = 16; // Total number of categories
     const purchasedCategoriesCount = Object.keys(purchasedCategories).length;
 
-    if (purchasedCategoriesCount === totalCategories) {
-        finishTaskBtn.style.display = 'block'; // Show button if all categories are purchased
-    } else {
-        finishTaskBtn.style.display = 'none'; // Hide button otherwise
-    }
+    // Show the button if all categories have an item purchased
+    finishTaskBtn.style.display = (purchasedCategoriesCount === totalCategories) ? 'block' : 'none';
 }
 
 
-          function getCategoryItems(category) {
+
+function getCategoryItems(category) {
     const itemsList = {
         "Fridge": [
-            { name: "Luxury 2-door Fridge", price: 1299, image: "../static/img/shop1/fridge1.png", description: "A spacious fridge with advanced cooling technology and ice maker." },
-            { name: "Modern 2-door Fridge", price: 1099, image: "../static/img/shop1/fridge2.png", description: "Energy-efficient fridge with smart controls." },
-            { name: "One-door Fridge", price: 799, image: "../static/img/shop1/fridge3.png", description: "Compact fridge perfect for small kitchens." },
-            { name: "Mini One-door Fridge", price: 399, image: "../static/img/shop1/fridge4.png", description: "Portable fridge for drinks and snacks." }
+            { name: "Luxury 2-Door Fridge", price: 1299, image: "../static/img/shop1/fridge1.png", description: "This refrigerator redefines luxury with its sleek design, Wi-Fi connectivity, and smart cooling zones. Enjoy unparalleled convenience and energy efficiency in a stunning stainless steel finish." },
+            { name: "Modern 2-Door Fridge", price: 1099, image: "../static/img/shop1/fridge2.png", description: "Elegant and eco-friendly, this fridge offers precise temperature control, ample storage, and a built-in water dispenser for a premium experience at an accessible price." },
+            { name: "One-Door Fridge", price: 799, image: "../static/img/shop1/fridge3.png", description: "Reliable and practical, this refrigerator features adjustable shelves, a frost-free freezer, and a spacious crisper to keep your groceries fresh." },
+            { name: "Mini One-Door Fridge", price: 399, image: "../static/img/shop1/fridge4.png", description: "Simple and efficient, this compact fridge is perfect for small spaces or tight budgets. Its quiet motor and adjustable storage make it a smart choice." }
         ],
         "Oven": [
-            { name: "Luxury Oven", price: 1099, image: "../static/img/shop1/oven1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Oven", price: 899, image: "../static/img/shop1/oven2.png", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Oven", price: 599, image: "../static/img/shop1/oven3.png", description: "Reliable oven for everyday baking." },
-            { name: "Compact Oven", price: 299, image: "../static/img/shop1/oven4.png", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Oven", price: 1099, image: "../static/img/shop1/oven1.png", description: "Elevate your cooking with this dual-zone, smart touchscreen oven. It offers self-cleaning functionality and precision heat control for the ultimate kitchen upgrade." },
+            { name: "Modern Oven", price: 899, image: "../static/img/shop1/oven2.png", description: "Stylish and versatile, this oven features advanced baking modes and an energy-efficient design that’s perfect for the everyday chef." },
+            { name: "Basic Oven", price: 599, image: "../static/img/shop1/oven3.png", description: "Dependable and easy to use, this oven delivers consistent results with pre-set cooking programs and a spacious interior." },
+            { name: "Compact Oven", price: 299, image: "../static/img/shop1/oven4.png", description: "Compact and affordable, this oven is ideal for simple, everyday cooking with easy-to-operate dials and quick heat-up times." }
         ],
         "Stove": [
-            { name: "Luxury Stove", price: 1099, image: "../static/img/shop1/stove1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Stove", price: 899, image: "../static/img/shop1/stove2.png", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Stove", price: 599, image: "../static/img/shop1/stove3.png", description: "Reliable oven for everyday baking." },
-            { name: "Compact Stove", price: 299, image: "../static/img/shop1/stove4.png", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Stove", price: 1099, image: "../static/img/shop1/stove1.png", description: "A top-tier stove with precision induction heating, touch controls, and a sleek glass surface for seamless cooking and easy cleaning." },
+            { name: "Modern Stove", price: 899, image: "../static/img/shop1/stove2.png", description: "This gas stove combines power and style with high-efficiency burners and a durable stainless-steel finish." },
+            { name: "Basic Stove", price: 599, image: "../static/img/shop1/stove3.png", description: "A reliable stove with evenly heated coils and adjustable temperature settings, perfect for everyday cooking." },
+            { name: "Compact Stove", price: 299, image: "../static/img/shop1/stove4.png", description: "Compact and efficient, this stove offers solid performance at an unbeatable price, ideal for small kitchens or limited budgets." }
         ],
         "Microwave": [
-            { name: "Luxury Microwave", price: 1099, image: "../static/img/shop1/microwave1.png", description: "Oven with multiple cooking modes and self-cleaning feature." },
-            { name: "Modern Microwave", price: 899, image: "../static/img/shop1/microwave2.png", description: "Stylish oven with precise temperature control." },
-            { name: "Basic Microwave", price: 599, image: "../static/img/shop1/microwave3.png", description: "Reliable oven for everyday baking." },
-            { name: "Compact Microwave", price: 299, image: "../static/img/shop1/microwave4.png", description: "Small oven for quick meals and snacks." }
+            { name: "Luxury Microwave", price: 1099, image: "../static/img/shop1/microwave1.png", description: "Experience ultimate convenience with voice control, pre-programmed settings, and even heating technology in a sleek, modern design." },
+            { name: "Modern Microwave", price: 899, image: "../static/img/shop1/microwave2.png", description: "This microwave combines style and functionality with one-touch cooking presets and a spacious interior for family meals." },
+            { name: "Basic Microwave", price: 599, image: "../static/img/shop1/microwave3.png", description: "Simple yet effective, this microwave offers all the essential features with a clean and compact design." },
+            { name: "Compact Microwave", price: 299, image: "../static/img/shop1/microwave4.png", description: "Affordable and straightforward, this microwave is perfect for quick reheating and basic cooking needs." }
         ],
         "TV": [
-          { name: "Samsung 98' 8K TV", price: 3299, image: "../static/img/shop2/tv1.png", description: "Massive 8K TV with breathtaking visuals." },
-          { name: "LG 65' 4K TV", price: 1599, image: "../static/img/shop2/tv2.png", description: "OLED TV with vivid colors and deep blacks." },
-          { name: "Sony 55' 4K TV", price: 999, image: "../static/img/shop2/tv3.png", description: "55-inch TV with immersive sound and picture." },
-          { name: "Vizio 42' HD TV", price: 499, image: "../static/img/shop2/tv4.png", description: "Affordable HD TV with great performance." }
-      ],
-      "Speaker": [
-          { name: "KEF LS50 Wireless Speaker", price: 2999, image: "../static/img/shop2/Speaker1.png", description: "High-end speaker with premium sound quality." },
-          { name: "Bose SoundLink", price: 499, image: "../static/img/shop2/Speaker2.png", description: "Portable Bluetooth speaker with deep bass." },
-          { name: "Sony Home Speaker", price: 199, image: "../static/img/shop2/Speaker3.png", description: "Speaker with 360-degree sound and voice control." },
-          { name: "JBL Flip 6", price: 129, image: "../static/img/shop2/Speaker4.png", description: "Waterproof Bluetooth speaker for outdoor use." }
-      ],
-      "Vacuum Cleaner":[
-          {name: "dreame X40 Ultra Robotic Vacuum", price: 1399.99, image: "../static/img/shop2/Vacuum1.png", description: "Wi-Fi enabled, self-emptying, 6 cleaning modes, avanced HEPA, voice control compatible"},
-          {name: "iRobot Roomba Combo 10 Max", price: 1249.99, image: "../static/img/shop2/Vacuum2.png",description: "120V, 5 cleaning modes, HEPA filters, cordless, 60-minute battery life"},
-          {name: "Dyson V15 Detect Absolute Cordless", price: 599.99, image: "../static/img/shop2/Vacuum3.png",description: "120V, 3 cleaning modes, bagless, HEPA filter"},
-          {name: "Dyson V7 Advanced All Attachments", price: 259.99, image: "../static/img/shop2/Vacuum4.png", description: "115V power, lightweight, compact"}
-      ],
-
-
-      "AC/Heater":[
-          {name: "Hoffman Spectracool AC 115V 6000 BTU indoor", price: 4357.00, image: "../static/img/shop2/AC1.png", description: "Ceiling type"},
-          {name: "LG-12k Cooling + Heating", price: 1608.35, image: "../static/img/shop2/AC2.png", description: "Wall mounted"},
-          {name: "Dyson Purifier Hot+Cool Formaldehyde HP09", price: 849.99, image: "../static/img/shop2/AC3.png", description: "Floor standing"},
-          {name: "GoveeLife 42 Tower Fan 150 rotation", price: 149.99, image: "../static/img/shop2/AC4.png", description: "Portable, very small"}
-],
+            { name: "Samsung 98’ 8K TV", price: 3299, image: "../static/img/shop2/tv1.png", description: "Immerse yourself in cutting-edge visuals with this 8K Smart TV featuring HDR10+, Dolby Atmos, and a frameless design." },
+            { name: "LG 65’ 4K TV", price: 1599, image: "../static/img/shop2/tv2.png", description: "Enjoy crisp 4K visuals, rich colors, and built-in streaming apps in a stylish, wall-mountable design." },
+            { name: "SONY 55’ 4K TV", price: 999, image: "../static/img/shop2/tv3.png", description: "A dependable full-HD TV with vibrant colors, great sound, and essential smart features." },
+            { name: "Vizio 42’ HD TV", price: 499, image: "../static/img/shop2/tv4.png", description: "A compact and affordable TV with sharp resolution, ideal for smaller spaces or second screens." }
+        ],
+        "Speaker": [
+            { name: "KEF LS50 Wireless Speaker", price: 2999, image: "../static/img/shop2/speaker1.png", description: "Experience immersive audio with these high-fidelity speakers, featuring Bluetooth connectivity and premium materials." },
+            { name: "Bose SoundLink", price: 499, image: "../static/img/shop2/speaker2.png", description: "Powerful bass, crisp treble, and a sleek design make this speaker perfect for music enthusiasts." },
+            { name: "Sony Home Speaker", price: 199, image: "../static/img/shop2/speaker3.png", description: "A compact and versatile speaker with clear audio and wireless streaming at an affordable price." },
+            { name: "JBL Flip 6", price: 129, image: "../static/img/shop2/speaker4.png", description: "Portable and cost-effective, this speaker is great for casual listening and easy on the wallet." }
+        ],
+        "Vacuum Cleaner": [
+            { name: "dreame X40 Ultra Robotic Vacuum", price: 1399.99, image: "../static/img/shop2/vacuum1.png", description: "A robotic vacuum with smart mapping, voice control, and powerful suction for effortless cleaning." },
+            { name: "iRobot Roomba Combo 10 Max", price: 1249.99, image: "../static/img/shop2/vacuum2.png", description: "Lightweight and cordless, this vacuum delivers strong suction and long battery life for hassle-free cleaning." },
+            { name: "Dyson V15 Detect Absolute Cordless", price: 599.99, image: "../static/img/shop2/vacuum3.png", description: "A reliable, bagless vacuum with adjustable settings for carpets and hardwood floors." },
+            { name: "Dyson V7 Advanced All Attachments", price: 259.99, image: "../static/img/shop2/vacuum4.png", description: "Compact and affordable, this vacuum is perfect for quick cleanups and small spaces." }
+        ],
+                "Chair": [
+            { name: "Artisan Lounge Chair", price: 399, image: "../static/img/shop4/chair1.png", description: "A handcrafted chair with a modern design, premium materials, and unmatched comfort for any living space." },
+            { name: "RelaxPro Chair", price: 299, image: "../static/img/shop4/chair2.png", description: "A cushioned accent chair with a stylish frame, perfect for reading or relaxing." },
+            { name: "HomeComfort Chair", price: 149, image: "../static/img/shop4/chair3.png", description: "A sturdy and practical chair with a soft fabric finish, designed for everyday use." },
+            { name: "BasicSeat Chair", price: 49, image: "../static/img/shop4/chair4.png", description: "Simple and affordable, this chair is ideal for extra seating or smaller spaces." }
+        ],
+        "AC/Heater": [
+            { name: "Hoffman Spectracool AC 115V 6000 BTU indoor", price: 4357, image: "../static/img/shop2/ac1.png", description: "A smart, all-in-one AC and heater with app control, energy efficiency, and whisper-quiet operation." },
+            { name: "LG-12k Cooling + Heating", price: 1608.35, image: "../static/img/shop2/ac2.png", description: "Combines powerful cooling and heating with a stylish design and remote control for convenience." },
+            { name: "Dyson Purifier Hot+Cool Formaldehyde HP09", price: 849.99, image: "../static/img/shop2/ac3.png", description: "A reliable AC/heater unit with multiple fan speeds and adjustable temperature settings." },
+            { name: "GoveeLife 42 Tower Fan 150 rotation", price: 149.99, image: "../static/img/shop2/ac4.png", description: "Affordable and compact, this unit is perfect for smaller rooms and budget-conscious buyers." }
+        ],
         "Sofa": [
-            { name: "Luxury Leather Sofa", price: 2499, image: "../static/img/shop4/sofa1.png", description: "Comfortable leather sofa with deep seating." },
-            { name: "Modern Fabric Sofa", price: 1299, image: "../static/img/shop4/sofa2.png", description: "Fabric sofa with contemporary design." },
-            { name: "Corner Sofa", price: 999, image: "../static/img/shop4/sofa3.png", description: "Corner sofa that maximizes seating space." },
-            { name: "Basic Sofa", price: 599, image: "../static/img/shop4/sofa4.png", description: "Everyday sofa with great comfort." }
+            { name: "Luxury Leather Sofa", price: 2499, image: "../static/img/shop4/sofa1.png", description: "Indulge in ultimate comfort with this spacious, modular sofa featuring plush cushions and high-end upholstery." },
+            { name: "Modern Fabric Sofa", price: 1299, image: "../static/img/shop4/sofa2.png", description: "A stylish and versatile sofa with durable fabric and a pull-out bed option for added convenience." },
+            { name: "Corner Sofa", price: 999, image: "../static/img/shop4/sofa3.png", description: "A comfortable 3-seater sofa with a modern design and soft cushions for everyday relaxation." },
+            { name: "Basic Sofa", price: 599, image: "../static/img/shop4/sofa4.png", description: "Compact and affordable, this sofa is perfect for small spaces without compromising on comfort." }
         ],
         "Bed": [
-            { name: "King Size Bed", price: 1799, image: "../static/img/shop4/bed1.png", description: "Spacious bed with plush mattress." },
-            { name: "Queen Size Bed", price: 1499, image: "../static/img/shop4/bed2.png", description: "Comfortable bed for restful sleep." },
-            { name: "Double Bed", price: 999, image: "../static/img/shop4/bed3.png", description: "Compact bed for guest rooms." },
-            { name: "Single Bed", price: 599, image: "../static/img/shop4/bed4.png", description: "Simple bed ideal for small spaces." }
+            { name: "DreamRest Elite King", price: 1799, image: "../static/img/shop4/bed1.png", description: "A luxurious king-size bed with a memory foam mattress and a sleek, upholstered headboard for ultimate relaxation." },
+            { name: "CozySleep Queen", price: 1499, image: "../static/img/shop4/bed2.png", description: "A sturdy queen-size bed frame with a supportive mattress for a restful night’s sleep." },
+            { name: "ComfortBase Full", price: 999, image: "../static/img/shop4/bed3.png", description: "A reliable full-size bed with a simple yet durable design, perfect for everyday use." },
+            { name: "EasyRest Twin", price: 599, image: "../static/img/shop4/bed4.png", description: "Affordable and functional, this twin-size bed is ideal for guest rooms or smaller spaces." }
         ],
-        "Chair": [
-            { name: "Lounge Chair", price: 399, image: "../static/img/shop4/chair1.png", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Chair", price: 299, image: "../static/img/shop4/chair2.png", description: "Traditional rocking chair." },
-            { name: "Dining Chair", price: 149, image: "../static/img/shop4/chair3.png", description: "Stylish dining chair." },
-            { name: "Plastic Chair", price: 49, image: "../static/img/shop4/chair4.png", description: "Affordable plastic chair." }
+                "Desk": [
+            { name: "Workspace Pro Executive Desk", price: 799, image: "../static/img/shop3/desk1.png", description: "This premium desk features a spacious solid wood surface, built-in charging ports, and elegant craftsmanship for a luxurious workspace." },
+            { name: "ModDesk 500", price: 499, image: "../static/img/shop3/desk2.png", description: "A sleek, height-adjustable desk with a durable finish, perfect for both work and study." },
+            { name: "SimpleWork 300", price: 299, image: "../static/img/shop3/desk3.png", description: "A sturdy and practical desk with ample surface area and a minimalistic design that fits any space." },
+            { name: "BasicDesk 200", price: 199, image: "../static/img/shop3/desk4.png", description: "Compact and affordable, this desk is perfect for small spaces and straightforward setups." }
         ],
-                "Office Chair": [
-            { name: "Lounge Office Chair", price: 399, image: "../static/img/shop3/oc1.png", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Office Chair", price: 299, image: "../static/img/shop3/oc2.png", description: "Traditional rocking chair." },
-            { name: "Dining Office Chair", price: 149, image: "../static/img/shop3/oc3.png", description: "Stylish dining chair." },
-            { name: "Plastic Office Chair", price: 49, image: "../static/img/shop3/oc4.png", description: "Affordable plastic chair." }
+        "Office Chair": [
+            { name: "Lux Ergo Executive Chair", price: 399, image: "../static/img/shop3/oc1.png", description: "This ergonomic chair offers premium lumbar support, adjustable settings, and breathable materials for all-day comfort." },
+            { name: "Comfywork Office Chair", price: 299, image: "../static/img/shop3/oc2.png", description: "A stylish and supportive chair with padded armrests, adjustable height, and a sleek design." },
+            { name: "TaskMate Office Chair", price: 149, image: "../static/img/shop3/oc3.png", description: "A reliable chair with basic ergonomic features and a comfortable cushioned seat for everyday use." },
+            { name: "SitEase Budget Chair", price: 49, image: "../static/img/shop3/oc4.png", description: "Affordable and compact, this chair is ideal for budget-conscious buyers." }
         ],
-                        "Dining Table": [
-            { name: "Lounge Dining Table", price: 399, image: "../static/img/shop3/dt1.png", description: "Comfortable chair for relaxing." },
-            { name: "Rocking Dining Table", price: 299, image: "../static/img/shop3/dt2.png", description: "Traditional rocking chair." },
-            { name: "Dining Dining Table", price: 149, image: "../static/img/shop3/dt3.png", description: "Stylish dining chair." },
-            { name: "Plastic Dining Table", price: 49, image: "../static/img/shop3/dt4.png", description: "Affordable plastic chair." }
-        ],
-        "Dresser": [
-            { name: "Modern Dresser", price: 999, image: "../static/img/shop4/dresser1.png", description: "Sleek modern dresser." },
-            { name: "Wooden Dresser", price: 799, image: "../static/img/shop4/dresser2.png", description: "Elegant wooden dresser." },
-            { name: "Compact Dresser", price: 599, image: "../static/img/shop4/dresser3.png", description: "Small dresser for tight spaces." },
-            { name: "Basic Dresser", price: 399, image: "../static/img/shop4/dresser4.png", description: "Simple and functional dresser." }
+        "Dining Table": [
+            { name: "Grand Dine Pro", price: 399, image: "../static/img/shop3/dt1.png", description: "A handcrafted solid wood dining table with an elegant finish and seating for up to 8 people, perfect for entertaining." },
+            { name: "Modern Dining Table", price: 299, image: "../static/img/shop3/dt2.png", description: "A sleek glass-top table with a contemporary design, offering style and functionality for everyday meals." },
+            { name: "SimpleDine Table 150", price: 149, image: "../static/img/shop3/dt3.png", description: "A durable, expandable table with a simple, timeless design for small to medium-sized gatherings." },
+            { name: "CompactDine Table", price: 49, image: "../static/img/shop3/dt4.png", description: "Affordable and space-saving, this table is ideal for small kitchens or casual dining." }
         ],
         "Lamp": [
-            { name: "Philips Hue Table Lamp", price: 199, image: "../static/img/shop3/lamp1.png", description: "Smart lamp with color-changing options." },
-            { name: "Ikea Floor Lamp", price: 99, image: "../static/img/shop3/lamp2.png", description: "Simple and elegant floor lamp." },
-            { name: "Bedside Lamp", price: 49, image: "../static/img/shop3/lamp3.png", description: "Compact lamp perfect for nightstands." },
-            { name: "Desk Lamp", price: 39, image: "../static/img/shop3/lamp4.png", description: "Adjustable desk lamp for study or work." }
+            { name: "Philips Hue Table Lamp", price: 199, image: "../static/img/shop3/lamp1.png", description: "A modern, touch-controlled lamp with customizable lighting modes and wireless charging." },
+            { name: "Ikea Floor Lamp", price: 99, image: "../static/img/shop3/lamp2.png", description: "Stylish and functional, this lamp offers dimmable light and a USB charging port." },
+            { name: "Bedside Lamp", price: 49, image: "../static/img/shop3/lamp3.png", description: "A simple, adjustable lamp with warm and cool light settings for everyday use." },
+            { name: "Desk Lamp", price: 39, image: "../static/img/shop3/lamp4.png", description: "Affordable and compact, this lamp is perfect for desks or bedside tables." }
         ],
-        "Desk": [
-            { name: "Standing Desk", price: 799, image: "../static/img/shop3/desk1.png", description: "Height-adjustable standing desk." },
-            { name: "Office Desk", price: 499, image: "../static/img/shop3/desk2.png", description: "Spacious desk for office use." },
-            { name: "Compact Study Desk", price: 299, image: "../static/img/shop3/desk3.png", description: "Small desk ideal for students." },
-            { name: "Basic Wooden Desk", price: 199, image: "../static/img/shop3/desk4.png", description: "Simple desk with a wooden finish." }
+        "Dresser": [
+            { name: "Modern Dresser", price: 999, image: "../static/img/shop4/dresser1.png", description: "A spacious, solid wood dresser with soft-close drawers and a polished finish for a touch of sophistication." },
+            { name: "Wooden Dresser", price: 799, image: "../static/img/shop4/dresser2.png", description: "A sleek and modern dresser with ample storage and smooth-gliding drawers, blending style and utility." },
+            { name: "Compact Dresser", price: 599, image: "../static/img/shop4/dresser3.png", description: "A functional dresser with a timeless design, offering plenty of storage for everyday needs." },
+            { name: "Basic Dresser", price: 399, image: "../static/img/shop4/dresser4.png", description: "Compact and affordable, this dresser is perfect for smaller bedrooms or simple storage needs." }
         ]
     };
     return itemsList[category] || [];
 }
-
 const categoryMapping = {
     "category1": "Fridge",
     "category2": "Oven",
@@ -1132,25 +1175,25 @@ const categoryMapping = {
     "category15": "Chair",
     "category16": "Dresser"
 };
-
 const surveyData = {
-    "Fridge": [12, 8, 15, 10],
-    "Oven": [9, 14, 11, 7],
-    "Stove": [10, 6, 12, 14],
-    "Microwave": [8, 16, 10, 6],
-    "TV": [18, 12, 8, 5],
-    "Speaker": [10, 7, 15, 12],
-    "Vacuum Cleaner": [6, 11, 14, 10],
-    "AC/Heater": [14, 10, 12, 8],
-    "Lamp": [10, 8, 14, 12],
-    "Desk": [9, 15, 10, 6],
-    "Office Chair": [8, 12, 14, 10],
-    "Dining Table": [7, 10, 16, 9],
-    "Sofa": [15, 11, 8, 10],
-    "Bed": [14, 12, 9, 10],
-    "Chair": [12, 8, 14, 10],
-    "Dresser": [10, 6, 15, 9]
+    "Fridge": { pollType: "Poll type 1", data: [20, 30, 30, 20] },
+    "Oven": { pollType: "Poll type 2", data: [60, 20, 10, 10] },
+    "Stove": { pollType: "Poll type 3", data: [10, 10, 20, 60] },
+    "Microwave": { pollType: "Poll type 1", data: [20, 30, 30, 20] },
+    "TV": { pollType: "Poll type 1", data: [20, 30, 30, 20] },
+    "Speaker": { pollType: "Poll type 2", data: [60, 20, 10, 10] },
+    "Vacuum Cleaner": { pollType: "Poll type 3", data: [10, 10, 20, 60] },
+    "AC/Heater": { pollType: "Poll type 2", data: [60, 20, 10, 10] },
+    "Lamp": { pollType: "Poll type 1", data: [20, 30, 30, 20] },
+    "Desk": { pollType: "Poll type 3", data: [10, 10, 20, 60] },
+    "Office Chair": { pollType: "Poll type 2", data: [60, 20, 10, 10] },
+    "Dining Table": { pollType: "Poll type 3", data: [10, 10, 20, 60] },
+    "Sofa": { pollType: "Poll type 1", data: [20, 30, 30, 20] },
+    "Bed": { pollType: "Poll type 2", data: [60, 20, 10, 10] },
+    "Chair": { pollType: "Poll type 3", data: [10, 10, 20, 60] },
+    "Dresser": { pollType: "Poll type 1", data: [20, 30, 30, 20] }
 };
+
         function submitSurvey() {
             var formData = $('#shoppingStyleForm').serializeArray();  // Serialize form data
 
@@ -1283,7 +1326,6 @@ function showShopSection() {
         }
     }
 }
-
 function showItems(shopId, shopName) {
     document.getElementById('shopSection').style.display = 'none';
     document.getElementById('itemSection').style.display = 'block';
@@ -1340,22 +1382,40 @@ function showItems(shopId, shopName) {
             const img = document.createElement('img');
             img.src = item.image;
             img.alt = item.name;
-            img.style.width = "100px";
-            img.style.height = "200px";
+            img.style.width = "100%";
+            img.style.height = "120px";
 
             const itemTitle = document.createElement('h5');
-            itemTitle.classList.add('shop-item-title', 'mt-4');
-            itemTitle.innerText = `${item.name} - $${item.price}`;
+            itemTitle.classList.add('shop-item-title');
+            itemTitle.innerText = item.name;
+
+            const itemPrice = document.createElement('p');
+            itemPrice.classList.add('shop-item-price');
+            itemPrice.innerText = `$${item.price}`;
+
+const detailButton = document.createElement('button');
+detailButton.classList.add('btn', 'btn-detail','me-1');
+detailButton.innerText = 'Details';
+detailButton.onclick = () => showProductDetail(item, category);
+
+
+
 
             const buyButton = document.createElement('button');
-            buyButton.classList.add('btn', 'btn-buy');
+            buyButton.classList.add('btn', 'btn-buy','ms-1');
             buyButton.innerText = 'Buy';
             buyButton.onclick = () => buyItem(item, category, buyButton);
             buyButton.setAttribute('data-category', category);
 
+const buttonContainer = document.createElement('div');
+buttonContainer.classList.add('button-container');
+buttonContainer.appendChild(detailButton);
+buttonContainer.appendChild(buyButton);
+
             card.appendChild(img);
             card.appendChild(itemTitle);
-            card.appendChild(buyButton);
+            card.appendChild(itemPrice);
+            card.appendChild(buttonContainer);
             itemsGrid.appendChild(card);
         });
 
@@ -1395,6 +1455,7 @@ function showItems(shopId, shopName) {
         });
     });
 }
+
 function buyItem(item, category, button) {
     if (purchasedCategories[category]) {
         alert(`You already bought an item from the ${category} category.`);
@@ -1409,11 +1470,18 @@ function buyItem(item, category, button) {
         updateAvailableBudget();
         button.disabled = true;
         button.innerText = 'Purchased';
+
+        // Place the purchased item in the room
+        placeItemInRoom(item);
+
         alert(`You bought ${item.name} for $${item.price}.`);
 
         // Update shop status
         const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
         if (shopId) updateShopStatus(shopId);
+
+        // Update Finish Button
+        updateFinishTaskButton();
     } else {
         alert('Insufficient budget!');
     }
@@ -1436,6 +1504,9 @@ function undoPurchase(category) {
     // Update shop status
     const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
     if (shopId) updateShopStatus(shopId);
+
+    // Update Finish Button
+    updateFinishTaskButton();
 }
 
 
@@ -1488,21 +1559,21 @@ function renderChart(category) {
     chartsContainer.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    const data = surveyData[category]; // Assuming your data is keyed by category name
+    const survey = surveyData[category]; // Get survey data for the category
 
-    if (!data) {
+    if (!survey) {
         console.error(`No data available for category: ${category}`);
         return;
     }
 
     // Render the chart
     new Chart(ctx, {
-        type: 'bar',
+        type: 'bar', // Change chart type if needed
         data: {
             labels: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], // Example labels
             datasets: [{
-                label: `Purchases for ${category}`,
-                data: data,
+                label: `${survey.pollType} - ${category}`,
+                data: survey.data,
                 backgroundColor: [
                     'rgba(75, 192, 192, 0.6)',
                     'rgba(54, 162, 235, 0.6)',
@@ -1520,10 +1591,10 @@ function renderChart(category) {
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true
+            plugins: {
+                legend: {
+                    display: false,
+                    position: 'top',
                 }
             }
         }
@@ -1562,8 +1633,28 @@ function finishTask() {
     const totalCategories = 16;
 
     if (allCategories.length === totalCategories) {
-        alert('Congratulations! You have completed the task successfully.');
-        window.location.href = "/task-completed";
+        const resultData = { purchasedItems: purchasedItems, remainingBudget: availableBudget };
+
+        fetch("/submit_task1_result", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(resultData),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === "success") {
+                alert('Congratulations! You have completed the task successfully. Redirecting to the next step.');
+                window.location.href = data.redirect_url;
+            } else {
+                alert("Error saving task result. Please try again.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("Failed to submit task result.");
+        });
     } else {
         const remaining = totalCategories - allCategories.length;
         alert(`You need to purchase ${remaining} more item(s) to finish the task.`);
@@ -1616,66 +1707,38 @@ function preloadImage(src) {
     return imageCache[src];
 }
 function drawRoom() {
-    // Clear the canvas before redrawing
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Draw the background image
     if (backgroundImage.complete) {
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-    } else {
-        backgroundImage.onload = () => {
-            ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-        };
     }
 
-    // Draw the items in the room (canvas-based)
+    // Draw each item
     itemsInRoom.forEach(item => {
         const img = preloadImage(item.image);
         if (img.complete) {
-            const aspectRatio = img.width / img.height;
-            let width = MAX_ITEM_WIDTH;
-            let height = MAX_ITEM_HEIGHT;
+            ctx.drawImage(img, item.x, item.y, MAX_ITEM_WIDTH, MAX_ITEM_HEIGHT);
 
-            if (aspectRatio > 1) {
-                height = MAX_ITEM_HEIGHT / aspectRatio;
-            } else {
-                width = MAX_ITEM_WIDTH * aspectRatio;
-            }
-
-            ctx.drawImage(img, item.x, item.y, width, height);
-
-            // Draw the price tag with background and padding on the canvas
-            const padding = 5; // Padding around the price text
+            // Draw the price tag at the middle of the image
             const text = `$${item.price}`;
-
-            // Calculate text width and height
-            ctx.font = '12px Arial';
             const textWidth = ctx.measureText(text).width;
-            const textHeight = 12; // Using the font size as the height
+            const tagX = item.x + (MAX_ITEM_WIDTH / 2) - (textWidth / 2); // Center horizontally
+            const tagY = item.y + (MAX_ITEM_HEIGHT / 2) + 10; // Center vertically, adjust with padding
 
-            // Draw the background rectangle (price tag background)
-            const rectX = item.x + 5; // Adjusted position for background
-            const rectY = item.y + MAX_ITEM_HEIGHT + 10; // Adjusted position below item
-            const rectWidth = textWidth + padding * 2; // Width with padding
-            const rectHeight = textHeight + padding * 2; // Height with padding
+            // Draw background for price tag
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(tagX - 5, tagY - 15, textWidth + 10, 20);
 
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; // Background color with transparency
-            ctx.fillRect(rectX, rectY, rectWidth, rectHeight);
-
-            // Draw the price text over the background
-            ctx.fillStyle = 'white'; // Text color
-
-            // Adjust text Y position to vertically center it within the rectangle
-            const textYPosition = rectY + rectHeight / 2 + textHeight / 4;
-
-            ctx.fillText(text, rectX + padding, textYPosition);
+            // Draw price tag text
+            ctx.fillStyle = 'white';
+            ctx.fillText(text, tagX, tagY);
         } else {
-            img.onload = () => {
-                drawRoom(); // Redraw room after the image is loaded
-            };
+            img.onload = () => drawRoom(); // Redraw after image loads
         }
     });
 }
+
 
 
 // Place the item in the room (create DOM elements for the item and price tag)
@@ -1779,6 +1842,31 @@ backButton.style.zIndex = '10'; // Ensure it stays on top of the canvas
 backButton.onclick = goBack;
 roomContainer.appendChild(backButton);
 
+document.addEventListener("DOMContentLoaded", function () {
+    updateFinishTaskButton();
+});
+function showProductDetail(item, category) {
+    // Populate modal content
+    document.getElementById('productDetailImage').src = item.image;
+    document.getElementById('productDetailName').innerText = item.name;
+    document.getElementById('productDetailPrice').innerText = `Price: $${item.price}`;
+    document.getElementById('productDetailDescription').innerText = item.description;
+
+    // Set the Buy button in the modal
+    const buyButtonModal = document.querySelector('#productDetailModal .btn-buy-modal');
+    buyButtonModal.onclick = () => {
+        buyItem(item, category, null); // Pass null since this button is not directly linked to a card
+
+        // Close the modal after purchase
+        const modalElement = document.getElementById('productDetailModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        modalInstance.hide();
+    };
+
+    // Show the modal
+    const modal = new bootstrap.Modal(document.getElementById('productDetailModal'));
+    modal.show();
+}
 
 </script>
 

@@ -20,27 +20,34 @@ def index():
 
 @app.route('/mindful', methods=['GET', 'POST'])
 def mindful():
-    isLogin = False
-    if 'username' in session: # {"username" : "testtest"}
-        isLogin = True
+    isLogin = 'username' in session
     if request.method == 'POST':
         # Handle user responses
         responses = request.form.to_dict()
         print("Mindful Responses:", responses)
-        return redirect(url_for('study_process'))  # Redirect after submission
-    return render_template('mindful.html',isLogin=isLogin, show_navbar=False)
+        return redirect(url_for('task'))  # Redirect to main task after completion
+    return render_template('mindful.html', isLogin=isLogin, show_navbar=False)
 
-@app.route('/non-mindful', methods=['GET', 'POST'])
+@app.route('/non_mindful', methods=['GET', 'POST'])
 def non_mindful():
-    isLogin = False
-    if 'username' in session: # {"username" : "testtest"}
-        isLogin = True
+    isLogin = 'username' in session
     if request.method == 'POST':
         # Handle user responses
         responses = request.form.to_dict()
         print("Non-Mindful Responses:", responses)
-        return redirect(url_for('index'))  # Redirect after submission
-    return render_template('non_mindful.html',isLogin=isLogin, show_navbar=False)
+        return redirect(url_for('task'))  # Redirect to main task after completion
+    return render_template('non_mindful.html', isLogin=isLogin, show_navbar=False)
+
+@app.route('/start_task')
+def start_task():
+    if 'username' in session:
+        user_id = session["username"].replace(".", "_").replace("@", "_")
+        # Randomly assign user to mindful or non-mindful
+        group = random.choice(["mindful", "non_mindful"])
+        db.child("users").child(user_id).child("warmup_group").set(group)  # Save group to Firebase
+        return redirect(url_for(group))
+    else:
+        return redirect(url_for('login'))
 @app.route('/study_process', methods=["GET", "POST"])
 def study_process():
     isLogin = False
@@ -134,12 +141,35 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+@app.route("/submit_task2_result", methods=["POST"])
+def submit_task2_result():
+    if "username" in session:
+        user_id = session["username"].replace(".", "_").replace("@", "_")
+        result = request.json.get("totalScore", 0)  # Get the total score from the request
+        db.child("users").child(user_id).child("game_result_task2").set(result)  # Save the result to Firebase
+        return jsonify({"status": "success"})
+    else:
+        return jsonify({"status": "error", "message": "User not logged in"})
+@app.route("/submit_task1_result", methods=["POST"])
+def submit_task1_result():
+    if "username" in session:
+        user_id = session["username"].replace(".", "_").replace("@", "_")
+        result = request.json.get("totalScore", 0)  # Get total score from request
+        db.child("users").child(user_id).child("game_result_task1").set(result)  # Save to Firebase
+        return jsonify({"status": "success", "redirect_url": url_for("task2")})
+    else:
+        return jsonify({"status": "error", "message": "User not logged in"})
 
 
 @app.route("/task")
 def task():
     isLogin = 'username' in session
     return render_template('task.html', isLogin=isLogin, show_navbar=False)
+
+@app.route("/task2")
+def task2():
+    isLogin = 'username' in session
+    return render_template('task2.html', isLogin=isLogin, show_navbar=False)
 
 
 @app.route('/submit_survey', methods=['POST'])
