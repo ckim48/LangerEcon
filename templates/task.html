@@ -1194,37 +1194,54 @@ const surveyData = {
     "Dresser": { pollType: "Poll type 1", data: [20, 30, 30, 20] }
 };
 
-        function submitSurvey() {
-            var formData = $('#shoppingStyleForm').serializeArray();  // Serialize form data
+       function submitSurvey() {
+    const form = document.getElementById("shoppingStyleForm");
+    const inputs = form.querySelectorAll('input[type="radio"]');
+    const questions = [...new Set([...inputs].map(input => input.name))];
+    const responses = {};
 
-            // Convert serialized data into an object
-            var responses = {};
-            formData.forEach(function(item) {
-                responses[item.name] = item.value;
-            });
-
-            // AJAX request to send data to the Flask server
-            $.ajax({
-                url: '/submit_survey',  // The Flask route to handle survey submission
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(responses),  // Send data as JSON
-                success: function(response) {
-                    if (response.status === 'success') {
-                        alert("Survey submitted successfully!");
-
-    document.getElementById('shoppingStyleSurveySection').style.display = 'none';
-        document.getElementById('instruction-final').style.display = 'block';
-                    } else {
-                        alert("There was an error submitting the survey.");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log(error);
-                    alert("Failed to submit the survey.");
-                }
-            });
+    // Validate all questions have answers
+    let allAnswered = true;
+    questions.forEach(question => {
+        const selected = form.querySelector(`input[name="${question}"]:checked`);
+        if (!selected) {
+            allAnswered = false;
+            // Highlight the unanswered question
+            const questionElement = form.querySelector(`input[name="${question}"]`).closest('.survey-question');
+            questionElement.style.border = '2px solid red'; // Highlight
+            setTimeout(() => questionElement.style.border = '', 3000); // Remove after 3 seconds
+        } else {
+            responses[question] = selected.value;
         }
+    });
+
+    if (!allAnswered) {
+        alert("Please answer all questions before submitting.");
+        return;
+    }
+
+    // AJAX request to send data to the Flask server
+    $.ajax({
+        url: '/submit_survey',  // The Flask route to handle survey submission
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(responses),  // Send data as JSON
+        success: function(response) {
+            if (response.status === 'success') {
+                alert("Survey submitted successfully!");
+                document.getElementById('shoppingStyleSurveySection').style.display = 'none';
+                document.getElementById('instruction-final').style.display = 'block';
+            } else {
+                alert("There was an error submitting the survey.");
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            alert("Failed to submit the survey.");
+        }
+    });
+}
+
     </script>
     <script>
 
