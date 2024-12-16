@@ -617,6 +617,30 @@
     .instruction-button:focus {
         outline: none;
     }
+/* Undo Button Styles */
+.btn-undo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #dc3545;
+    border-color: #dc3545;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.btn-undo:hover {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-undo i {
+    margin-right: 5px;
+    font-size: 1rem;
+}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.5/dist/chart.umd.min.js"></script>
@@ -1045,6 +1069,8 @@
 
 
       <script>
+          
+
 function updateFinishTaskButton() {
     const finishTaskBtn = document.getElementById('finishTaskBtnContainer');
     const totalCategories = 16; // Total number of categories
@@ -1392,49 +1418,55 @@ function showItems(shopId, shopName) {
         itemsGrid.id = `${categoryId}-items`;
 
         // Populate items for the category
-        shop.items[category].forEach(item => {
-            const card = document.createElement('div');
-            card.classList.add('shop-item-card');
+shop.items[category].forEach(item => {
+    const card = document.createElement('div');
+    card.classList.add('shop-item-card');
 
-            const img = document.createElement('img');
-            img.src = item.image;
-            img.alt = item.name;
-            img.style.width = "100%";
-            img.style.height = "120px";
+    const img = document.createElement('img');
+    img.src = item.image;
+    img.alt = item.name;
+    img.style.width = "100%";
+    img.style.height = "120px";
 
-            const itemTitle = document.createElement('h5');
-            itemTitle.classList.add('shop-item-title');
-            itemTitle.innerText = item.name;
+    const itemTitle = document.createElement('h5');
+    itemTitle.classList.add('shop-item-title');
+    itemTitle.innerText = item.name;
 
-            const itemPrice = document.createElement('p');
-            itemPrice.classList.add('shop-item-price');
-            itemPrice.innerText = `$${item.price}`;
+    const itemPrice = document.createElement('p');
+    itemPrice.classList.add('shop-item-price');
+    itemPrice.innerText = `$${item.price}`;
 
-const detailButton = document.createElement('button');
-detailButton.classList.add('btn', 'btn-detail','me-1');
-detailButton.innerText = 'Details';
-detailButton.onclick = () => showProductDetail(item, category);
+    const detailButton = document.createElement('button');
+    detailButton.classList.add('btn', 'btn-detail', 'me-1');
+    detailButton.innerText = 'Details';
+    detailButton.onclick = () => showProductDetail(item, category);
 
+    const buyButton = document.createElement('button');
+    buyButton.classList.add('btn', 'btn-buy', 'ms-1');
+    buyButton.setAttribute('data-category', category);
 
+    // Check if this specific item has been purchased
+    const alreadyPurchased = purchasedCategories[category]?.some(purchasedItem => purchasedItem.name === item.name);
+    if (alreadyPurchased) {
+        buyButton.disabled = true;
+        buyButton.innerText = 'Purchased';
+    } else {
+        buyButton.innerText = 'Buy';
+        buyButton.onclick = () => buyItem(item, category, buyButton);
+    }
 
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('button-container');
+    buttonContainer.appendChild(detailButton);
+    buttonContainer.appendChild(buyButton);
 
-            const buyButton = document.createElement('button');
-            buyButton.classList.add('btn', 'btn-buy','ms-1');
-            buyButton.innerText = 'Buy';
-            buyButton.onclick = () => buyItem(item, category, buyButton);
-            buyButton.setAttribute('data-category', category);
+    card.appendChild(img);
+    card.appendChild(itemTitle);
+    card.appendChild(itemPrice);
+    card.appendChild(buttonContainer);
+    itemsGrid.appendChild(card);
+});
 
-const buttonContainer = document.createElement('div');
-buttonContainer.classList.add('button-container');
-buttonContainer.appendChild(detailButton);
-buttonContainer.appendChild(buyButton);
-
-            card.appendChild(img);
-            card.appendChild(itemTitle);
-            card.appendChild(itemPrice);
-            card.appendChild(buttonContainer);
-            itemsGrid.appendChild(card);
-        });
 
         // Add items grid to content
         content.appendChild(itemsGrid);
@@ -1472,24 +1504,30 @@ buttonContainer.appendChild(buyButton);
         });
     });
 }
-
 function buyItem(item, category, button) {
-    if (purchasedCategories[category]) {
-        alert(`You already bought an item from the ${category} category.`);
+    // Ensure `purchasedCategories` for the category is initialized as an array
+    if (!purchasedCategories[category]) {
+        purchasedCategories[category] = [];
+    }
+
+    // Check if the item has already been purchased
+    const alreadyPurchased = purchasedCategories[category].some(purchasedItem => purchasedItem.name === item.name);
+    if (alreadyPurchased) {
+        alert(`You already purchased ${item.name} from the ${category} category.`);
         return;
     }
 
     if (availableBudget >= item.price) {
         availableBudget -= item.price;
         purchasedItems.push({ ...item, category });
-        purchasedCategories[category] = item;
+        purchasedCategories[category].push(item); // Add the specific item to the category list
 
         updateAvailableBudget();
         button.disabled = true;
         button.innerText = 'Purchased';
 
         // Place the purchased item in the room
-        placeItemInRoom(item);
+        placeItemInRoom(item, category);
 
         alert(`You bought ${item.name} for $${item.price}.`);
 
@@ -1503,6 +1541,7 @@ function buyItem(item, category, button) {
         alert('Insufficient budget!');
     }
 }
+
 function undoPurchase(category) {
     if (!purchasedCategories[category]) {
         alert(`No item purchased from ${category} category to undo.`);
@@ -1514,24 +1553,19 @@ function undoPurchase(category) {
     purchasedItems = purchasedItems.filter(i => i.category !== category);
     delete purchasedCategories[category];
 
-    // Remove the item from itemsInRoom
+    // Remove item from itemsInRoom
     const roomIndex = itemsInRoom.findIndex(roomItem => roomItem.category === category);
     if (roomIndex > -1) {
         itemsInRoom.splice(roomIndex, 1);
+    } else {
+        console.warn("Item not found in itemsInRoom for category:", category);
     }
 
     updateAvailableBudget();
-    alert(`Undo purchase of ${item.name}. Budget refunded.`);
-
-    // Update shop status
-    const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
-    if (shopId) updateShopStatus(shopId);
-
-    // Redraw the room to reflect the change
+    updatePurchasedItemsList();
     drawRoom();
-
-    // Update Finish Button
-    updateFinishTaskButton();
+    enableBuyButton(category);
+    alert(`Undo purchase of ${item.name}. Budget refunded.`);
 }
 
 
@@ -1548,8 +1582,11 @@ function updatePurchasedItemsList() {
     const list = document.getElementById('purchasedItemsList');
     list.innerHTML = purchasedItems.length
         ? purchasedItems.map(item =>
-            `<li>${item.name} - $${item.price}
-                <button onclick="undoPurchase('${item.category}')">Undo</button>
+            `<li>
+                ${item.name} - $${item.price}
+                <button class="btn btn-outline-danger btn-sm btn-undo" onclick="undoPurchase('${item.category}')">
+                    <i class="bi bi-arrow-counterclockwise"></i> Undo
+                </button>
             </li>`).join('')
         : '<p>No items purchased yet.</p>';
 }
@@ -1767,7 +1804,7 @@ function drawRoom() {
 
 
 // Place the item in the room (create DOM elements for the item and price tag)
-function placeItemInRoom(item) {
+function placeItemInRoom(item, category) {
     if (itemsInRoom.length >= (canvas.width / MAX_ITEM_WIDTH) * (canvas.height / MAX_ITEM_HEIGHT)) {
         alert("Room is full!"); // Notify if the room is full
         return;
@@ -1776,6 +1813,7 @@ function placeItemInRoom(item) {
     // Add the item to the itemsInRoom array
     itemsInRoom.push({
         ...item,
+        category: category, // Add the category property
         x: defaultPositionX,
         y: defaultPositionY
     });
