@@ -148,6 +148,79 @@
             font-weight: bold;
             margin-bottom: 20px;
         }
+.deck-card {
+    display: inline-block;
+    width: 150px;
+    height: 200px;
+    margin: 10px;
+    padding: 0; /* Remove padding to align with image size */
+    background: linear-gradient(145deg, #e6e6e6, #ffffff);
+    border-radius: 15px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Ensures image doesn't overflow */
+}
+
+.deck-card:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.3), -6px -6px 12px rgba(255, 255, 255, 0.9);
+}
+
+.deck-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the card while maintaining aspect ratio */
+    border-radius: 15px; /* Matches the card border radius */
+    transition: transform 0.3s ease;
+}
+
+.deck-card:hover .deck-image {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+}
+.deck-card.selected {
+    border: 4px solid #ff6b6b; /* Highlight border */
+    box-shadow: 0 0 20px rgba(255, 107, 107, 0.8); /* Glowing effect */
+    transform: scale(1.1); /* Slightly enlarge the selected card */
+}
+
+.deck-card.selected .deck-image {
+    transform: scale(1.15); /* Further zoom the image for emphasis */
+}
+        .results-container {
+    display: flex;
+    justify-content: center; /* Center the boxes */
+    gap: 20px; /* Space between boxes */
+    margin-top: 20px;
+}
+
+.result-box {
+    width: 200px;
+    height: 120px;
+    background: linear-gradient(145deg, #ffffff, #e6e6e6);
+    border-radius: 12px;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2), -4px -4px 10px rgba(255, 255, 255, 0.8);
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.result-box h3 {
+    font-size: 1.2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.result-box p {
+    font-size: 1rem;
+    font-weight: bold;
+    color: black;
+}
+
 
     </style>
 </head>
@@ -155,43 +228,52 @@
     <div class="container mt-5">
         <div class="card task-card">
             <div class="card-header">
-                <h1>Psychological Task: Iowa Gambling Task</h1>
+                <h1>Money Pot Challenge</h1>
             </div>
             <div class="card-body">
                 <!-- Instructions Section -->
                 <div class="instruction-container" id="instructions">
-                    <h1 class="instruction-header">Welcome to the Iowa Gambling Task!</h1>
+                    <h1 class="instruction-header">Welcome to Main Task 2!</h1>
                     <div class="instruction-content">
-                        <p>The task is designed to measure decision-making skills in uncertain situations. You will be presented with four decks of cards. Your goal is to maximize your total winnings by choosing cards wisely.</p>
-                        <p>Some decks are riskier than others. Take your time and think before making a choice!</p>
+                        <p>In this task, you play a “gambling” game. You need to choose one of 4 buttons (A, B, C, or D) with the mouse.</p>
+                        <p>Each time, you can win some money, but you may sometimes also have to pay a fee to the bank. After each trial, you need to collect your money, which will adjust your pot of money.</p>
+                        <p>You start with a loan of $2000.</p>
+                        <p>There are 100 trials (taking 5 minutes or so).</p>
+                        <p>Go on until it stops and see how much you can make on top of the loan of $2000. Good luck!</p>
+
                     </div>
                     <button class="instruction-button" onclick="startTask()">Start Task</button>
                 </div>
 
                 <!-- Trial Section -->
                 <div id="trialSection" class="trial-container">
-                    <div class="budget-display" id="budgetDisplay">Budget: $0</div>
+                    <div class="budget-display" id="budgetDisplay">Budget: $2000</div>
                     <h2>Choose a Deck</h2>
-                    <div id="deckChoices">
-                        <div class="deck-card" onclick="chooseDeck('A')">
-                            <h3>Deck A</h3>
-                            <p>Risk: High</p>
-                        </div>
-                        <div class="deck-card" onclick="chooseDeck('B')">
-                            <h3>Deck B</h3>
-                            <p>Risk: Moderate</p>
-                        </div>
-                        <div class="deck-card" onclick="chooseDeck('C')">
-                            <h3>Deck C</h3>
-                            <p>Risk: Low</p>
-                        </div>
-                        <div class="deck-card" onclick="chooseDeck('D')">
-                            <h3>Deck D</h3>
-                            <p>Risk: Minimal</p>
-                        </div>
-                    </div>
-                    <div id="feedback" class="feedback"></div>
-                </div>
+                <div id="deckChoices">
+    <div class="deck-card" onclick="chooseDeck('A')">
+        <img src="../static/img/econ_deckA.png" alt="Deck A" class="deck-image">
+    </div>
+    <div class="deck-card" onclick="chooseDeck('B')">
+        <img src="../static/img/econ_deckB.png" alt="Deck B" class="deck-image">
+    </div>
+    <div class="deck-card" onclick="chooseDeck('C')">
+        <img src="../static/img/econ_deckC.png" alt="Deck C" class="deck-image">
+    </div>
+    <div class="deck-card" onclick="chooseDeck('D')">
+        <img src="../static/img/econ_deckD.png" alt="Deck D" class="deck-image">
+    </div>
+</div>
+<div id="results" class="results-container">
+    <div class="result-box me-2">
+        <p id="totalWin"></p>
+    </div>
+    <div class="result-box ms-2">
+        <p id="totalPenalty"></p>
+    </div>
+</div>
+
+<!--                    <div id="feedback" class="feedback"></div>-->
+<!--                </div>-->
 
                 <!-- Loading Screen -->
                 <div id="loadingScreen" class="loading-screen">
@@ -202,77 +284,126 @@
     </div>
 
     <script>
-        const trialsPerRound = 100;
-        const totalRounds = 3;
-        let currentRound = 1;
-        let currentTrial = 0;
-        let totalScore = 0;
+const trialsPerRound = 100; // Number of trials per round
+const totalRounds = 1; // Total rounds in the task
+let currentRound = 1; // Current round tracker
+let currentTrial = 0; // Current trial tracker
+let totalScore = 2000; // Initial budget
 
-        const deckRewards = {
-            A: { reward: 250, risk: 0.6 },
-            B: { reward: 150, risk: 0.4 },
-            C: { reward: 100, risk: 0.3 },
-            D: { reward: 250, risk: 0.1 },
-        };
+// Deck reward and penalty configuration
+const deckRewards = {
+    A: { win: 100, penalty: -250, risk: 0.5 },
+    B: { win: 100, penalty: -250, risk: 0.5 },
+    C: { win: 50, penalty: -50, risk: 0.5 },
+    D: { win: 50, penalty: -50, risk: 0.5 },
+};
 
-        function startTask() {
-            document.getElementById('instructions').style.display = 'none';
-            document.getElementById('trialSection').style.display = 'block';
-            updateBudgetDisplay();
+// Start the task
+function startTask() {
+    document.getElementById('instructions').style.display = 'none'; // Hide instructions
+    document.getElementById('trialSection').style.display = 'block'; // Show trial section
+    updateBudgetDisplay();
+    currentTrial = 0; // Reset trials
+    currentRound = 1; // Reset rounds
+}
+
+// Update budget display on the page
+function updateBudgetDisplay() {
+    document.getElementById('budgetDisplay').innerText = `Budget: $${totalScore}`;
+}
+function chooseDeck(deck) {
+    // Highlight the clicked deck
+    const deckCards = document.querySelectorAll('.deck-card');
+    deckCards.forEach(card => card.classList.remove('selected')); // Remove 'selected' from all cards
+
+    const selectedCard = document.querySelector(`[onclick="chooseDeck('${deck}')"]`);
+    selectedCard.classList.add('selected'); // Add 'selected' class to the clicked deck
+
+    // Remove the highlight after 1 second
+    setTimeout(() => {
+        selectedCard.classList.remove('selected');
+    }, 1000);
+
+    const deckData = deckRewards[deck]; // Fetch deck-specific data
+
+    // Simulate reward or penalty
+    const isPenalty = Math.random() < deckData.risk; // Determine if the player gets a penalty
+    let outcome;
+    if (isPenalty) {
+        outcome = deckData.penalty; // Apply penalty
+        updateResultBoxes(0, Math.abs(outcome)); // Update penalty box
+    } else {
+        outcome = deckData.win; // Apply reward
+        updateResultBoxes(outcome, 0); // Update win box
+    }
+
+    // Update the total score
+    totalScore += outcome;
+    updateBudgetDisplay();
+
+    // Display feedback for the trial
+//    const feedbackElement = document.getElementById('feedback');
+//    feedbackElement.innerText = `You chose Deck ${deck}. You ${outcome >= 0 ? 'won' : 'lost'} $${Math.abs(outcome)}.`;
+
+    // Increment the trial count
+    currentTrial++;
+
+    // Check if the current round is complete
+    if (currentTrial < trialsPerRound) {
+        setTimeout(() => {
+            feedbackElement.innerText = ''; // Clear feedback for the next trial
+        }, 1000);
+    } else if (currentRound < totalRounds) {
+        // Proceed to the next round
+        currentRound++;
+        showLoadingScreen();
+        setTimeout(() => {
+            feedbackElement.innerText = '';
             currentTrial = 0;
-            currentRound = 1;
-        }
+            hideLoadingScreen();
+        }, 3000);
+    } else {
+        // Task completed
+        endTask();
+    }
+}
 
-        function updateBudgetDisplay() {
-            document.getElementById('budgetDisplay').innerText = `Budget: $${totalScore}`;
-        }
+// Function to update the result boxes
+function updateResultBoxes(win, penalty) {
+    const winBox = document.getElementById('totalWin');
+    const penaltyBox = document.getElementById('totalPenalty');
 
-        function chooseDeck(deck) {
-            const randomChance = Math.random();
-            const deckData = deckRewards[deck];
-            let reward = deckData.reward;
+    if (win > 0) {
+        winBox.innerHTML = `You win <span style="color: blue;">$${win}</span>`;
+        penaltyBox.innerText = ""; // Clear penalty box
+    } else if (penalty > 0) {
+        winBox.innerText = ""; // Clear win box
+        penaltyBox.innerHTML = `Fee of <span style="color: red;">$${penalty}</span> applies now`;
+    } else {
+        winBox.innerText = ""; // Clear both if no win or penalty
+        penaltyBox.innerText = "";
+    }
+}
 
-            if (randomChance < deckData.risk) {
-                reward = -Math.abs(reward); // Apply loss
-            }
 
-            totalScore += reward;
-            updateBudgetDisplay();
 
-            document.getElementById('feedback').innerText = `You chose Deck ${deck}. You ${reward > 0 ? 'won' : 'lost'} $${Math.abs(reward)}.`;
+// Show loading screen between rounds
+function showLoadingScreen() {
+    document.getElementById('trialSection').style.display = 'none'; // Hide trial section
+    document.getElementById('loadingScreen').style.display = 'block'; // Show loading screen
+}
 
-            currentTrial++;
+// Hide loading screen
+function hideLoadingScreen() {
+    document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen
+    document.getElementById('trialSection').style.display = 'block'; // Show trial section
+}
 
-            if (currentTrial < trialsPerRound) {
-                setTimeout(() => {
-                    document.getElementById('feedback').innerText = '';
-                }, 1000);
-            } else if (currentRound < totalRounds) {
-                currentRound++;
-                showLoadingScreen();
-                setTimeout(() => {
-                    document.getElementById('feedback').innerText = '';
-                    currentTrial = 0;
-                    hideLoadingScreen();
-                }, 3000);
-            } else {
-                endTask();
-            }
-        }
-
-        function showLoadingScreen() {
-            document.getElementById('trialSection').style.display = 'none';
-            document.getElementById('loadingScreen').style.display = 'block';
-        }
-
-        function hideLoadingScreen() {
-            document.getElementById('loadingScreen').style.display = 'none';
-            document.getElementById('trialSection').style.display = 'block';
-        }
-
+// End the task and submit results
 function endTask() {
-    const resultData = { totalScore: totalScore };
+    const resultData = { totalScore: totalScore }; // Prepare result data
 
+    // Send the results to the backend
     fetch("/submit_task2_result", {
         method: "POST",
         headers: {
@@ -283,8 +414,9 @@ function endTask() {
     .then(response => response.json())
     .then(data => {
         if (data.status === "success") {
-            alert(`Task completed! Your total score is $${totalScore}. Thank you for participating.`);
-            window.location.href = "https://www.jotform.com/build/243311949113452?iak=c5d330888d0e73bbb5a20b8e3647e954-4968caa490b0d312";
+            alert(`Task completed! Please proceed to the post-task survey to finalize your participation.`);
+            // Redirect to the provided URL
+            window.location.href = "https://form.jotform.com/243311949113452";
         } else {
             alert("Error saving task result. Please try again.");
         }

@@ -53,7 +53,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body text-center">
-                    <h5 class="text-orange mb-4">Welcome to the Mindful Activity!</h5>
+                    <h5 class="text-orange mb-4">Welcome to the Warm-Up Activity!</h5>
                     <p>These are warm-up tasks to prepare you for the main tasks. They are not scored, so enjoy and do your best!</p>
                     <button type="button" class="btn btn-orange" data-bs-dismiss="modal">Start</button>
                 </div>
@@ -216,4 +216,35 @@
             $('#startModal').modal('show');
         });
 </script>
+<script>
+    document.querySelector("form").addEventListener("submit", function (e) {
+        let unansweredQuestions = [];
+
+        // Check if all radio questions are answered
+        const radioGroups = ["q1", "q2", "q3", "q4", "q5"];
+        radioGroups.forEach(group => {
+            const radios = document.querySelectorAll(`input[name="${group}"]`);
+            const isChecked = Array.from(radios).some(radio => radio.checked);
+            if (!isChecked) {
+                unansweredQuestions.push(`Question ${group.replace('q', '')}`);
+            }
+        });
+
+        // Check if all text inputs for question 6 are answered
+        for (let i = 1; i <= 3; i++) {
+            const input = document.getElementById(`q6Answer${i}`);
+            if (!input.value.trim()) {
+                unansweredQuestions.push(`Question 6, item ${i}`);
+            }
+        }
+
+        // If any question is unanswered, show a single alert and prevent submission
+        if (unansweredQuestions.length > 0) {
+            e.preventDefault();
+            alert(`Please answer the following:\n- ${unansweredQuestions.join('\n- ')}`);
+        }
+    });
+</script>
+
+
 {% endblock %}

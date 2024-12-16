@@ -657,10 +657,10 @@
           <p id="productDetailDescription"></p>
         </div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-buy btn-buy-modal">Buy</button>
-      </div>
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-buy btn-buy-modal">Buy</button>-->
+<!--      </div>-->
     </div>
   </div>
 </div>
@@ -843,7 +843,7 @@
         <h1 class="instruction-header mb-5">Shopping Instructions</h1>
 <!--        <h2 class="instruction-subtitle">Survey completed!</h2>-->
         <div class="instruction-content">
-<ul>            <li> You have a limited budget of $1,5000.</li>
+<ul>            <li> You have a limited budget of $15,000.</li>
             <li>Visit 4 different shops, each offering 4 unique product types.</li>
             <li>You need to purchase all 16 item types for your new home.</li>
             <li>Each item has 4 options; choose the one that best fits your needs and preferences.</li>
@@ -1503,7 +1503,6 @@ function buyItem(item, category, button) {
         alert('Insufficient budget!');
     }
 }
-
 function undoPurchase(category) {
     if (!purchasedCategories[category]) {
         alert(`No item purchased from ${category} category to undo.`);
@@ -1515,12 +1514,21 @@ function undoPurchase(category) {
     purchasedItems = purchasedItems.filter(i => i.category !== category);
     delete purchasedCategories[category];
 
+    // Remove the item from itemsInRoom
+    const roomIndex = itemsInRoom.findIndex(roomItem => roomItem.category === category);
+    if (roomIndex > -1) {
+        itemsInRoom.splice(roomIndex, 1);
+    }
+
     updateAvailableBudget();
     alert(`Undo purchase of ${item.name}. Budget refunded.`);
 
     // Update shop status
     const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
     if (shopId) updateShopStatus(shopId);
+
+    // Redraw the room to reflect the change
+    drawRoom();
 
     // Update Finish Button
     updateFinishTaskButton();
@@ -1868,17 +1876,6 @@ function showProductDetail(item, category) {
     document.getElementById('productDetailName').innerText = item.name;
     document.getElementById('productDetailPrice').innerText = `Price: $${item.price}`;
     document.getElementById('productDetailDescription').innerText = item.description;
-
-    // Set the Buy button in the modal
-    const buyButtonModal = document.querySelector('#productDetailModal .btn-buy-modal');
-    buyButtonModal.onclick = () => {
-        buyItem(item, category, null); // Pass null since this button is not directly linked to a card
-
-        // Close the modal after purchase
-        const modalElement = document.getElementById('productDetailModal');
-        const modalInstance = bootstrap.Modal.getInstance(modalElement);
-        modalInstance.hide();
-    };
 
     // Show the modal
     const modal = new bootstrap.Modal(document.getElementById('productDetailModal'));
