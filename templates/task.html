@@ -1545,9 +1545,21 @@ function undoPurchase(category) {
             drawRoom(); // Redraw the canvas without the removed item
         }
 
+        // Reset the purchasedCategories for this category
+        delete purchasedCategories[category];
+
         // Update the UI
         updateAvailableBudget();
         updatePurchasedItemsList();
+
+        // Re-enable the "Buy" button for the undone category
+        const buyButtons = document.querySelectorAll('.btn-buy');
+        buyButtons.forEach(button => {
+            if (button.innerText === 'Purchased') {
+                button.disabled = false;
+                button.innerText = 'Buy';
+            }
+        });
 
         // Immediately re-render the current category to reflect the updated button
         const currentCategoryId = getCurrentCategoryId();
@@ -1560,6 +1572,8 @@ function undoPurchase(category) {
         console.warn("Item price is invalid during undo operation.");
     }
 }
+
+
 
 
 // Helper function to get the current active category tab ID
@@ -1647,7 +1661,7 @@ function updatePurchasedItemsList() {
     const list = document.getElementById('purchasedItemsList');
     list.innerHTML = purchasedItems.length
         ? purchasedItems.map(item =>
-            `<li>
+            `<li class="mt-2">
                 ${item.name} - $${item.price}
                 <button class="btn btn-outline-danger btn-sm btn-undo" onclick="undoPurchase('${item.category}')">
                     <i class="bi bi-arrow-counterclockwise"></i> Undo
