@@ -1437,15 +1437,21 @@ function showItems(shopId, shopName) {
             itemPrice.classList.add('shop-item-price');
             itemPrice.innerText = `$${item.price}`;
 
+            // Check if this specific item has been purchased
+            const alreadyPurchased = purchasedItems.some(purchased => purchased.name === item.name);
+
             const detailButton = document.createElement('button');
-            detailButton.classList.add('btn', 'btn-detail');
+            detailButton.classList.add('btn', 'btn-detail','me-1');
             detailButton.innerText = 'Details';
             detailButton.onclick = () => showProductDetail(item, category);
 
             const buyButton = document.createElement('button');
-            buyButton.classList.add('btn', 'btn-buy');
-            buyButton.innerText = 'Buy';
-            buyButton.onclick = () => buyItem(item, category, buyButton);
+            buyButton.classList.add('btn', 'btn-buy','ms-1');
+            buyButton.innerText = alreadyPurchased ? 'Purchased' : 'Buy';
+            buyButton.disabled = alreadyPurchased;
+            buyButton.onclick = () => {
+                if (!alreadyPurchased) buyItem(item, category, buyButton);
+            };
 
             const buttonContainer = document.createElement('div');
             buttonContainer.appendChild(detailButton);
@@ -1482,7 +1488,6 @@ function showItems(shopId, shopName) {
     renderChart(currentCategoryMapping['category1']);
 }
 
-
 function buyItem(item, category, button) {
     // Prevent multiple purchases in the same category
     if (purchasedCategories[category]) {
@@ -1517,6 +1522,7 @@ function buyItem(item, category, button) {
 
 
 function undoPurchase(category) {
+    // Check if the category has a purchased item
     if (!purchasedCategories[category] || purchasedCategories[category].length === 0) {
         alert(`No item purchased from ${category} category to undo.`);
         return;
@@ -1526,25 +1532,105 @@ function undoPurchase(category) {
     const lastItem = purchasedCategories[category].pop();
 
     if (lastItem && lastItem.price) {
-        availableBudget += lastItem.price; // Refund the item price
+        // Refund the price to the available budget
+        availableBudget += lastItem.price;
+
+        // Remove the item from the purchasedItems array
         purchasedItems = purchasedItems.filter(i => !(i.category === category && i.name === lastItem.name));
 
-        // Remove item from the room visually
-        const roomIndex = itemsInRoom.findIndex(roomItem => roomItem.category === category);
-        if (roomIndex > -1) {
-            itemsInRoom.splice(roomIndex, 1);
+        // Remove the item from the room canvas
+        const roomIndex = itemsInRoom.findIndex(item => item.category === category);
+        if (roomIndex !== -1) {
+            itemsInRoom.splice(roomIndex, 1); // Remove the item from the room array
+            drawRoom(); // Redraw the canvas without the removed item
         }
 
-        // Redraw and update
+        // Update the UI
         updateAvailableBudget();
         updatePurchasedItemsList();
-        drawRoom();
-        enableBuyButton(category);
+
+        // Immediately re-render the current category to reflect the updated button
+        const currentCategoryId = getCurrentCategoryId();
+        if (currentCategoryId) {
+            renderCategoryItems(currentCategoryId);
+        }
+
         alert(`Undo purchase of ${lastItem.name}. Budget refunded.`);
     } else {
         console.warn("Item price is invalid during undo operation.");
     }
 }
+
+
+// Helper function to get the current active category tab ID
+function getCurrentCategoryId() {
+    const activeTab = document.querySelector('.nav-link.active');
+    return activeTab ? activeTab.getAttribute('data-bs-target').replace('#', '') : null;
+}
+
+// Helper function to re-render items in the given category
+function renderCategoryItems(categoryId) {
+    const categoryName = window.dynamicCategoryMapping[categoryId];
+    const itemsGrid = document.getElementById(`${categoryId}-items`);
+    itemsGrid.innerHTML = ''; // Clear the current items grid
+
+    const items = getCategoryItems(categoryName);
+    items.forEach(item => {
+        const card = document.createElement('div');
+        card.classList.add('shop-item-card');
+
+        const img = document.createElement('img');
+        img.src = item.image;
+        img.alt = item.name;
+
+        const itemTitle = document.createElement('h5');
+        itemTitle.classList.add('shop-item-title');
+        itemTitle.innerText = item.name;
+
+        const itemPrice = document.createElement('p');
+        itemPrice.classList.add('shop-item-price');
+        itemPrice.innerText = `$${item.price}`;
+
+        // Check if item has been purchased
+        const alreadyPurchased = purchasedItems.some(purchased => purchased.name === item.name);
+
+        const detailButton = document.createElement('button');
+        detailButton.classList.add('btn', 'btn-detail','me-1');
+        detailButton.innerText = 'Details';
+        detailButton.onclick = () => showProductDetail(item, categoryName);
+
+        const buyButton = document.createElement('button');
+        buyButton.classList.add('btn', 'btn-buy','ms-1');
+        buyButton.innerText = alreadyPurchased ? 'Purchased' : 'Buy';
+        buyButton.disabled = alreadyPurchased;
+        buyButton.onclick = () => {
+            if (!alreadyPurchased) buyItem(item, categoryName, buyButton);
+        };
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.appendChild(detailButton);
+        buttonContainer.appendChild(buyButton);
+
+        card.appendChild(img);
+        card.appendChild(itemTitle);
+        card.appendChild(itemPrice);
+        card.appendChild(buttonContainer);
+
+        itemsGrid.appendChild(card);
+    });
+}
+
+
+function enableBuyButton(category) {
+    const buttons = document.querySelectorAll('.btn-buy');
+    buttons.forEach(button => {
+        if (button.onclick.toString().includes(category)) {
+            button.disabled = false;
+            button.innerText = 'Buy';
+        }
+    });
+}
+
 
 
 
