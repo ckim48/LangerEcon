@@ -1381,7 +1381,11 @@ function showItems(shopId, shopName) {
     tabsContainer.innerHTML = ''; // Clear previous tabs
     tabsContent.innerHTML = ''; // Clear previous content
 
+    // Dynamically update categoryMapping for this shop
+    const currentCategoryMapping = {};
     Object.keys(shop.items).forEach((category, index) => {
+        currentCategoryMapping[`category${index + 1}`] = category; // Dynamic mapping
+
         const categoryId = `category${index + 1}`;
 
         // Create tab for the category
@@ -1412,115 +1416,84 @@ function showItems(shopId, shopName) {
         content.setAttribute('role', 'tabpanel');
         content.setAttribute('aria-labelledby', `${categoryId}-tab`);
 
-        // Create items grid
+        // Populate items for the category
         const itemsGrid = document.createElement('div');
         itemsGrid.classList.add('shop-items-grid');
         itemsGrid.id = `${categoryId}-items`;
 
-        // Populate items for the category
-shop.items[category].forEach(item => {
-    const card = document.createElement('div');
-    card.classList.add('shop-item-card');
+        shop.items[category].forEach(item => {
+            const card = document.createElement('div');
+            card.classList.add('shop-item-card');
 
-    const img = document.createElement('img');
-    img.src = item.image;
-    img.alt = item.name;
-    img.style.width = "100%";
-    img.style.height = "120px";
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.name;
 
-    const itemTitle = document.createElement('h5');
-    itemTitle.classList.add('shop-item-title');
-    itemTitle.innerText = item.name;
+            const itemTitle = document.createElement('h5');
+            itemTitle.classList.add('shop-item-title');
+            itemTitle.innerText = item.name;
 
-    const itemPrice = document.createElement('p');
-    itemPrice.classList.add('shop-item-price');
-    itemPrice.innerText = `$${item.price}`;
+            const itemPrice = document.createElement('p');
+            itemPrice.classList.add('shop-item-price');
+            itemPrice.innerText = `$${item.price}`;
 
-    const detailButton = document.createElement('button');
-    detailButton.classList.add('btn', 'btn-detail', 'me-1');
-    detailButton.innerText = 'Details';
-    detailButton.onclick = () => showProductDetail(item, category);
+            const detailButton = document.createElement('button');
+            detailButton.classList.add('btn', 'btn-detail');
+            detailButton.innerText = 'Details';
+            detailButton.onclick = () => showProductDetail(item, category);
 
-    const buyButton = document.createElement('button');
-    buyButton.classList.add('btn', 'btn-buy', 'ms-1');
-    buyButton.setAttribute('data-category', category);
+            const buyButton = document.createElement('button');
+            buyButton.classList.add('btn', 'btn-buy');
+            buyButton.innerText = 'Buy';
+            buyButton.onclick = () => buyItem(item, category, buyButton);
 
-    // Check if this specific item has been purchased
-    const alreadyPurchased = purchasedCategories[category]?.some(purchasedItem => purchasedItem.name === item.name);
-    if (alreadyPurchased) {
-        buyButton.disabled = true;
-        buyButton.innerText = 'Purchased';
-    } else {
-        buyButton.innerText = 'Buy';
-        buyButton.onclick = () => buyItem(item, category, buyButton);
-    }
+            const buttonContainer = document.createElement('div');
+            buttonContainer.appendChild(detailButton);
+            buttonContainer.appendChild(buyButton);
 
-    const buttonContainer = document.createElement('div');
-    buttonContainer.classList.add('button-container');
-    buttonContainer.appendChild(detailButton);
-    buttonContainer.appendChild(buyButton);
+            card.appendChild(img);
+            card.appendChild(itemTitle);
+            card.appendChild(itemPrice);
+            card.appendChild(buttonContainer);
 
-    card.appendChild(img);
-    card.appendChild(itemTitle);
-    card.appendChild(itemPrice);
-    card.appendChild(buttonContainer);
-    itemsGrid.appendChild(card);
-});
+            itemsGrid.appendChild(card);
+        });
 
-
-        // Add items grid to content
         content.appendChild(itemsGrid);
-
-        // Create chart container for the category
-        const chartContainer = document.createElement('div');
-        chartContainer.id = `${categoryId}-chart`;
-        chartContainer.classList.add('category-chart', 'mt-4');
-        chartContainer.style.display = index === 0 ? 'block' : 'none'; // Show the first chart by default
-        content.appendChild(chartContainer);
-
-        // Add content to tabs content
         tabsContent.appendChild(content);
     });
 
-    // Render the chart for the active tab on first load
-    const firstCategoryId = `category1`; // Assuming the first tab corresponds to category1
-    const firstCategoryName = categoryMapping[firstCategoryId]; // Map to category name
-    if (firstCategoryName) {
-        renderChart(firstCategoryName); // Render the initial chart
-    }
+    // Update the dynamic mapping globally
+    window.dynamicCategoryMapping = currentCategoryMapping;
 
-    // Add event listeners for tab switching to update charts
-    const tabs = document.querySelectorAll(".nav-link");
-    tabs.forEach((tab) => {
-        tab.addEventListener("click", function () {
-            const categoryId = this.getAttribute("aria-controls");
-            const allCharts = document.querySelectorAll(".category-chart");
-            allCharts.forEach(chart => chart.style.display = 'none'); // Hide all charts
-
-            const activeChart = document.getElementById(`${categoryId}-chart`);
-            if (activeChart) activeChart.style.display = 'block'; // Show the active chart
-            const categoryName = categoryMapping[categoryId];
-            if (categoryName) renderChart(categoryName); // Render the corresponding chart
+    // Attach event listeners to category tabs for chart rendering
+    const tabs = document.querySelectorAll('.nav-link');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const categoryId = tab.getAttribute('aria-controls');
+            const categoryName = window.dynamicCategoryMapping[categoryId];
+            if (categoryName) {
+                renderChart(categoryName); // Render the chart for the selected category
+            }
         });
     });
-}
-function buyItem(item, category, button) {
-    // Ensure `purchasedCategories` for the category is initialized as an array
-    if (!purchasedCategories[category]) {
-        purchasedCategories[category] = [];
-    }
 
-    // Check if the item has already been purchased
-    const alreadyPurchased = purchasedCategories[category].some(purchasedItem => purchasedItem.name === item.name);
-    if (alreadyPurchased) {
-        alert(`You already purchased ${item.name} from the ${category} category.`);
+    // Render the first category chart by default
+    renderChart(currentCategoryMapping['category1']);
+}
+
+
+function buyItem(item, category, button) {
+    // Prevent multiple purchases in the same category
+    if (purchasedCategories[category]) {
+        alert(`You can only buy one item in the ${category} category.`);
         return;
     }
 
     if (availableBudget >= item.price) {
         availableBudget -= item.price;
         purchasedItems.push({ ...item, category });
-        purchasedCategories[category].push(item); // Add the specific item to the category list
+        purchasedCategories[category] = [item]; // Mark category as purchased
 
         updateAvailableBudget();
         button.disabled = true;
@@ -1542,31 +1515,37 @@ function buyItem(item, category, button) {
     }
 }
 
+
 function undoPurchase(category) {
-    if (!purchasedCategories[category]) {
+    if (!purchasedCategories[category] || purchasedCategories[category].length === 0) {
         alert(`No item purchased from ${category} category to undo.`);
         return;
     }
 
-    const item = purchasedCategories[category];
-    availableBudget += item.price;
-    purchasedItems = purchasedItems.filter(i => i.category !== category);
-    delete purchasedCategories[category];
+    // Retrieve the last purchased item from this category
+    const lastItem = purchasedCategories[category].pop();
 
-    // Remove item from itemsInRoom
-    const roomIndex = itemsInRoom.findIndex(roomItem => roomItem.category === category);
-    if (roomIndex > -1) {
-        itemsInRoom.splice(roomIndex, 1);
+    if (lastItem && lastItem.price) {
+        availableBudget += lastItem.price; // Refund the item price
+        purchasedItems = purchasedItems.filter(i => !(i.category === category && i.name === lastItem.name));
+
+        // Remove item from the room visually
+        const roomIndex = itemsInRoom.findIndex(roomItem => roomItem.category === category);
+        if (roomIndex > -1) {
+            itemsInRoom.splice(roomIndex, 1);
+        }
+
+        // Redraw and update
+        updateAvailableBudget();
+        updatePurchasedItemsList();
+        drawRoom();
+        enableBuyButton(category);
+        alert(`Undo purchase of ${lastItem.name}. Budget refunded.`);
     } else {
-        console.warn("Item not found in itemsInRoom for category:", category);
+        console.warn("Item price is invalid during undo operation.");
     }
-
-    updateAvailableBudget();
-    updatePurchasedItemsList();
-    drawRoom();
-    enableBuyButton(category);
-    alert(`Undo purchase of ${item.name}. Budget refunded.`);
 }
+
 
 
 
@@ -1607,62 +1586,36 @@ function goBackShop() {
     document.getElementById('itemSection').style.display = 'none';
     document.getElementById('shopSection').style.display = 'block';
 }
-
 function renderChart(category) {
-    const chartsContainer = document.getElementById('chartsContainer');
-    if (!chartsContainer) return;
+    const chartContainer = document.getElementById('chartsContainer');
+    chartContainer.innerHTML = '';
 
-    // Clear any previous chart
-    chartsContainer.innerHTML = '';
-
-    // Create a new canvas element for the chart
     const canvas = document.createElement('canvas');
-    canvas.id = `chart-${category}`;
-    chartsContainer.appendChild(canvas);
+    chartContainer.appendChild(canvas);
 
     const ctx = canvas.getContext('2d');
-    const survey = surveyData[category]; // Get survey data for the category
+    const survey = surveyData[category];
 
     if (!survey) {
-        console.error(`No data available for category: ${category}`);
+        console.error(`No survey data for category: ${category}`);
         return;
     }
 
-    // Render the chart
     new Chart(ctx, {
-        type: 'bar', // Change chart type if needed
+        type: 'bar',
         data: {
-            labels: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], // Example labels
+            labels: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
             datasets: [{
                 label: `${survey.pollType} - ${category}`,
                 data: survey.data,
-                backgroundColor: [
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(153, 102, 255, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
+                backgroundColor: ['rgba(75,192,192,0.6)', 'rgba(54,162,235,0.6)', 'rgba(255,206,86,0.6)', 'rgba(153,102,255,0.6)'],
+                borderColor: ['rgba(75,192,192,1)', 'rgba(54,162,235,1)', 'rgba(255,206,86,1)', 'rgba(153,102,255,1)'],
                 borderWidth: 1
             }]
         },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    display: false,
-                    position: 'top',
-                }
-            }
-        }
+        options: { responsive: true, plugins: { legend: { display: false } } }
     });
 }
-
 
 
 function onCategoryClick(categoryId) {
@@ -1671,20 +1624,20 @@ function onCategoryClick(categoryId) {
         console.error(`No mapping found for categoryId: ${categoryId}`);
         return;
     }
-    renderChart(category); // Draw the chart for the selected category
+    renderChart(category);
 }
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".nav-link");
 
-    tabs.forEach((tab) => {
+    tabs.forEach(tab => {
         tab.addEventListener("click", function () {
-            const categoryId = this.getAttribute("aria-controls"); // Get the category ID from the 'aria-controls' attribute
+            const categoryId = this.getAttribute("aria-controls");
             onCategoryClick(categoryId);
         });
     });
 });
+
 
 
 

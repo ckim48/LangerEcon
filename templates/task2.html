@@ -285,125 +285,83 @@
 
     <script>
 const trialsPerRound = 100; // Number of trials per round
-const totalRounds = 1; // Total rounds in the task
-let currentRound = 1; // Current round tracker
-let currentTrial = 0; // Current trial tracker
-let totalScore = 2000; // Initial budget
+let currentTrial = 0; // Current trial count
+let totalScore = 2000; // Starting budget
 
 // Deck reward and penalty configuration
 const deckRewards = {
-    A: { win: 100, penalty: -250, risk: 0.5 },
-    B: { win: 100, penalty: -250, risk: 0.5 },
-    C: { win: 50, penalty: -50, risk: 0.5 },
-    D: { win: 50, penalty: -50, risk: 0.5 },
+    A: [
+        { win: 100, fee: 0, chance: 0.5 }, // 50%: Win $100, No Fee
+        { win: 100, fee: 250, chance: 0.5 } // 50%: Win $100, Fee $250
+    ],
+    B: [
+        { win: 100, fee: 0, chance: 0.5 },
+        { win: 100, fee: 250, chance: 0.5 }
+    ],
+    C: [
+        { win: 50, fee: 0, chance: 0.5 }, // 50%: Win $50, No Fee
+        { win: 50, fee: 50, chance: 0.5 } // 50%: Win $50, Fee $50
+    ],
+    D: [
+        { win: 50, fee: 0, chance: 0.5 },
+        { win: 50, fee: 50, chance: 0.5 }
+    ],
 };
 
 // Start the task
 function startTask() {
-    document.getElementById('instructions').style.display = 'none'; // Hide instructions
-    document.getElementById('trialSection').style.display = 'block'; // Show trial section
+    document.getElementById('instructions').style.display = 'none';
+    document.getElementById('trialSection').style.display = 'block';
     updateBudgetDisplay();
-    currentTrial = 0; // Reset trials
-    currentRound = 1; // Reset rounds
+    currentTrial = 0; // Reset trial count
 }
 
-// Update budget display on the page
+// Update budget display
 function updateBudgetDisplay() {
     document.getElementById('budgetDisplay').innerText = `Budget: $${totalScore}`;
 }
+
+// Function to handle deck selection
 function chooseDeck(deck) {
-    // Highlight the clicked deck
+    // Highlight selected deck
     const deckCards = document.querySelectorAll('.deck-card');
-    deckCards.forEach(card => card.classList.remove('selected')); // Remove 'selected' from all cards
-
+    deckCards.forEach(card => card.classList.remove('selected'));
     const selectedCard = document.querySelector(`[onclick="chooseDeck('${deck}')"]`);
-    selectedCard.classList.add('selected'); // Add 'selected' class to the clicked deck
+    selectedCard.classList.add('selected');
 
-    // Remove the highlight after 1 second
     setTimeout(() => {
         selectedCard.classList.remove('selected');
     }, 1000);
 
-    const deckData = deckRewards[deck]; // Fetch deck-specific data
+    // Determine outcome
+    const outcomes = deckRewards[deck];
+    const randomOutcome = outcomes[Math.random() < 0.5 ? 0 : 1]; // 50% probability
+    const netWin = randomOutcome.win - randomOutcome.fee; // Net outcome: win - fee
 
-    // Simulate reward or penalty
-    const isPenalty = Math.random() < deckData.risk; // Determine if the player gets a penalty
-    let outcome;
-    if (isPenalty) {
-        outcome = deckData.penalty; // Apply penalty
-        updateResultBoxes(0, Math.abs(outcome)); // Update penalty box
-    } else {
-        outcome = deckData.win; // Apply reward
-        updateResultBoxes(outcome, 0); // Update win box
-    }
-
-    // Update the total score
-    totalScore += outcome;
+    totalScore += netWin; // Update total score
+    updateResultBoxes(randomOutcome.win, randomOutcome.fee);
     updateBudgetDisplay();
 
-    // Display feedback for the trial
-//    const feedbackElement = document.getElementById('feedback');
-//    feedbackElement.innerText = `You chose Deck ${deck}. You ${outcome >= 0 ? 'won' : 'lost'} $${Math.abs(outcome)}.`;
-
-    // Increment the trial count
+    // Increment trial count and check for task completion
     currentTrial++;
-
-    // Check if the current round is complete
-    if (currentTrial < trialsPerRound) {
-        setTimeout(() => {
-            feedbackElement.innerText = ''; // Clear feedback for the next trial
-        }, 1000);
-    } else if (currentRound < totalRounds) {
-        // Proceed to the next round
-        currentRound++;
-        showLoadingScreen();
-        setTimeout(() => {
-            feedbackElement.innerText = '';
-            currentTrial = 0;
-            hideLoadingScreen();
-        }, 3000);
-    } else {
-        // Task completed
+    if (currentTrial >= trialsPerRound) {
         endTask();
     }
 }
 
-// Function to update the result boxes
-function updateResultBoxes(win, penalty) {
+// Update the win and penalty result boxes
+function updateResultBoxes(win, fee) {
     const winBox = document.getElementById('totalWin');
     const penaltyBox = document.getElementById('totalPenalty');
 
-    if (win > 0) {
-        winBox.innerHTML = `You win <span style="color: blue;">$${win}</span>`;
-        penaltyBox.innerText = ""; // Clear penalty box
-    } else if (penalty > 0) {
-        winBox.innerText = ""; // Clear win box
-        penaltyBox.innerHTML = `Fee of <span style="color: red;">$${penalty}</span> applies now`;
-    } else {
-        winBox.innerText = ""; // Clear both if no win or penalty
-        penaltyBox.innerText = "";
-    }
+    winBox.innerHTML = win > 0 ? `You win <span style="color: blue;">$${win}</span>` : '';
+    penaltyBox.innerHTML = fee > 0 ? `Fee of <span style="color: red;">$${fee}</span> applies now` : '';
 }
 
-
-
-// Show loading screen between rounds
-function showLoadingScreen() {
-    document.getElementById('trialSection').style.display = 'none'; // Hide trial section
-    document.getElementById('loadingScreen').style.display = 'block'; // Show loading screen
-}
-
-// Hide loading screen
-function hideLoadingScreen() {
-    document.getElementById('loadingScreen').style.display = 'none'; // Hide loading screen
-    document.getElementById('trialSection').style.display = 'block'; // Show trial section
-}
-
-// End the task and submit results
+// End the task and submit the results
 function endTask() {
     const resultData = { totalScore: totalScore }; // Prepare result data
 
-    // Send the results to the backend
     fetch("/submit_task2_result", {
         method: "POST",
         headers: {
@@ -415,7 +373,6 @@ function endTask() {
     .then(data => {
         if (data.status === "success") {
             alert(`Task completed! Please proceed to the post-task survey to finalize your participation.`);
-            // Redirect to the provided URL
             window.location.href = "https://form.jotform.com/243311949113452";
         } else {
             alert("Error saving task result. Please try again.");
