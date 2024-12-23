@@ -221,6 +221,19 @@
     color: black;
 }
 
+.trial-counter {
+    position: absolute;
+/*    top: 20px;*/
+    right: 30px;
+    background-color: #ff6b6b;
+    color: white;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
 
     </style>
 </head>
@@ -231,7 +244,6 @@
                 <h1>Money Pot Challenge</h1>
             </div>
             <div class="card-body">
-                <!-- Instructions Section -->
                 <div class="instruction-container" id="instructions">
                     <h1 class="instruction-header">Welcome to Main Task 2!</h1>
                     <div class="instruction-content">
@@ -247,6 +259,8 @@
 
                 <!-- Trial Section -->
                 <div id="trialSection" class="trial-container">
+                        <div class="trial-counter" id="trialCounter">Trial: 0 / 100</div>
+
                     <div class="budget-display" id="budgetDisplay">Budget: $2000</div>
                     <h2>Choose a Deck</h2>
                 <div id="deckChoices">
@@ -312,6 +326,7 @@ const deckRewards = {
 function startTask() {
     document.getElementById('instructions').style.display = 'none';
     document.getElementById('trialSection').style.display = 'block';
+    updateTrialCounter();
     updateBudgetDisplay();
     currentTrial = 0; // Reset trial count
 }
@@ -344,6 +359,8 @@ function chooseDeck(deck) {
 
     // Increment trial count and check for task completion
     currentTrial++;
+    updateTrialCounter();
+
     if (currentTrial >= trialsPerRound) {
         endTask();
     }
@@ -382,6 +399,10 @@ function endTask() {
         console.error("Error:", error);
         alert("Failed to submit task result.");
     });
+}
+function updateTrialCounter() {
+    const trialCounter = document.getElementById('trialCounter');
+    trialCounter.innerText = `Trial: ${currentTrial} / ${trialsPerRound}`;
 }
 
     </script>
