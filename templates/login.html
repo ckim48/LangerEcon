@@ -14,15 +14,15 @@
                 <div class="card-body">
                     <h1 class="text-center mb-3">Login</h1>
                     <form action="/login" method="POST">
-                        <input  class="form-control mb-4" placeholder="Username" name = "username">
+                        <input  class="form-control mb-4" placeholder="Prolific/Email" name = "username">
                         <input type="password"  class="form-control mb-4" placeholder="Password" name = "password">
 
                         {% with messages = get_flashed_messages() %}
                             {% if messages %}
-                            <p>{{messages[0]}}</p>
+                            <p style="color:red;" class="ms-3">{{messages[0]}}</p>
                              {% endif %}
                          {% endwith %}
-                        <p>Don't have an account? <a href="{{url_for('register')}}">Register</a></p>
+                        <p class="ms-3">Don't have an account? <a href="{{url_for('register')}}">Register</a></p>
                          <button type="submit" class="btn btn-login ">Login</button>
                     </form>
 

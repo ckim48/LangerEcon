@@ -85,6 +85,67 @@
     display: d-block;
     margin: 0 auto;
 }
+            .card {
+    background-color: #ffffff;
+    border-radius: 15px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 0 auto;
+    height: 590px;
+    border: none;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+    width: 95%;
+    margin: 0 auto !important;
+    border-radius: 15px 15px 0 0;
+    height: 250px; /* Adjusted for consistent height */
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+.card-body {
+    flex-grow: 1; /* Ensures consistent alignment across cards */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 15px;
+}
+
+.card-body h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.card-body p {
+    flex-grow: 1; /* Ensures the text occupies available space */
+    margin-bottom: 15px;
+}
+
+.btn-learnmore {
+    background-color: #3498db;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    text-transform: uppercase;
+    transition: background-color 0.3s;
+}
+
+.btn-learnmore:hover {
+    background-color: #2980b9;
+}
+
         </style>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     </head>
@@ -95,7 +156,7 @@
             <div class="container">
                 <div class="hero-container">
                     <h1 data-aos="fade-up" data-aos-duration="1000"><span style="color:#3498db;"> <strong> Mood and Money:</strong></span> The Interplay Between Mental States and Economic Choices</h1>
-                    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">To participate in our study, please create an account and complete the assigned tasks.</p>
+                    <p data-aos="fade-up" data-aos-duration="1000" data-aos-delay="500">To participate in our study, please login and complete the assigned tasks.</p>
                                         {% if isLogin %}
                     <a data-aos="fade-up" data-aos-duration="1000" data-aos-delay="800" href="{{url_for('start_task')}}" class="btn btn-learnmore">Start Task</a>
                         {% else %}
@@ -113,14 +174,14 @@
                         <h2 class="section-title">About</h2>
                         <p class="text-justify">This study aims to explore the relationship between mental states and financial decision-making. Specifically, the research focuses on understanding how different mental and emotional states can influence the way individuals approach financial choices. By examining how awareness, focus, and emotional regulation impact decision-making processes, this study seeks to uncover ways to enhance financial outcomes, regardless of the size or complexity of the decisions. Through cultivating psychological awareness and maintaining emotional balance, individuals may experience reduced stress, improved clarity, and better judgment in financial scenarios. Previous research in fields such as behavioral finance and cognitive psychology supports the idea that mental states play a significant role in financial behavior. Studies have shown that individuals in positive and stable mental states tend to make more rational decisions and are less influenced by impulsive or emotional biases. With this research, we hope to offer valuable insights into the connection between mental states and financial decision-making, providing participants with strategies for making informed and confident financial choices. This study is being led by <strong>Professor Ellen J. Langer, Department of Psychology, Harvard University.</strong>  </p>
                     </div>
-                    <div  data-aos="fade-left"  data-aos-duration="1000"  class="col-md-6 px-md-5">
+                    <div  data-aos="fade-left"  data-aos-duration="1000"  class="col-md-6 px-md-5 mt-md-5">
                         <img class="img-fluid mt-5" src="../static/img/ecnomoy.jpg">
                     </div>
                 </div>
 
                 <div class="row mt-5">
-                    <div class="col-md-6 mt-md-5 px-md-5"data-aos="fade-left"  data-aos-duration="1000" >
-                        <img class="img-fluid" src="../static/img/process.png">
+                    <div class="col-md-6 mt-md-5 px-md-5 mt-md-5"data-aos="fade-left"  data-aos-duration="1000" >
+                        <img class="img-fluid mt-md-5" src="../static/img/process.png">
                     </div>
                     <div class="col-md-6 mt-md-5 px-md-5" data-aos="fade-right"  data-aos-duration="1000" >
                         <h2 class="section-title">What we will ask you to do</h2>
