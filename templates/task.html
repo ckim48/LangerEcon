@@ -1347,26 +1347,33 @@ function showShopSection() {
     document.getElementById('instruction-final').style.display = 'none';
     document.getElementById('shopSection').style.display = 'block';
 }
-        function updateShopStatus(shopId) {
+function updateShopStatus(shopId) {
     const shop = shopData[shopId];
     const categories = shop.categories;
     const allPurchased = categories.every(category => purchasedCategories[category]);
 
     const shopCard = document.querySelector(`[data-shop-id="${shopId}"]`);
+    let purchasedMessage = shopCard.querySelector('.purchased-message');
+
     if (allPurchased) {
-        let purchasedMessage = shopCard.querySelector('.purchased-message');
+        // Add "All items purchased!" if it doesn't exist
         if (!purchasedMessage) {
             purchasedMessage = document.createElement('div');
             purchasedMessage.classList.add('purchased-message');
             purchasedMessage.innerText = 'All items purchased!';
             purchasedMessage.style.color = '#28a745';
-            purchasedMessage.style.fontWeight = 500;
-            purchasedMessage.style.marginTop = '1px';
-//            purchasedMessage.style.marginTop = '10px';
+            purchasedMessage.style.fontWeight = '500';
+            purchasedMessage.style.marginTop = '10px';
             shopCard.appendChild(purchasedMessage);
+        }
+    } else {
+        // Remove the message if not all items are purchased
+        if (purchasedMessage) {
+            purchasedMessage.remove();
         }
     }
 }
+
 function showItems(shopId, shopName) {
     document.getElementById('shopSection').style.display = 'none';
     document.getElementById('itemSection').style.display = 'block';
@@ -1536,40 +1543,24 @@ function undoPurchase(category) {
         // Remove the item from the purchasedItems array
         purchasedItems = purchasedItems.filter(i => !(i.category === category && i.name === lastItem.name));
 
-        // Remove the item from the room canvas
-        const roomIndex = itemsInRoom.findIndex(item => item.category === category);
-        if (roomIndex !== -1) {
-            itemsInRoom.splice(roomIndex, 1); // Remove the item from the room array
-            drawRoom(); // Redraw the canvas without the removed item
-        }
-
         // Reset the purchasedCategories for this category
         delete purchasedCategories[category];
+
+        // Update the shop status
+        const shopId = Object.keys(shopData).find(shopId => shopData[shopId].categories.includes(category));
+        if (shopId) updateShopStatus(shopId);
 
         // Update the UI
         updateAvailableBudget();
         updatePurchasedItemsList();
-
-        // Re-enable the "Buy" button for the undone category
-        const buyButtons = document.querySelectorAll('.btn-buy');
-        buyButtons.forEach(button => {
-            if (button.innerText === 'Purchased') {
-                button.disabled = false;
-                button.innerText = 'Buy';
-            }
-        });
-
-        // Immediately re-render the current category to reflect the updated button
-        const currentCategoryId = getCurrentCategoryId();
-        if (currentCategoryId) {
-            renderCategoryItems(currentCategoryId);
-        }
+        enableBuyButton(category); // Enable "Buy" button for this category
 
         alert(`Undo purchase of ${lastItem.name}. Budget refunded.`);
     } else {
         console.warn("Item price is invalid during undo operation.");
     }
 }
+
 
 
 
